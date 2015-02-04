@@ -1,0 +1,33 @@
+containers:
+
+	server1:
+		image: myrepo/myapp1
+		run:
+			env:
+		    - pipework_cmd=eth0 @CONTAINER_NAME@ 192.168.1.101/24
+
+	server2:
+		image: myrepo/myapp2
+		run:
+			env:
+		    - pipework_cmd=eth0 @CONTAINER_NAME@ dhcp 0a:00:01:00:02:18
+
+	# Notice the @CONTAINER_NAME@ macro replacement.
+	# 2 alternative macro templates: @CONTAINER_ID@ and @HOSTNAME@
+
+	pipework:
+		image: dreamcat4/pipework
+		run:
+			volume:
+				- /var/run/docker.sock:/docker.sock
+			privileged: true
+			pid: true
+			net: container:host
+			link:
+				- server1
+				- server2
+
+
+
+# docker run -v /var/run/docker.sock:/docker.sock --privileged=true --net=none --pid=host -v /proc/self/net:/proc/self/net dreamcat4/pipework
+
