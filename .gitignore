@@ -1,1 +1,8 @@
 /*.yml
+/mc2xml/mc2xml
+/*
+
+!/pipework
+!/pipework/*
+
+*.html

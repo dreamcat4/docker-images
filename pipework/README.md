@@ -1,105 +1,63 @@
-## Pipework
+*<div align=right>Pipework reference:* ***[`jpetazzo/pipework`](https://github.com/jpetazzo/pipework/blob/master/README.md)</div>***
+**[`Readme`](README.md)** / **[`Install`](1. Install.md)** / **[`Usage`](2. Usage.md)** / **[`Examples`](3. Examples.md)** / **[`Config`](4. Config.md)**
 
-A docker image for [jpetazzo/pipework](https://github.com/jpetazzo/pipework). So that you can now run pipework as a docker container.
+## Docker-Pipework
+**_A docker image which runs jpetazzo's pipework_**
 
-This method allows us to specify an environment variable `pipework_cmd=` for each container to give it an external IP address, or DHCP lease etc. See [Usage](#usage) for more information.
+Recommended with the `crane` orchestration tool. [See here for an example](3. Examples.md#crane).
 
-### Status
+This docker image encapsulates the awesome [jpetazzo/pipework](https://github.com/jpetazzo/pipework) networking configuration script. You can now run pipework as a docker container. The configurable [run modes](2. Usage.md#run-modes) determine how the pipework command is invoked on your docker containers.
 
-DOES NOT WORK (YET):
+By setting an environment variable named with the substring [`pipework_cmd`](4. Config.md#pipework_cmd) on a container. That it will tell the `dreamcat4/pipework` image how to run jpetazzo's `pipework` script, and with which specified command line arguments.
 
-Finding app containers by linking them to the pipework container. Because the combination of `--net=host` and `--link ...` cannot be specified together. Docker does not support such a combination of options. And perhaps never will.
+The intention may be to give your container an external IP address, or a macvlan L2 ethernet bridge, a particular [MAC address](https://github.com/jpetazzo/pipework/blob/master/README.md#custom_mac), a dynamic or a static [DHCP lease](https://github.com/jpetazzo/pipework/blob/master/README.md#dhcp). To be able to [manually configure the IP address](https://github.com/jpetazzo/pipework/blob/master/README.md#no_ip) from inside the container. To set up [host routes](4. Config.md#host_routes) so that those IPs are reachable / visible on the docker host. Or to [create a private bridge](https://github.com/jpetazzo/pipework/blob/master/README.md#lamp) between N other containers].
 
-Which means that both Crane and Fig don't work yet...
+Or perhaps all of those things! As you may run multiple pipework commands on the same container. Using the [`.*pipework_cmd.*` pattern globbing](4. Config.md#globbing).
 
-### Miniumum Requirements
+Requires privileged mode, access to the host PID namespace, and the host's networking stack. ~ But only on the `dreamcat4/pipework` container, not on any of your application containers.
 
-* Docker 1.5
+## Readme
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
 
-To run in a container, the pipework command needs to see the host pid namespace. Which requires the `--pid` flag be implemented in docker and hence `docker-lxc-1.5.0`.
+- [Status](#status)
+- [Support](#support)
+- [Credit](#credit)
+- [Future](#future)
 
-* Crane
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-You can run pipework in [Crane](https://github.com/michaelsauter/crane). Providing you have installed both `lxc-docker-1.5.0`, and have also have a recent build of crane which includes [crane PR #144](https://github.com/michaelsauter/crane/pull/144).
+<a name="status"/>
+### Status 
 
-See [Installing pre-release dependancies](#installing_deps), for how to download them / get them.
+DOCKER COMPOSE (FIG)
+* This image does not work. The `--pid` option needs to be implemented in fig, when it calls `container_create` on the `docker-py` API library. Current Status:
 
-* This image also needs to be run with `--privileged` mode (or else `--cap-add` modes). So that pipework can access host networking stack, modify other containers, etc. It has been tested on ubuntu-14.10 host. 
+  * [PR #485 - Support for PID mode in docker-py](https://github.com/docker/docker-py/pull/485) - Merged.
 
-### What's not ready yet
+<a name="support"/>
+### Support
 
-* Pipework does not work in fig yet. The `--pid` option needs to be implemented in the docker python API first, and can be subsequently added to fig also.
+Should you experience any problems with this image, there are a couple of things to try.
 
-[docker-py issue 471](https://github.com/docker/docker-py/issues/471)
+* Please first check that the same pipework command will run correctly on the command line on your host system. By installing pipework script on your host system as a standalone tool.
 
-* As we cannot use docker links. Then instead we must come up with a different approach. We need to loop around and wait for docker start events. When an event is catched, the container must be inspected for it's `pipework_cmd=` and then the pipework script should be launched at that time.
+* Pipework has it's own requirements for certain features. Which can be found in the official pipework documentation @ [jpetazzo/pipework](https://github.com/jpetazzo/pipework/blob/master/README.md). For example `dhclient` is needed for the DHCP feature and so on. Please check through the available documentation here, at [dreamcat4/docker-images/pipework](https://github.com/dreamcat4/docker-images/tree/master/pipework).
 
-<a name="usage"/>
-### Usage
+* If still no luck, then it is best to open a [new issue](https://github.com/dreamcat4/docker-images/issues/new) here on this github repository.
 
-#### Environment variables
+### Credit
 
-On the pipework container, you can set the following environment variables:
+* [Pipework](https://github.com/jpetazzo/pipework) - Jerome Petazzoni
+* [This Article](http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/), at very end, shows how to set up host routes - Lars Kellogg-Stedman
+* [This Docker Image](https://github.com/dreamcat4/docker-images/tree/master/pipework), a wrapper for Pipework - Dreamcat4
 
-Not implemented yet.
+### Future
 
-#### Cmd line (single usage / single invocation)
+The pipework tool, although excellent, is a 3rd party solution. There are eventually plans for Docker itself to be improved with a new networking subsystem. It is important to be aware of that. So here are those issues covering that future work:
 
-Works.
+* [#9983 Proposal: Network Driver](https://github.com/docker/docker/issues/9983)
+* [#8951 Proposal: Native Docker Multi-Host Networking](https://github.com/docker/docker/issues/8951)
 
-Full documentation on the pipework script can be found at [jpetazzo/pipework](https://github.com/jpetazzo/pipework).
-
-Cmdline Usage (docker run):
-
-    docker run -v /var/run/docker.sock:/docker.sock --pid=host --net=host --privileged=true dreamcat4/pipework --help
-
-#### Fig / Docker Compose
-
-Does not work yet.
-
-To see how to use pipework in fig, take a look at the file [example-fig.yml](https://github.com/dreamcat4/pipework/blob/master/example-fig.yml).
-
-* Start the master pipework container with `-e daemon=true` on the command line. Do this before `fig up`.
-
-* Set the environment variable `pipework_cmd=` on each app container which you need to pipework to be run for.
-
-#### Crane
-
-Does not work yet.
-
-To see how to use pipework in crane, take a look at the file [example-crane.yml](https://github.com/dreamcat4/pipework/blob/master/example-crane.yml).
-
-<a name="install_deps"/>
-### Installing pre-release dependancies
-
-* Until docker-1.5 is officially released, it can be installed from docker's ubuntu testing repo with the following commands:
-
-	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 740B314AE3941731B942C66ADF4FD13717AAD7D6
-	sudo add-apt-repository -y "deb https://test.docker.com/ubuntu docker main"
-	sudo apt-get install lxc-docker
-
-* You will need to build a master (head) version of crane, until [crane PR #144](https://github.com/michaelsauter/crane/pull/144) gets released in binary form. You can build a local copy of crane by running the following commands:
-
-	# Set up your go environment. You should want to add `GOPATH` and `GOBIN` to your `.profile`
-	sudo apt-get install gccgo-go
-	[ "$GOPATH" ] || export GOPATH=$HOME/go   && mkkdir -p $GOPATH
-	[ "$GOBIN" ]  || export GOBIN=$GOPATH/bin && mkkdir -p $GOBIN && export PATH="$GOBIN:$PATH"
-
-	# Build crane and install the `crane` binary into `GOBIN`
-	cd $GOPATH && mkdir -p src/github.com/michaelsauter
-	cd src/github.com/michaelsauter
-	git clone https://github.com/michaelsauter/crane.git
-	cd crane && go get
-
-#### Other notes
-
-* The `--cap-add=` flag will be available in Fig 1.1.0- [pull 623](https://github.com/docker/fig/pull/623) (merged).
-
-* Specifying each capabilities individually with `--cap-add=` may avoid some of `--privileged`. But it messier on the command line. Not sure precisely which ones are required for pipework.
-
-### If --pid flag is not enabled
-
-If you try to run pipework cmd without `--pid` flag, pipework will exit with the following error msg:
-
-    RTNETLINK answers: No such process
-
+Once a better networking solution is implemented natively in Docker (we would hope) that pipework becomes entirely deprecated. Including the automatic setup of macvlan L2 bridge (or functinoal equivalent). The key purpose for which pipework is most widely used for at the moment.
