@@ -32,15 +32,9 @@ Requires privileged mode, access to the host PID namespace, and the host's netwo
 ### Status 
 
 * Working 1.0.0 release.
-* Tested on `ubuntu-14.10` host.
+* Tested on an Ubuntu-14.10 host.
 * Requires Docker 1.5.0
 * Needs to be run in privileged mode etc.
-
-* Works in `crane`.
-* Does not work yet in Docker Compose (Fig). The `--pid` option needs to be implemented in fig, when it calls `container_create` on the `docker-py` API library. Current Status:
-
-  * docker-py - [PR #485 - Support for PID mode in docker-py](https://github.com/docker/docker-py/pull/485) - Merged.
-  * fig - Did not find any open ticket.
 
 <a name="support"/>
 ### Support
