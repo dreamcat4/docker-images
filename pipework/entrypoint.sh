@@ -181,9 +181,6 @@ _create_host_route ()
     ln -s /proc/${_pid}/ns/net /var/run/netns/$_pid
 
     for proto in inet inet6; do
-        # nsenter -t $(_docker_pid $c12id) -n ip -o -f $proto addr show $cont_if
-        # ip_and_netmask="$(nsenter -t $(_docker_pid $c12id) -n ip -o -f $proto addr show $cont_if | tr -s ' ' | cut -d ' ' -f4)"
-        # ip netns exec $_pid ip -o -f $proto addr show $cont_if
         ip_and_netmask="$(ip netns exec $_pid ip -o -f $proto addr show $cont_if | tr -s ' ' | cut -d ' ' -f4)"
 
         [ "$ip_and_netmask" ] || continue
@@ -193,18 +190,33 @@ _create_host_route ()
         case $proto in
             inet)
                 unset last_ip
-                fping -c1 -t200 $ip && continue
-                [ "$_arping" ] && arping -c1 -I $host_if $ip && continue
+                if [ "$_debug" ]; then
+                    fping -c1 -t200 $ip && continue
+                    [ "$_arping" ] && arping -c1 -I $host_if $ip && continue
+                else
+                    fping -c1 -t200 $ip 2> /dev/null 1> /dev/null && continue
+                    [ "$_arping" ] && arping -c1 -I $host_if $ip 2> /dev/null 1> /dev/null && continue
+                fi
 
                 last_ipv4=$(sipcalc $ip_and_netmask | grep 'Usable range' | cut -d ' ' -f5 | sed -e 's/255/254/g')
                 i=0
                 # while true; do
                 while [ "$i" -le "10" ]; do
-                    if ! fping -c1 -t200 $last_ipv4; then
-                        if [ "$_arping" ]; then
-                            arping -c1 -I $host_if $last_ipv4 || break
-                        else
-                            break
+                    if [ "$_debug" ]; then
+                        if ! fping -c1 -t200 $last_ipv4; then
+                            if [ "$_arping" ]; then
+                                arping -c1 -I $host_if $last_ipv4 || break
+                            else
+                                break
+                            fi
+                        fi
+                    else
+                        if ! fping -c1 -t200 $last_ipv4 2> /dev/null 1> /dev/null; then
+                            if [ "$_arping" ]; then
+                                arping -c1 -I $host_if $last_ipv4 2> /dev/null 1> /dev/null || break
+                            else
+                                break
+                            fi
                         fi
                     fi
                     last_ipv4=$(_decrement_ipv4 $last_ipv4)
@@ -215,17 +227,30 @@ _create_host_route ()
 
             inet6)
                 unset last_ip
-                fping6 -c1 -t200 $ip && continue
-                ndisc6 -1 -r1 -w200 $ip $host_if && continue
+                if [ "$_debug" ]; then
+                    fping6 -c1 -t200 $ip && continue
+                    ndisc6 -1 -r1 -w200 $ip $host_if && continue
+                else
+                    fping6 -c1 -t200 $ip 2> /dev/null 1> /dev/null && continue
+                    ndisc6 -1 -r1 -w200 $ip $host_if 2> /dev/null 1> /dev/null && continue
+                fi
 
                 last_ipv6=$(sipcalc $ip_and_netmask | grep -A1 'Network range' | tail -1)
                 last_ipv6=$(_decrement_ipv6 $last_ipv6)
                 i=0
                 # while true; do
                 while [ "$i" -le "10" ]; do
-                    if ! fping6 -c1 -t200 $last_ipv6; then
-                        if ! ndisc6 -1 -r1 -w200 $last_ipv6 $host_if; then
-                            break
+                    if [ "$_debug" ]; then
+                        if ! fping6 -c1 -t200 $last_ipv6; then
+                            if ! ndisc6 -1 -r1 -w200 $last_ipv6 $host_if; then
+                                break
+                            fi
+                        fi
+                    else
+                        if ! fping6 -c1 -t200 $last_ipv6 2> /dev/null 1> /dev/null; then
+                            if ! ndisc6 -1 -r1 -w200 $last_ipv6 $host_if 2> /dev/null 1> /dev/null; then
+                                break
+                            fi
                         fi
                     fi
                     last_ipv6=$(_decrement_ipv6 $last_ipv6)
@@ -247,8 +272,14 @@ _create_host_route ()
             ip -f $proto addr add $last_ip/$netmask dev $macvlan_ifname
             # bring up the interface
             ip link set $macvlan_ifname up
-            # add a new route to container's ip address
-            ip -f $proto route add $ip dev $macvlan_ifname
+
+            if [ "$_debug" ]; then
+                # add a new route to container's ip address
+                ip -f $proto route add $ip dev $macvlan_ifname
+            else
+                # add a new route to container's ip address
+                ip -f $proto route add $ip dev $macvlan_ifname 2> /dev/null 1> /dev/null
+            fi
         fi
     done
 
@@ -279,7 +310,11 @@ _process_container ()
         pipework_cmd="$(eval echo "\$$pipework_cmd_varname")"
 
         # Run pipework
-        $_pipework ${pipework_cmd#pipework }
+        if [ "$_debug" ]; then
+            $_pipework ${pipework_cmd#pipework }
+        else
+            $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
+        fi
 
         pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
         pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
@@ -328,7 +363,11 @@ _manual ()
             pipework_cmd="$(eval echo "\$$pipework_cmd_varname")"
 
             # Run pipework
-            $_pipework ${pipework_cmd#pipework }
+            if [ "$_debug" ]; then
+                $_pipework ${pipework_cmd#pipework }
+            else
+                $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
+            fi
 
             pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
             pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
@@ -344,7 +383,12 @@ _manual ()
         done
 
     else
-        $_pipework ${_args#pipework }
+        if [ "$_debug" ]; then
+            $_pipework ${_args#pipework }
+        else
+            $_pipework ${_args#pipework } 2> /dev/null 1> /dev/null
+        fi
+
         if [ "$_pipework_host_routes" ] || [ "$pipework_host_route" ]; then
 
             set ${_args#pipework }
