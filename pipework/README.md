@@ -1,34 +1,8 @@
-*<div align=right>Pipework reference:* ***[`jpetazzo/pipework`](https://github.com/jpetazzo/pipework/blob/master/README.md)</div>***
-**[`Readme`](README.md)** / **[`Install`](1. Install.md)** / **[`Usage`](2. Usage.md)** / **[`Examples`](3. Examples.md)** / **[`Config`](4. Config.md)**
-
 ## Docker-Pipework
 **_A docker image of jpetazzo's pipework_**
 
-Recommended with the `crane` orchestration tool. [See here for an example](3. Examples.md#crane).
+For documentation go ---> [here](https://github.com/dreamcat4/docker-images/blob/master/pipework/0.%20Introduction.md).
 
-This docker image encapsulates the awesome [jpetazzo/pipework](https://github.com/jpetazzo/pipework) networking configuration script. You can now run pipework as a docker container. The configurable [run modes](2. Usage.md#run-modes) determine how the pipework command is invoked on your docker containers.
-
-By setting an environment variable named with the substring [`pipework_cmd`](4. Config.md#pipework_cmd) on a container. That it will tell the `dreamcat4/pipework` image how to run jpetazzo's `pipework` script, and with which specified command line arguments.
-
-The intention may be to give your container an external IP address, or a macvlan L2 ethernet bridge, a particular [MAC address](https://github.com/jpetazzo/pipework/blob/master/README.md#custom_mac), a dynamic or a static [DHCP lease](https://github.com/jpetazzo/pipework/blob/master/README.md#dhcp). To be able to [manually configure the IP address](https://github.com/jpetazzo/pipework/blob/master/README.md#no_ip) from inside the container. To set up [host routes](4. Config.md#host_routes) so that those IPs are reachable / visible on the docker host. Or to [create a private bridge](https://github.com/jpetazzo/pipework/blob/master/README.md#lamp) between N other containers].
-
-Or perhaps all of those things! As you may run multiple pipework commands on the same container. Using the [`.*pipework_cmd.*` pattern globbing](4. Config.md#globbing).
-
-Requires privileged mode, access to the host PID namespace, and the host's networking stack. ~ But only on the `dreamcat4/pipework` container, not on any of your application containers.
-
-## Readme
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
- 
-
-- [Status](#status)
-- [Support](#support)
-- [Credit](#credit)
-- [Future](#future)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-<a name="status"/>
 ### Status 
 
 * Working 1.0.0 release.
@@ -36,28 +10,8 @@ Requires privileged mode, access to the host PID namespace, and the host's netwo
 * Requires Docker 1.5.0
 * Needs to be run in privileged mode etc.
 
-<a name="support"/>
-### Support
-
-Should you experience any problems with this image, there are a couple of things to try.
-
-* Please first check that the same pipework command will run correctly on the command line on your host system. By installing pipework script on your host system as a standalone tool.
-
-* Pipework has it's own requirements for certain features. Which can be found in the official pipework documentation @ [jpetazzo/pipework](https://github.com/jpetazzo/pipework/blob/master/README.md). For example `dhclient` is needed for the DHCP feature and so on. Please check through the available documentation here, at [dreamcat4/docker-images/pipework](https://github.com/dreamcat4/docker-images/tree/master/pipework).
-
-* Open a [new issue](https://github.com/dreamcat4/docker-images/issues/new) here on this github repository.
-
 ### Credit
 
 * [Pipework](https://github.com/jpetazzo/pipework) - Jerome Petazzoni
 * Inspiration for the `host_routes` feature came from [this Article](http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/), by Lars Kellogg-Stedman
 * [This Docker Image](https://github.com/dreamcat4/docker-images/tree/master/pipework), a wrapper for Pipework - Dreamcat4
-
-### Future
-
-The pipework tool, although excellent, is a 3rd party solution. There are eventually plans for Docker itself to be improved with a new networking subsystem. It is important to be aware of that. So here are those issues covering that future work:
-
-* [#9983 Proposal: Network Driver](https://github.com/docker/docker/issues/9983)
-* [#8951 Proposal: Native Docker Multi-Host Networking](https://github.com/docker/docker/issues/8951)
-
-Once a better networking solution is implemented natively in Docker (we would hope) that pipework becomes entirely deprecated. Including the automatic setup of macvlan L2 bridge (or functinoal equivalent). The key purpose for which pipework is most widely used for at the moment.
