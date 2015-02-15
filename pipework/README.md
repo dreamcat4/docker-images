@@ -31,10 +31,16 @@ Requires privileged mode, access to the host PID namespace, and the host's netwo
 <a name="status"/>
 ### Status 
 
-DOCKER COMPOSE (FIG)
-* This image does not work. The `--pid` option needs to be implemented in fig, when it calls `container_create` on the `docker-py` API library. Current Status:
+* Working 1.0.0 release.
+* Tested on `ubuntu-14.10` host.
+* Requires Docker 1.5.0
+* Needs to be run in privileged mode etc.
 
-  * [PR #485 - Support for PID mode in docker-py](https://github.com/docker/docker-py/pull/485) - Merged.
+* Works in `crane`.
+* Does not work yet in Docker Compose (Fig). The `--pid` option needs to be implemented in fig, when it calls `container_create` on the `docker-py` API library. Current Status:
+
+  * docker-py - [PR #485 - Support for PID mode in docker-py](https://github.com/docker/docker-py/pull/485) - Merged.
+  * fig - Did not find any open ticket.
 
 <a name="support"/>
 ### Support
@@ -50,7 +56,7 @@ Should you experience any problems with this image, there are a couple of things
 ### Credit
 
 * [Pipework](https://github.com/jpetazzo/pipework) - Jerome Petazzoni
-* [This Article](http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/), at very end, shows how to set up host routes - Lars Kellogg-Stedman
+* Inspiration for the `host_routes` feature came from [this Article](http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/), by Lars Kellogg-Stedman
 * [This Docker Image](https://github.com/dreamcat4/docker-images/tree/master/pipework), a wrapper for Pipework - Dreamcat4
 
 ### Future
