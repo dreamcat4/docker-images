@@ -2,7 +2,7 @@
 **[`Readme`](README.md)** / **[`Install`](1. Install.md)** / **[`Usage`](2. Usage.md)** / **[`Examples`](3. Examples.md)** / **[`Config`](4. Config.md)**
 
 ## Docker-Pipework
-**_A docker image which runs jpetazzo's pipework_**
+**_A docker image of jpetazzo's pipework_**
 
 Recommended with the `crane` orchestration tool. [See here for an example](3. Examples.md#crane).
 
