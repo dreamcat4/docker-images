@@ -45,7 +45,7 @@ Should you experience any problems with this image, there are a couple of things
 
 * Pipework has it's own requirements for certain features. Which can be found in the official pipework documentation @ [jpetazzo/pipework](https://github.com/jpetazzo/pipework/blob/master/README.md). For example `dhclient` is needed for the DHCP feature and so on. Please check through the available documentation here, at [dreamcat4/docker-images/pipework](https://github.com/dreamcat4/docker-images/tree/master/pipework).
 
-* If still no luck, then it is best to open a [new issue](https://github.com/dreamcat4/docker-images/issues/new) here on this github repository.
+* Open a [new issue](https://github.com/dreamcat4/docker-images/issues/new) here on this github repository.
 
 ### Credit
 
