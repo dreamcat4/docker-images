@@ -15,9 +15,6 @@ done
 _pipework="$_debug /sbin/pipework"
 _args="$@"
 
-#set -e  # stop when any command returns non-zero exit code
-#set -x # enable debugging output
-
 export DOCKER_HOST=${DOCKER_HOST:-"unix:///docker.sock"}
 _test_docker ()
 {
@@ -350,7 +347,7 @@ _daemon ()
     # listen for new container start events
     docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts |  \
     while read event_line; do
-        contaner_id="$(echo -e "$event_line" | grep -v "from $_pipework_image_name" | cut -d ' ' -f2)"
+        container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
         [ "$container_id" ] && _process_container ${container_id%:};
     done
 }
@@ -404,7 +401,7 @@ _main ()
 {
     [ "$_pipework_debug" ] && set -x
 
-    if echo "$_pipework_run_mode" | grep ','; then
+    if echo "$_pipework_run_mode" | grep ',' 2> /dev/null 1> /dev/null; then
         # Ensure run_modes are processed in correct order: manual --> batch --> daemon
         _run_modes="$(echo manual batch daemon | \
             grep -o "$(echo "$_pipework_run_mode" | \
