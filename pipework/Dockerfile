@@ -16,6 +16,9 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D78692
 # Install some few networking tools dependancies
 RUN apt-get install -y arping ndisc6 fping sipcalc bc
 
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # workaround for ubuntu apparmor profile - http://unix.stackexchange.com/a/155995
 # dhclient: error while loading shared libraries: libc.so.6: cannot open shared object file: Permission denied
 RUN mv /sbin/dhclient /usr/sbin/dhclient
