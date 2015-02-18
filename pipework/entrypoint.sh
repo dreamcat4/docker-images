@@ -352,18 +352,22 @@ _daemon ()
         unset IFS
     fi
 
-    # create fifo (unix socket)
+    # Create a fifo (unix socket)
     _docker_events_fifo="$(mktemp -u --suffix=.sock /tmp/docker-events-XXX)"
     mkfifo --mode 0600 $_docker_events_fifo
 
-    # listen for new container start events and pipe them to the fifo
-    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_fifo &
-    _docker_events_pid=$!
-
+    # Start read processing loop, attach it to the fifo socket
     while read event_line; do
         container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
         [ "$container_id" ] && _process_container ${container_id%:};
-    done < $_docker_events_fifo
+    done < $_docker_events_fifo &
+
+    # Start to listen for new container start events and pipe them to the fifo
+    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_fifo &
+    _docker_events_pid=$!
+
+    # Wait until 'docker events' command is killed by 'trap _cleanup ...'
+    wait $_docker_events_pid
 
     [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
 }
