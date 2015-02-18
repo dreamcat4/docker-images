@@ -25,6 +25,14 @@ _test_docker ()
 	fi
 }
 
+_cleanup ()
+{
+    [ "$_docker_events_pid" ]  && kill $_docker_events_pid
+    [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
+    exit 1
+}
+trap _cleanup TERM INT QUIT HUP
+
 _setup_container_for_host_access ()
 {
     # ---------------------------------------------------------------------------------
@@ -333,7 +341,7 @@ _batch ()
 
 _daemon ()
 {
-    [ "$_batch_start_time" ] && _pe_opts="$_pe_opts --since=$_batch_start_time"
+        [ "$_batch_start_time" ] && _pe_opts="$_pe_opts --since=$_batch_start_time"
     [ "$_pipework_up_time" ] && _pe_opts="$_pe_opts --until='$(expr $(date +%s) + $_pipework_up_time)'"
 
     if [ "$_pipework_event_filters" ]; then
@@ -344,12 +352,20 @@ _daemon ()
         unset IFS
     fi
 
-    # listen for new container start events
-    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts |  \
+    # create fifo (unix socket)
+    _docker_events_fifo="$(mktemp -u --suffix=.sock /tmp/docker-events-XXX)"
+    mkfifo --mode 0600 $_docker_events_fifo
+
+    # listen for new container start events and pipe them to the fifo
+    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_fifo &
+    _docker_events_pid=$!
+
     while read event_line; do
         container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
         [ "$container_id" ] && _process_container ${container_id%:};
-    done
+    done < $_docker_events_fifo
+
+    [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
 }
 
 _manual ()
