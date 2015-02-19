@@ -28,8 +28,9 @@ _test_docker ()
 _cleanup ()
 {
     [ "$_docker_events_pid" ]  && kill $_docker_events_pid
+    [ "$_while_read_pid" ]     && kill $_while_read_pid
     [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
-    exit 1
+    exit 0
 }
 trap _cleanup TERM INT QUIT HUP
 
@@ -361,6 +362,7 @@ _daemon ()
         container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
         [ "$container_id" ] && _process_container ${container_id%:};
     done < $_docker_events_fifo &
+    _while_read_pid=$!
 
     # Start to listen for new container start events and pipe them to the fifo
     docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_fifo &
@@ -368,8 +370,7 @@ _daemon ()
 
     # Wait until 'docker events' command is killed by 'trap _cleanup ...'
     wait $_docker_events_pid
-
-    [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
+    _cleanup;
 }
 
 _manual ()
