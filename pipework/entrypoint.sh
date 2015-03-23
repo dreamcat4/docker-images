@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 _pipework_image_name="dreamcat4/pipework"
 _global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters"
