@@ -1,25 +1,22 @@
 FROM ubuntu:trusty
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
-RUN apt-get update -qq && apt-get install -y apt-transport-https wget zip
-
-# Install pipework
-RUN wget https://github.com/jpetazzo/pipework/archive/master.zip && \
-			unzip master.zip && cp /pipework-master/pipework /sbin/ && rm master.zip
+ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ENV _apt_clean="eval apt-get clean && $_clean"
 
 # Install docker
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9 \
-&&  echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list \
-&&  apt-get update -qq \
-&&  apt-get install -y lxc-docker
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D8576A8BA88D21E9 \
+ && echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list \
+ && apt-get update -qq && apt-get install -y lxc-docker && $_apt_clean
 
-# Install some few networking tools dependancies
-RUN apt-get install -y arping ndisc6 fping sipcalc bc
+# Install pipework
+ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
+RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Install networking tools dependancies
+RUN apt-get update -qq && apt-get install -y isc-dhcp-client arping ndisc6 fping sipcalc bc && $_apt_clean
 
-# workaround for ubuntu apparmor profile - http://unix.stackexchange.com/a/155995
+# workaround for dhclient error due to ubuntu apparmor profile - http://unix.stackexchange.com/a/155995
 # dhclient: error while loading shared libraries: libc.so.6: cannot open shared object file: Permission denied
 RUN mv /sbin/dhclient /usr/sbin/dhclient
 
