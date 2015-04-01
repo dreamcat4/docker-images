@@ -27,8 +27,8 @@ _test_docker ()
 
 _cleanup ()
 {
-    [ "$_docker_events_pid" ]  && kill $_docker_events_pid
     [ "$_while_read_pid" ]     && kill $_while_read_pid
+    [ "$_docker_events_pid" ]  && kill $_docker_events_pid
     [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
     exit 0
 }
