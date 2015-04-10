@@ -1,13 +1,14 @@
 ## Docker-Pipework
 **_A docker image of jpetazzo's pipework_**
 
+![dependencies docker-1.5.0](https://img.shields.io/badge/dependencies-docker--1.5.0-green.svg)
+
 For documentation go ---> [here](https://github.com/dreamcat4/docker-images/blob/master/pipework/0.%20Introduction.md).
 
 Page on DockerHub go ---> [here](https://registry.hub.docker.com/u/dreamcat4/pipework/).
 
-### Status 
+### Status
 
-* Working 1.0.0 release.
 * Tested on an Ubuntu-14.10 host.
 * Requires Docker 1.5.0
 * Needs to be run in privileged mode etc.
