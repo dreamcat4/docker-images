@@ -18,10 +18,10 @@ RUN AUTOBUILD_CONFIGURE_EXTRA="--enable-libffmpeg_static --enable-hdhomerun_stat
 
 # Upload tvheadend ubuntu .deb pkgs --> bintray.com
 WORKDIR /out
-RUN tvh_deb="$(find /out -name 'tvheadend_*')" && tvh_dbg_deb="$(find /out -name 'tvheadend-dbg_*')" \
+RUN pkg_name="tvheadend" && tvh_deb="$(find /out -name 'tvheadend_*')" && tvh_dbg_deb="$(find /out -name 'tvheadend-dbg_*')" \
  && tvh_ver="$(echo $tvh_deb | sed -e 's|.*/tvheadend_||' -e 's|~precise.*||')" \
  && for debfile in $tvh_deb $tvh_dbg_deb; do \
-			pkg_name="$(echo $tvh_deb | sed -e 's|.*/||' -e 's|_.*||')" && deb_repo_path="pool/main/t/tvheadend/${debfile}" && chksum="b084fd7f4ac2cd46df13dadfa96ba36f63c9d190" && \
+			deb_repo_path="pool/main/t/tvheadend/${debfile}" && chksum="b084fd7f4ac2cd46df13dadfa96ba36f63c9d190" && \
 			curl -T $debfile -udreamcat4:$chksum https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty,utopic,vivid;deb_component=main;deb_architecture=amd64 ; \
   	done
 
