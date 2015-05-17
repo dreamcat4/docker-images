@@ -22,7 +22,7 @@ RUN pkg_name="tvheadend" && tvh_deb="$(find /out -name 'tvheadend_*')" && tvh_db
  && tvh_ver="$(echo $tvh_deb | sed -e 's|.*/tvheadend_||' -e 's|~precise.*||')" \
  && for debfile in $tvh_deb $tvh_dbg_deb; do \
 			deb_repo_path="pool/main/t/tvheadend/${debfile}" && chksum="b084fd7f4ac2cd46df13dadfa96ba36f63c9d190" && \
-			curl -T $debfile -udreamcat4:$chksum https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty,utopic,vivid;deb_component=main;deb_architecture=amd64 ; \
+			curl -sS -T $debfile -udreamcat4:$chksum -H X-Bintray-Version:$tvh_ver https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty,utopic,vivid;deb_component=main;deb_architecture=amd64 ; \
   	done
 
 
