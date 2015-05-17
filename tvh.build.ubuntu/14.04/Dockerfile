@@ -12,7 +12,7 @@ RUN git pull && git checkout "$tvh_branch"
 
 
 # Compile tvheadend .deb pkgs
-RUN AUTOBUILD_CONFIGURE_EXTRA="--enable-libffmpeg_static --enable-hdhomerun_static --enable-bundle" ./Autobuild.sh -t precise-amd64 \
+RUN AUTOBUILD_CONFIGURE_EXTRA="--enable-libffmpeg_static --enable-hdhomerun_static --enable-dvbcsa --enable-bundle" ./Autobuild.sh -t precise-amd64 \
  && mv /build/*.deb /out && mv /build/*.changes /out
 
 
