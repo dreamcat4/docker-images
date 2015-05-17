@@ -23,6 +23,10 @@ RUN pkg_name="tvheadend" && tvh_deb="$(find /out -name 'tvheadend_*')" && tvh_db
  && for debfile in $tvh_deb $tvh_dbg_deb; do \
 			deb_repo_path="pool/main/t/tvheadend/${debfile}" && chksum="b084fd7f4ac2cd46df13dadfa96ba36f63c9d190" && \
 			curl -sS -T $debfile -udreamcat4:$chksum -H X-Bintray-Version:$tvh_ver https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty,utopic,vivid;deb_component=main;deb_architecture=amd64 ; \
+			echo curl -sS -T $debfile -udreamcat4:$chksum -H X-Bintray-Version:$tvh_ver https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty,utopic,vivid;deb_component=main;deb_architecture=amd64 ; \
+			echo try 2 ; \
+			curl -sS -T $debfile -udreamcat4:$chksum -H X-Bintray-Version:$tvh_ver https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty;deb_component=main;deb_architecture=amd64 ; \
+			echo curl -sS -T $debfile -udreamcat4:$chksum -H X-Bintray-Version:$tvh_ver https://api.bintray.com/content/dreamcat4/${repo}/${pkg_name}/${tvh_ver}/${deb_repo_path};deb_distribution=trusty;deb_component=main;deb_architecture=amd64 ; \
   	done
 
 
