@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# Trigger a build on dockerhub
+
+if ! [ "$(command -v curl)" ]; then
+	echo "error: curl not found. This script requires the 'curl' program."
+	exit 1
+fi
+
+if ! [ "$1" ]; then
+	echo "error: no docker hub username speficied."
+	echo "usage: dh-trigger <user> <repo>"
+	exit 1
+fi
+
+dockerhub_user="$1"
+
+if ! [ "$2" ]; then
+	echo "error: no docker hub repository speficied."
+	echo "usage: dh-trigger <user> <repo>"
+	exit 1
+fi
+
+dockerhub_repo="$2"
+
+
+# Your trigger key should be kept in a file chmod 600
+trigger_token_file="$HOME/.cron.dockerhub.build/trigger.tokens/${dockerhub_repo}"
+
+if ! [ -e "$trigger_token_file" ]; then
+	echo "error: The file: '$trigger_token_file' was not found."
+	echo "it should be chmod 600 and contain your build trigger api key"
+	exit 1
+fi
+
+trigger_token="$(cat "$trigger_token_file")"
+
+if [ ! "$trigger_token" ] || [ "$trigger_token" = "01234567-89ab-cdef-0123-456789abcdef" ]; then
+	echo "error: The file: '$trigger_token_file' does not container a valid dockerhub build trigger token."
+	exit 1
+fi
+
+
+
+# Trigger the build:
+
+# this triggers all tags/branchs for this automated build.
+curl -H "Content-Type: application/json" --data '{"build": true}' -X POST https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
+
+
+
