@@ -11,7 +11,7 @@ all
 tag
 git-branch
 git-tag"
-dht_version="0.9.0"
+dht_version="1.0.0"
 
 _dht_check_depends ()
 {
