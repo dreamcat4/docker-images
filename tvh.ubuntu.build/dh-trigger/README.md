@@ -2,8 +2,12 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
  
 
-- [tvh.build.ubuntu](#tvhbuildubuntu)
-- [Maintainers guide](#maintainers-guide)
+- [dh-trigger](#dh-trigger)
+  - [Installation](#installation)
+  - [Cmdline Usage](#cmdline-usage)
+  - [Add a trigger](#add-a-trigger)
+  - [Running a build trigger](#running-a-build-trigger)
+  - [Setting up a cron job](#setting-up-a-cron-job)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
