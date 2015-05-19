@@ -29,7 +29,7 @@ _trigger_with_json ()
   http_post_string="$1"
 
   if $wget; then
-    wget --header="Content-Type: application/json" --post-data="$http_post_string" https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
+    wget -O - --header="Content-Type: application/json" --post-data="$http_post_string" https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
 
   elif $curl; then
     curl -sS -H "Content-Type: application/json" --data "$http_post_string" -X POST https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
