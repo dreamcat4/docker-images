@@ -1,21 +1,20 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
- 
-
-- [dh-trigger](#dh-trigger)
-  - [Installation](#installation)
-  - [Cmdline Usage](#cmdline-usage)
-  - [Add a trigger](#add-a-trigger)
-  - [Running a build trigger](#running-a-build-trigger)
-  - [Setting up a cron job](#setting-up-a-cron-job)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## dh-trigger
 
 A simple program to trigger dockerhub's automated builds. This is performed by enabling 'build triggers' on the setting of the target dockerhub repo, and obtaining it's 'trigger token'. Once you have the trigger token (an api key), then you can input into the `dh-trigger` program.
 
 Trigger tokens are secured as `chmod 0600` files sitting inside of a `chmod 0700` subdirectory of the user's home folder. In the `~/.dh-trigger/` configuration folder.
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
+
+- [Installation](#installation)
+- [Cmdline Usage](#cmdline-usage)
+- [Add a trigger](#add-a-trigger)
+- [Running a build trigger](#running-a-build-trigger)
+- [Setting up a cron job](#setting-up-a-cron-job)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ### Installation
 
