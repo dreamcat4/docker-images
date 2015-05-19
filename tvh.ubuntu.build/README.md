@@ -3,6 +3,7 @@
  
 
 - [tvh.build.ubuntu](#tvhbuildubuntu)
+- [Maintainers guide](#maintainers-guide)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
