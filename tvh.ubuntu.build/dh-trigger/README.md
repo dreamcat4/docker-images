@@ -97,7 +97,7 @@ dh-trigger all dreamcat4/nginx
 
 ```sh
 # Add a new cron job line to fire off your chosen trigger command
-crontab -e
+crontab -e    # or 'cru' on some machines
 >>>
 # Set the $PATH to 'dh-trigger' cmd here in your crontab, e.g. if 'root' user, then
 PATH="$PATH:/root/.bin"
