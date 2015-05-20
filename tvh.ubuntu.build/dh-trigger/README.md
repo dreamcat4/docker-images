@@ -22,11 +22,9 @@ Trigger tokens are secured as `chmod 0600` files sitting inside of a `chmod 0700
 # Choose a location on your $PATH where to save the 'dh-trigger' script
 mkdir -p $HOME/.bin
 
-# Download the dh-trigger cmd with curl
+# Download the dh-trigger cmd with wget or curl
+wget -O $HOME/.bin/dh-trigger https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh.ubuntu.build/dh-trigger/dh-trigger || \
 curl https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh.ubuntu.build/dh-trigger -o $HOME/.bin/dh-trigger/dh-trigger
-
-# Or with wget
-wget -O $HOME/.bin/dh-trigger https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh.ubuntu.build/dh-trigger/dh-trigger
 
 # Add the bin/ folder to your $PATH if not already
 echo "PATH=\"$PATH:$HOME/.bin\"" >> ~/.profile
@@ -99,17 +97,16 @@ dh-trigger all dreamcat4/nginx
 # Add a new cron job line to fire off your chosen trigger command
 crontab -e    # or 'cru' on some machines
 >>>
-# Set the $PATH to 'dh-trigger' cmd here in your crontab, e.g. if 'root' user, then
-PATH="$PATH:/root/.bin"
-
-# OR: as regular user 'bob', then
-PATH="$PATH:/home/bob/.bin"
-
-
 # Rebuild all image tags (branches) at 03:17am every morning
-17 3 * * * dh-trigger all dreamcat4/nginx
+17 3 * * * $HOME/.bin/dh-trigger all dreamcat4/nginx
 <<<
 ```
 
 The trigger command `all` will trigger all the `tags` (branches) of your repo simultaneously. However you may not wish for every one of them to be re-build every time. Then use one of the other trigger commands `dh-trigger --help` for more information.
+
+***Cron job redundancy:***
+
+If you have multiple computers, then you can repeat the exact same steps above, to set up identical cron job(s) on multiple computers. This means that if one computer does down or has technical problems, then the scheduled build job will still get triggered from an alternate machine.
+
+This is only possible because Dockerhub will ignore duplicate build trigger curl requests made withing the same 5 minute window. *So you must be absolutely sure to check that the system time setting and time zones etc are all identical across all of your machines. E.g. always within a few seconds of each other << 5 min. Including the 1 hour seasonal shift of BST etc daylight savings time.*
 
