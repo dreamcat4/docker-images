@@ -9,11 +9,10 @@ ENV _apt_clean="eval apt-get clean && $_clean"
 RUN apt-get update -qq && apt-get install -qqy \
 			git wget curl libcurl4-gnutls-dev zlib1g-dev bzip2 \
 			build-essential pkg-config debhelper libssl-dev liburiparser-dev \
-			python libavahi-client-dev libhdhomerun-dev dvb-apps libdvbcsa-dev \
+			python libavahi-client-dev libhdhomerun-dev libdvbcsa-dev \
 			libavcodec-dev libavutil-dev libavformat-dev libswscale-dev \
 			libavresample-dev libavfilter-dev libavcodec-extra a52dec \
  && $_apt_clean
-
 
 # Download tvheadend
 RUN mkdir /build /out \
