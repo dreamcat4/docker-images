@@ -1,15 +1,12 @@
+## tvh.build.ubuntu.master
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
- 
-
-- [tvh.build.ubuntu.master](#tvhbuildubuntumaster)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## tvh.build.ubuntu.master
-
 Builder for tvheadend on ubuntu.
-Master branch.
+Master branch, Nightly builds.
 
 https://github.com/tvheadend/tvheadend
 

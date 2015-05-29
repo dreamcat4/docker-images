@@ -1,15 +1,12 @@
+## tvh.build.ubuntu.stable
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
- 
-
-- [tvh.build.ubuntu.stable](#tvhbuildubuntustable)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## tvh.build.ubuntu.stable
-
 Builder for tvheadend on ubuntu.
-Stable branch.
+Stable branch, Nightly builds.
 
 https://github.com/tvheadend/tvheadend/tree/release/4.0
 
