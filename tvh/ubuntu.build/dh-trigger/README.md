@@ -23,8 +23,8 @@ Trigger tokens are secured as `chmod 0600` files sitting inside of a `chmod 0700
 mkdir -p $HOME/.bin
 
 # Download the dh-trigger cmd with wget or curl
-wget -O $HOME/.bin/dh-trigger https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh.ubuntu.build/dh-trigger/dh-trigger || \
-curl https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh.ubuntu.build/dh-trigger/dh-trigger -o $HOME/.bin/dh-trigger
+wget -O $HOME/.bin/dh-trigger https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh/ubuntu.build/dh-trigger/dh-trigger || \
+curl https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh/ubuntu.build/dh-trigger/dh-trigger -o $HOME/.bin/dh-trigger
 
 # Make executable
 chmod +x $HOME/.bin/dh-trigger
