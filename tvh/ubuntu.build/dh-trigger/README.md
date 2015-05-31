@@ -30,8 +30,8 @@ curl https://raw.githubusercontent.com/dreamcat4/docker-images/master/tvh/ubuntu
 chmod +x $HOME/.bin/dh-trigger
 
 # Add the bin/ folder to your $PATH if not already
-echo "PATH=\"$PATH:$HOME/.bin\"" >> ~/.profile
-echo "PATH=\"$PATH:$HOME/.bin\"" >> ~/.bashrc
+echo "PATH=\"\$PATH:$HOME/.bin\"" >> ~/.profile
+echo "PATH=\"\$PATH:$HOME/.bin\"" >> ~/.bashrc
 ```
 
 ### Cmdline Usage
