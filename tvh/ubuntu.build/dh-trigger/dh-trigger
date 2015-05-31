@@ -84,7 +84,7 @@ _add ()
   mkdir -p "${dht_tokens_dir}/${dockerhub_user}"
 
   if [ "$(command -v install)" ]; then
-    install -d --mode=0700 "${dht_tokens_dir}/${dockerhub_user}"
+    install -d -m 0700 "${dht_tokens_dir}/${dockerhub_user}"
   else
     mkdir -p   "${dht_tokens_dir}/${dockerhub_user}"
     chmod 0700 "${dht_tokens_dir}/${dockerhub_user}"
