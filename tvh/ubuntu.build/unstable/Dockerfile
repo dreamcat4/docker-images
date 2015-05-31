@@ -2,14 +2,10 @@ FROM dreamcat4/tvh.ubuntu.build.deps
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-# Version to build
-ENV tvh_major_ver=4
-
-
 # Update & checkout tvheadend
 WORKDIR /build/tvheadend
 RUN git pull \
- && tvh_last_tag="$(git tag | grep v${tvh_major_ver}.[13579] | sort | tail -1)" \
+ && tvh_last_tag="$(git tag | grep v[456789].[13579] | sort | tail -1)" \
  && if [ "$tvh_last_tag" ]; then git checkout "$tvh_last_tag" ; \
 		else echo "error: no git tag for v${tvh_major_ver}.x unstable" && false ; fi
 
