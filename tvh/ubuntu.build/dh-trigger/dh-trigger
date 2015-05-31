@@ -2,7 +2,7 @@
 # dh-trigger - trigger dockerhub automated builds
 
 # Globals
-dht_conf_root="$HOME/.dh-trigger"
+[ "$dht_conf_root" ] || dht_conf_root="$HOME/.dh-trigger"
 dht_tokens_dir="${dht_conf_root}/trigger.tokens"
 dht_supported_cmds="add
 remove
