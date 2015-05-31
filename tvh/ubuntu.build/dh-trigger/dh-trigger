@@ -1,3 +1,4 @@
+#!/bin/sh
 # dh-trigger - trigger dockerhub automated builds
 
 # Globals
