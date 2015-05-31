@@ -1,8 +1,8 @@
-#!/bin/sh
 # dh-trigger - trigger dockerhub automated builds
 
 # Globals
 [ "$dht_conf_root" ] || dht_conf_root="$HOME/.dh-trigger"
+# dht_nossl=true
 dht_tokens_dir="${dht_conf_root}/trigger.tokens"
 dht_supported_cmds="add
 remove
@@ -11,7 +11,12 @@ all
 tag
 git-branch
 git-tag"
-dht_version="1.0.0"
+dht_version="1.0.1"
+
+if $dht_nossl; then
+  dht_curl_nossl="--insecure"
+  dht_wget_nossl="--no-check-certificate"
+fi
 
 _dht_check_depends ()
 {
@@ -29,10 +34,10 @@ _trigger_with_json ()
   http_post_string="$1"
 
   if $wget; then
-    wget -O - --header="Content-Type: application/json" --post-data="$http_post_string" https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
+    wget $dht_wget_nossl -O - --header="Content-Type: application/json" --post-data="$http_post_string" https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
 
   elif $curl; then
-    curl -sS -H "Content-Type: application/json" --data "$http_post_string" -X POST https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
+    curl $dht_curl_nossl -sS -H "Content-Type: application/json" --data "$http_post_string" -X POST https://registry.hub.docker.com/u/${dockerhub_user}/${dockerhub_repo}/trigger/${trigger_token}/
   fi
 }
 
@@ -76,7 +81,14 @@ _add ()
   trigger_token_file="${dht_tokens_dir}/${dockerhub_user}/${dockerhub_repo}"
 
   mkdir -p "${dht_tokens_dir}/${dockerhub_user}"
-  install -d --mode=0700 "${dht_tokens_dir}/${dockerhub_user}"
+
+  if [ "$(command -v install)" ]; then
+    install -d --mode=0700 "${dht_tokens_dir}/${dockerhub_user}"
+  else
+    mkdir -p   "${dht_tokens_dir}/${dockerhub_user}"
+    chmod 0700 "${dht_tokens_dir}/${dockerhub_user}"
+  fi
+
   touch "$trigger_token_file"
   chmod 0600 "$trigger_token_file"
   echo "$trigger_token" > "$trigger_token_file"
