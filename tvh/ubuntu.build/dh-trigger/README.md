@@ -102,9 +102,6 @@ We need to specify 2 similar cron lines because of a technical issue regarding d
 # Add a new cron job line to fire off your chosen trigger command
 crontab -e    # or 'cru' on some machines
 >>>
-# Override this default conf path if $HOME/ isn't persistent across reboots (ramfs)
-# dht_conf_root=$HOME/.dh-trigger
-
 # Rebuild all image tags (branches) at 03:15am UTC every morning
 15 03 * * * [ "$(date +%z)" = "+0000" ] && $HOME/.bin/dh-trigger all dreamcat4/nginx
 15 04 * * * [ "$(date +%z)" = "+0100" ] && $HOME/.bin/dh-trigger all dreamcat4/nginx
@@ -123,9 +120,6 @@ If your regular time is `+0500` shift of `UTC`, and your seasonal time is `+0600
 # Add a new cron job line to fire off your chosen trigger command
 crontab -e    # or 'cru' on some machines
 >>>
-# Override this default conf path if $HOME/ isn't persistent across reboots (ramfs)
-# dht_conf_root=$HOME/.dh-trigger
-
 # Rebuild all image tags (branches) at 03:15am UTC every morning
 15 08 * * * [ "$(date +%z)" = "+0500" ] && $HOME/.bin/dh-trigger all dreamcat4/nginx
 15 09 * * * [ "$(date +%z)" = "+0600" ] && $HOME/.bin/dh-trigger all dreamcat4/nginx
