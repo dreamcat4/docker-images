@@ -21,7 +21,7 @@ A docker image of Tvheadend Server.
 
 There are 3 kinds of tvheadend docker images:
 
-`dreamcat4/tvheadend`
+[`dreamcat4/tvheadend`](https://registry.hub.docker.com/u/dreamcat4/tvheadend)
 
   * The main release image
   * Very simple, 2 volumes: `/config` and `/recordings`
@@ -30,7 +30,7 @@ There are 3 kinds of tvheadend docker images:
   * Uses excellent automated build of all branches. Including stable and development release etc.
   * Updated every 24 hours automatically from latest pkgs.
 
-`dreamcat4/tvh.debug`
+[`dreamcat4/tvh.debug`](https://registry.hub.docker.com/u/dreamcat4/tvh.debug)
 
   * A version for Debugging
   * To do a debigging run - just swap it out for the main `tvheadend` image - shares the same `tvh.config` image.
@@ -42,7 +42,7 @@ There are 3 kinds of tvheadend docker images:
   * Contains `stacktrace` script to take running snapshot with `gdb`
   * Trace is not switched on by default. Just add the `--trace` flags as arguments by specifying extra optional `CMD` params
 
-`dreamcat4/tvh.config`
+[`dreamcat4/tvh.config`](https://registry.hub.docker.com/u/dreamcat4/tvh.config)
 
   * You should build your own version of the `tvh.config` image and use `volumes-from` to mount it to the main tvheadend image (or debug image).
   * The `/config` volume provided by this image should NOT be bind-mounted. It should be a regular docker volume. Since docker only pre-seeds volumes data for the regular type of volumes.
@@ -63,7 +63,9 @@ There are 3 kinds of tvheadend docker images:
 
 * `dreamcat4/tvheadend:stable` - Stable branch - official releases
 
+Same image tags are available for the Debugging version.
 
+By default, the `:latest` image tag maps onto the latest official 'Stable' release of tvheadend. e.g. `v4.0.4` at this time of writing.
 
 ### Config
 
