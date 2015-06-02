@@ -4,8 +4,7 @@ A docker image of Tvheadend Server.
 
 For more information about these tvheadend docker images, please see the full documentation at:
 
-https://github.com/dreamcat4/docker-images/blob/master/tvh/README.md
-
+[https://github.com/dreamcat4/docker-images/blob/master/tvh/README.md](https://github.com/dreamcat4/docker-images/blob/master/tvh/README.md)
 
 ### dreamcat4/tvheadend
 
