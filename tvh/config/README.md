@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
+
+- [Tvheadend](#tvheadend)
+  - [dreamcat4/tvh.config](#dreamcat4tvhconfig)
+  - [Customizing the Dockerfile](#customizing-the-dockerfile)
+  - [Building](#building)
+  - [Using](#using)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Tvheadend
 
 A docker image of Tvheadend Server.
