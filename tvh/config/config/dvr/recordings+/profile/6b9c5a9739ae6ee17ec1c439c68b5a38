@@ -1,0 +1,10 @@
+{
+	"class": "profile-htsp",
+	"enabled": true,
+	"default": false,
+	"name": "htsp",
+	"comment": "HTSP Default Stream Settings",
+	"timeout": 0,
+	"restart": false,
+	"shield": true
+}

@@ -1,0 +1,19 @@
+{
+	"channel_rename": 1,
+	"channel_renumber": 1,
+	"channel_reicon": 1,
+	"epgdb_periodicsave": 3600,
+	"cron": "# Default config (00:04 and 12:04 everyday)\n4 */12 * * *",
+	"ota_cron": "# Default config (02:04 and 14:04 everyday)\n4 2 * * *\n4 14 * * *",
+	"ota_timeout": 600,
+	"ota_initial": 1,
+	"mod_enabled": {
+		"opentv-skyit": 0,
+		"opentv-skyuk": 1,
+		"opentv-ausat": 0,
+		"viasat_baltic": 0,
+		"uk_freeview": 1,
+		"uk_freesat": 1,
+		"eit": 1
+	}
+}
