@@ -1,0 +1,11 @@
+{
+	"webm": false,
+	"class": "profile-matroska",
+	"enabled": true,
+	"default": false,
+	"name": "matroska",
+	"comment": "Matroska",
+	"timeout": 0,
+	"restart": false,
+	"shield": true
+}

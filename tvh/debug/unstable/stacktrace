@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# This script is for taking stacktrace while tvheadend is hung running.
+# e.g. Deadlock / Livelock / Hanging crash / Tvh stops responding
+
+# Tvheadend Debugging Guide
+# https://tvheadend.org/projects/tvheadend/wiki/Debugging
+
+tvh_version="$(tvheadend --version | cut -d' ' -f 3)"
+tvh_pid="$(ps -o pid= -C tvheadend)"
+
+# Override core path
+core_pattern_orig=$(cat /proc/sys/kernel/core_pattern)
+core_pattern="/crash/%e-${tvh_version}.t%t.stacktrace.core"
+echo "$core_pattern" > /proc/sys/kernel/core_pattern
+
+# Remember the folder ownership for later
+crash_uid="$(stat -c %u /crash)"
+crash_gid="$(stat -c %g /crash)"
+crash_rwx="$(stat -c %a /crash)"
+
+# Set folder permissions
+chown -R hts:video /crash && chmod u+rwx /crash
+
+echo "
+***********************************************************************
+uname -a"
+uname -a
+echo "
+***********************************************************************
+ps -aux"
+ps -aux
+ps -aux > /crash/tvheadend-${tvh_version}.ps-aux.txt
+echo "
+***********************************************************************
+top -b -n 1 -H -p $tvh_pid"
+top -b -n 1 -H -p $tvh_pid
+echo "
+***********************************************************************
+GDB Backtrace
+***********************************************************************"
+echo "set logging on /crash/tvheadend-${tvh_version}.gdb.stacktrace.txt
+set pagination off
+thread apply all bt full
+generate core file" | gdb /usr/bin/tvheadend $tvh_pid
+
+# Restore core path
+echo "$core_pattern_orig" > /proc/sys/kernel/core_pattern
+
+# Restore original file ownership and permissions
+chown -R ${crash_uid}:${crash_gid} /crash && chmod ${crash_rwx} /crash
+
+echo "
+***********************************************************************"
+echo "
+ Tvheadend Debugging Guide
+ ----> https://tvheadend.org/projects/tvheadend/wiki/Debugging
+
+ Tvheadend Issue Tracker
+ ----> https://tvheadend.org/projects/tvheadend/issues
+
+ Tvheadend New Issue
+ ----> https://tvheadend.org/projects/tvheadend/issues/new
+"
+
