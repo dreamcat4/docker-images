@@ -5,7 +5,8 @@ ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ENV _apt_clean="eval apt-get clean && $_clean"
 
 # Install docker
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D8576A8BA88D21E9 \
+RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
+ && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D8576A8BA88D21E9 \
  && echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list \
  && apt-get update -qq && apt-get install -qqy lxc-docker && $_apt_clean
 

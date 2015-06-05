@@ -27,9 +27,9 @@ _test_docker ()
 
 _cleanup ()
 {
-    [ "$_while_read_pid" ]     && kill $_while_read_pid
-    [ "$_docker_events_pid" ]  && kill $_docker_events_pid
-    [ "$_docker_events_fifo" ] && rm $_docker_events_fifo
+    [ "$_while_read_pid" ]     && kill  $_while_read_pid
+    [ "$_docker_events_pid" ]  && kill  $_docker_events_pid
+    [ "$_docker_events_log" ]  && rm -f $_docker_events_log
     exit 0
 }
 trap _cleanup TERM INT QUIT HUP
@@ -342,7 +342,7 @@ _batch ()
 
 _daemon ()
 {
-        [ "$_batch_start_time" ] && _pe_opts="$_pe_opts --since=$_batch_start_time"
+    [ "$_batch_start_time" ] && _pe_opts="$_pe_opts --since=$_batch_start_time"
     [ "$_pipework_up_time" ] && _pe_opts="$_pe_opts --until='$(expr $(date +%s) + $_pipework_up_time)'"
 
     if [ "$_pipework_event_filters" ]; then
@@ -353,20 +353,22 @@ _daemon ()
         unset IFS
     fi
 
-    # Create a fifo (unix socket)
-    _docker_events_fifo="$(mktemp -u --suffix=.sock /tmp/docker-events-XXX)"
-    mkfifo --mode 0600 $_docker_events_fifo
+    # Create docker events log
+    _docker_events_log="/tmp/docker-events.log"
+    rm -f $_docker_events_log
+    touch $_docker_events_log
+    chmod 0600 $_docker_events_log
 
     while true; do
-        if read event_line < $_docker_events_fifo; then
+        if read event_line < $_docker_events_log; then
             container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
             [ "$container_id" ] && _process_container ${container_id%:};
         fi
     done &
     _while_read_pid=$!
 
-    # Start to listen for new container start events and pipe them to the fifo
-    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_fifo &
+    # Start to listen for new container start events and pipe them to the events log
+    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_log &
     _docker_events_pid=$!
 
     # Wait until 'docker events' command is killed by 'trap _cleanup ...'
