@@ -359,12 +359,10 @@ _daemon ()
     touch $_docker_events_log
     chmod 0600 $_docker_events_log
 
-    while true; do
-        if read event_line < $_docker_events_log; then
-            container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
-            [ "$container_id" ] && _process_container ${container_id%:};
-        fi
-    done &
+    while read event_line; do
+        container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
+        [ "$container_id" ] && _process_container ${container_id%:};
+    done < $_docker_events_log &
     _while_read_pid=$!
 
     # Start to listen for new container start events and pipe them to the events log
