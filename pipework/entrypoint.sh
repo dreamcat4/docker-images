@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _pipework_image_name="dreamcat4/pipework"
-_global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters"
+_global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters cleanup_wait retry_delay inter_delay"
 
 for _var in $_global_vars; do
     _value="$(eval echo \$${_var})"
@@ -12,6 +12,7 @@ done
 [ "$_pipework_debug" ] && _debug="sh -x"
 [ "$_pipework_sleep" ] && sleep $_pipework_sleep
 
+_default_cleanup_wait="22" # for dhclient
 _pipework="$_debug /sbin/pipework"
 _args="$@"
 
@@ -29,6 +30,7 @@ _cleanup ()
 {
     [ "$_while_read_pid" ]     && kill  $_while_read_pid
     [ "$_docker_events_pid" ]  && kill  $_docker_events_pid
+    [ "$_tail_f_pid" ]         && kill  $_tail_f_pid
     [ "$_docker_events_log" ]  && rm -f $_docker_events_log
     exit 0
 }
@@ -294,9 +296,42 @@ _create_host_route ()
     [ -f /var/run/netns/$_pid ] && rm -f /var/run/netns/$_pid
 }
 
+_run_pipework ()
+{
+    # Run pipework
+    if [ "$_debug" ]; then
+        $_pipework ${pipework_cmd#pipework }
+    else
+        $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
+    fi
+
+    if [ $? != 0 ]; then
+        unset retry_delay
+        [ "$_pipework_retry_delay" ] && retry_delay="$_pipework_retry_delay"
+        [ "$pipework_retry_delay" ]  && retry_delay="$pipework_retry_delay"
+
+        if [ "$retry_delay" -gt 0 ] > /dev/null 2>&1; then
+            sleep $retry_delay;
+
+            # Run pipework again, the 2nd time
+            if [ "$_debug" ]; then
+                $_pipework ${pipework_cmd#pipework }
+            else
+                $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
+            fi
+        fi
+    fi
+
+    unset inter_delay
+    [ "$_pipework_inter_delay" ] && inter_delay="$_pipework_inter_delay"
+    [ "$pipework_inter_delay" ]  && inter_delay="$pipework_inter_delay"
+    [ "$inter_delay" ] && sleep $inter_delay;
+}
+
 _process_container ()
 {
     c12id="$(echo "$1" | cut -c1-12)" # container_id
+    event="$2" # start|stop
     unset $(env | grep -e "^pipework.*" | cut -d= -f1)
 
     _pipework_vars="$(docker inspect --format '{{range $index, $val := .Config.Env }}{{printf "%s\"\n" $val}}{{end}}' $c12id \
@@ -312,20 +347,23 @@ _process_container ()
     _pipework_cmds="$(env | grep -o -e '[^=]*pipework_cmd[^=]*')"
     [ "$_pipework_cmds" ]  || return 0
 
+    if [ "$event" = "die" ]; then
+        cleanup_wait="$_default_cleanup_wait"
+        [ "$_pipework_cleanup_wait" ] && cleanup_wait="$_pipework_cleanup_wait"
+        [ "$pipework_cleanup_wait" ] && cleanup_wait="$pipework_cleanup_wait"
+        sleep $cleanup_wait
+        return 0
+    fi
+
     for pipework_cmd_varname in $_pipework_cmds; do
         pipework_cmd="$(eval echo "\$$pipework_cmd_varname")"
 
         # Run pipework
-        if [ "$_debug" ]; then
-            $_pipework ${pipework_cmd#pipework }
-        else
-            $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
-        fi
+        _run_pipework;
 
         pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
         pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
-        [ "$_pipework_host_routes" ] || [ "$pipework_host_routes" ] ||[ "$pipework_host_route" ] &&_create_host_route "$c12id" "${pipework_cmd#pipework }";
-
+        [ "$_pipework_host_routes" ] || [ "$pipework_host_routes" ] || [ "$pipework_host_route" ] &&_create_host_route "$c12id" "${pipework_cmd#pipework }";
     done
 }
 
@@ -353,21 +391,78 @@ _daemon ()
         unset IFS
     fi
 
+    # _filters_json="{%22event%22:[%22start%22]"
+    # if [ "$_pipework_event_filters" ]; then
+    #     IFS=,
+    #     for filter in $_pipework_event_filters; do
+    #         _filters_json="${_filters_json},%22${filter%=*}%22:[%22${filter#*=}%22]"
+    #     done
+    #     unset IFS
+    # fi
+    # _filters_json="$_filters_json}"
+
+    # [ "$_batch_start_time" ] && _pe_opts="${_pe_opts}&since=$_batch_start_time"
+    # [ "$_pipework_up_time" ] && _pe_opts="${_pe_opts}&until=$(expr $(date +%s) + $_pipework_up_time)"
+
+    # docker_events_query="/events?filters=${_filters_json}${_pe_opts}"
+
+
     # Create docker events log
     _docker_events_log="/tmp/docker-events.log"
     rm -f $_docker_events_log
     touch $_docker_events_log
     chmod 0600 $_docker_events_log
 
-    while read event_line; do
-        container_id="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ' | cut -d ' ' -f3)"
-        [ "$container_id" ] && _process_container ${container_id%:};
-    done < $_docker_events_log &
-    _while_read_pid=$!
+    # http://stackoverflow.com/questions/1652680/how-to-get-the-pid-of-a-process-that-is-piped-to-another-process-in-bash
+    tail_f_pid_file="$(mktemp -u --suffix=.pid /var/run/tail_f.XXX)"
+    ( tail -f $_docker_events_log & echo $! >&3 ) 3>$tail_f_pid_file | \
+    while true
+    do
+        read event_line
+        echo event_line=$event_line
 
-    # Start to listen for new container start events and pipe them to the events log
-    docker events $_pe_opts --filter='event=start' $_pipework_daemon_event_opts > $_docker_events_log &
+        # using $ docker events
+        # _pipework_image_name=pipework
+        # event_line="2015-06-10T16:38:12.000000000Z 753ce24472db2af099328ad161f1af70da0f4bc9fa00af2a4e82625f56eb67f2: (from dreamcat4/tvheadend:latest) start"
+        event_line_sanitized="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ')"
+        container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f3)"
+        event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f6)"
+        # echo event_line_sanitized=$event_line_sanitized
+        # echo container_id=$container_id
+        # echo event=$event
+        [ "$container_id" ] && _process_container ${container_id%:} $event;
+
+        # read -d "}" event_line
+        # echo event_line=$event_line}
+
+        # # using $ netcat
+        # # {"status":"start","id":"ca3b678ef3b6924e18361ddd48f7cf4f3deb82fb0dc42a59c2bcf1fdd6c9e1ad","from":"dreamcat4/pipework:latest","time":1433759001}
+        # container_id="$(echo -e "$event_line}" | tail -1 | jq -r .id)"
+        # event="$(echo -e "$event_line}" | tail -1 | jq -r .status)"
+        # [ "$container_id" ] && _process_container $container_id $event;
+
+        # # using $ curl 7.42
+        # # {"status":"start","id":"ca3b678ef3b6924e18361ddd48f7cf4f3deb82fb0dc42a59c2bcf1fdd6c9e1ad","from":"dreamcat4/pipework:latest","time":1433759001}
+        # container_id="$(echo -e "$event_line}" | jq -r .id)"
+        # event="$(echo -e "$event_line}" | jq -r .status)"
+        # [ "$container_id" ] && _process_container $container_id $event;
+
+    # done < $_docker_events_fifo &
+    done &
+    _while_read_pid=$!
+    _tail_f_pid=$(cat $tail_f_pid_file) && rm -f $tail_f_pid_file
+
+    # Start to listen for new container start events and write them to the events log
+    docker events $_pe_opts --filter='event=start' --filter='event=die' \
+        $_pipework_daemon_event_opts > $_docker_events_log &
     _docker_events_pid=$!
+
+    # # requires curl 7.42
+    # # curl -sS --no-buffer -XGET --unix-socket /docker.sock http:/events > $_docker_events_log &
+    # _docker_events_pid=$!
+
+    # echo -e "GET $docker_events_query HTTP/1.0\r\n" | nc -U /docker.sock > $_docker_events_log &
+    # _docker_events_pid=$!
 
     # Wait until 'docker events' command is killed by 'trap _cleanup ...'
     wait $_docker_events_pid
@@ -382,11 +477,7 @@ _manual ()
             pipework_cmd="$(eval echo "\$$pipework_cmd_varname")"
 
             # Run pipework
-            if [ "$_debug" ]; then
-                $_pipework ${pipework_cmd#pipework }
-            else
-                $_pipework ${pipework_cmd#pipework } 2> /dev/null 1> /dev/null
-            fi
+            _run_pipework;
 
             pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
             pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
@@ -402,11 +493,8 @@ _manual ()
         done
 
     else
-        if [ "$_debug" ]; then
-            $_pipework ${_args#pipework }
-        else
-            $_pipework ${_args#pipework } 2> /dev/null 1> /dev/null
-        fi
+        # Run pipework
+        _run_pipework;
 
         if [ "$_pipework_host_routes" ] || [ "$pipework_host_route" ]; then
 
