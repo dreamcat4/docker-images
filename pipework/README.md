@@ -2,7 +2,7 @@
 ## Docker-Pipework
 **_A docker image of jpetazzo's pipework_**
 
-![dependencies docker-1.5.0](https://img.shields.io/badge/dependencies-docker--1.5.0-green.svg)
+![dependencies docker-1.6.0](https://img.shields.io/badge/dependencies-docker--1.6.0-green.svg)
 
 ![dependencies docker-compose-1.3.0](https://img.shields.io/badge/dependencies-docker-compose--1.3.0-green.svg)
 
@@ -13,7 +13,7 @@ Page on DockerHub go ---> [here](https://registry.hub.docker.com/u/dreamcat4/pip
 ### Status
 
 * Tested on an Ubuntu-14.10 host.
-* Requires Docker 1.5.0
+* Requires Docker 1.6.0
 * Requires Docker Compose 1.3.0
 * Needs to be run in privileged mode etc.
 
