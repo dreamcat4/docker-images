@@ -69,6 +69,9 @@ uname -a
 dmesg > /crash/tvheadend-${tvh_version}.dmesg.new
 echo "Saved: dmesg --> /crash/dmesg.new"
 
+# Clear umask
+umask 0
+
 # Start tvheadend
 echo /usr/bin/tvheadend "$@"
      /usr/bin/tvheadend "$@"

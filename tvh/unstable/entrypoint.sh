@@ -11,5 +11,8 @@ if [ "$pipework_wait" ]; then
 	pipework --wait -i $pipework_wait
 fi
 
+# Clear umask
+umask 0
+
 echo /usr/bin/tvheadend "$@"
      /usr/bin/tvheadend "$@"
