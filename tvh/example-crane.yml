@@ -1,7 +1,7 @@
 containers:
 
   tvh.config:
-    # Or build your own 'config image' with timezone, networks/ adapters/ folders etc.
+    # Or build your own 'config image' with local timezone, networks, adapters, users etc
     image: dreamcat4/tvh.config
 
   tvh:
@@ -18,7 +18,7 @@ containers:
         - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.4
       detach: true
 
-  # Optional sister image you can switch over to when debugging issues
+  # Optional: A sister image you can switch over to when debugging tvheadend problems
   tvh.debug:
     image: dreamcat4/tvh.debug
     run:
