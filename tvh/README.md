@@ -105,7 +105,7 @@ device:
 
 ### Docker Compose
 
-Sorry there is no example for docker compose yet. But very similar is this [`crane.yml`](https://github.com/dreamcat4/docker-images/blob/master/tvh/crane.yml) file. The networking is setup by [`dreamcat4/pipwork`](https://github.com/dreamcat4/docker-images/tree/master/pipework) docker image.
+Sorry there is no example for docker compose yet. But very similar is this [`crane.yml`](https://github.com/dreamcat4/docker-images/blob/master/tvh/example-crane.yml) file. The networking is setup by [`dreamcat4/pipwork`](https://github.com/dreamcat4/docker-images/tree/master/pipework) docker image.
 
 ### GUI configuration
 
