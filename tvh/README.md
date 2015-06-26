@@ -115,7 +115,7 @@ See official Tvheadend Documentation about that.
 Then `/crash` must be bind-mounted as a host volume. It doesn't work otherwise.
 
 ```sh
-docker create --volume |/tvh_debug:/crash --privileged=true --name tvh.debug dreamcat4/tvh.debug --abort
+docker create -v/tvh_debug:/crash --privileged=true --name tvh.debug dreamcat4/tvh.debug --abort
 docker start tvh.debug
 ```
 
