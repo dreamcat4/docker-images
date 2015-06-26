@@ -3,6 +3,20 @@ containers:
   tvh.config:
     image: dreamcat4/tvh.config
 
+  tvh:
+    image: dreamcat4/tvheadend
+    run:
+      net: none
+      cmd: --satip_xml http://satip.lan:8080/desc.xml --bindaddr 192.168.1.4
+      volume:
+        - /data/TvShows:/recordings
+      volumes-from:
+        - tvh.config
+      env:
+        - pipework_wait=eth0
+        - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.4
+      detach: true
+
   tvh.debug:
     image: dreamcat4/tvh.debug
     run:
@@ -17,20 +31,6 @@ containers:
       env:
         - pipework_wait=eth0
         - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.4
-
-  tvh:
-    image: dreamcat4/tvheadend
-    run:
-      net: none
-      cmd: --satip_xml http://satip.lan:8080/desc.xml --bindaddr 192.168.1.4
-      volume:
-        - /data/TvShows:/recordings
-      volumes-from:
-        - tvh.config
-      env:
-        - pipework_wait=eth0
-        - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.4
-      detach: true
 
   pipework:
     image: dreamcat4/pipework
