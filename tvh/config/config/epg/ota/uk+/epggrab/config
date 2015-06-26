@@ -1,6 +1,6 @@
 {
 	"channel_rename": 1,
-	"channel_renumber": 1,
+	"channel_renumber": 0,
 	"channel_reicon": 1,
 	"epgdb_periodicsave": 3600,
 	"cron": "# Default config (00:04 and 12:04 everyday)\n4 */12 * * *",
