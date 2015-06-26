@@ -10,6 +10,7 @@ A docker image of Tvheadend Server.
 - [Image Tags](#image-tags)
 - [Config](#config)
 - [Usage](#usage)
+- [Docker Compose](#docker-compose)
 - [GUI configuration](#gui-configuration)
 - [Debugging Tvheadend](#debugging-tvheadend)
   - [To get core files, and other artifact files](#to-get-core-files-and-other-artifact-files)
@@ -102,9 +103,13 @@ device:
 
 * The August DVB-T210v1 / Geniatech T220 tuner requires Linux Kernel 3.19 or higher. Other tuners will have different requirements. Run the `w_scan` or similar on you host system to check your DVB tuner is working properly... before trying to use it inside Tvheadend.
 
+### Docker Compose
+
+Sorry there is no example for docker compose yet. But very similar is this [`crane.yml`](https://github.com/dreamcat4/docker-images/blob/master/tvh/crane.yml) file. The networking is setup by [`dreamcat4/pipwork`](https://github.com/dreamcat4/docker-images/tree/master/pipework) docker image.
+
 ### GUI configuration
 
-See official Tvheadend Documentation about that.
+* Official tvheadend help [http://docs.tvheadend.org](http://docs.tvheadend.org/)
 
 ### Debugging Tvheadend
 
