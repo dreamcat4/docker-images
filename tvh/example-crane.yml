@@ -18,7 +18,7 @@ containers:
         - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.4
       detach: true
 
-  # Optional
+  # Optional sister image you can switch over to when debugging issues
   tvh.debug:
     image: dreamcat4/tvh.debug
     run:
