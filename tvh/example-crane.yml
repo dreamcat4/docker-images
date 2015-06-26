@@ -1,9 +1,11 @@
 containers:
 
+  # Config image. Pre-seeds the '/config' folder with initial settings
+  # See: https://github.com/dreamcat4/docker-images/blob/master/tvh/config/Dockerfile
   tvh.config:
-    # Or build your own 'config image' with local timezone, networks, adapters, users etc
     image: dreamcat4/tvh.config
 
+  # Main 'tvheadend' image
   tvh:
     image: dreamcat4/tvheadend
     run:
@@ -47,3 +49,23 @@ containers:
       env:
         - run_mode=batch,daemon
         - debug=true
+
+
+
+# Instructions for 'crane' tool (https://github.com/michaelsauter/crane)
+
+# Build / Download
+# $ crane provision -v pipework tvh.config tvh tvh.debug
+
+# Create instances
+# $ crane create -v --recreate pipework tvh.config tvh tvh.debug
+
+# Start pipework
+# $ docker start pipework
+
+# Start tvheadend
+# $ docker start tvh
+
+# Stop tvheadend
+# $ docker stop tvh
+
