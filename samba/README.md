@@ -49,6 +49,7 @@ OR set local storage:
                     required arg: "<username>;<passwd>"
                     <username> for user
                     <password> for user
+        -g "<groupname>[;gid]" Add a group
 
     The 'command' (if provided and valid) will be run instead of samba
 

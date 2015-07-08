@@ -91,6 +91,17 @@ user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups=
     echo "$passwd" | tee - | smbpasswd -s -a "$name"
 }
 
+### group: add a group
+# Arguments:
+#   name) for group
+#   gid) gid for group
+# Return: group added to container
+group() { local name="${1}" gid="${2:-}"
+    local ua_args=""
+    [ "$gid" ] && ua_args="$ua_args -o -g $gid"
+    groupadd "$name" $ua_args
+}
+
 ### usage: Help
 # Arguments:
 #   none)
@@ -115,6 +126,7 @@ Options (fields in '[]' are optional, '<>' are required):
                 required arg: \"<username>;<passwd>\"
                 <username> for user
                 <password> for user
+    -g \"<groupname>[;gid]\" Add a group
 
 The 'command' (if provided and valid) will be run instead of samba
 " >&2
@@ -128,7 +140,8 @@ while getopts ":hi:t:u:s:" opt; do
         h) usage ;;
         i) import "$OPTARG" ;;
         s) eval share $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
-        u) eval user $(sed 's/;/ /g' <<< $OPTARG) ;;
+        u) eval user  $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
+        g) eval group $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
         t) timezone "$OPTARG" ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
