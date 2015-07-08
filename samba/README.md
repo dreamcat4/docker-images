@@ -33,8 +33,6 @@ OR set local storage:
     Usage: samba.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
-        -i "<path>" Import smbpassword
-                    required arg: "<path>" - full file path in container to import
         -s "<name;/path>[;browse;readonly;guest;users]" Configure a share
                     required arg: "<name>;<comment>;</path>"
                     <name> is how it's called for clients
@@ -50,6 +48,10 @@ OR set local storage:
                     <username> for user
                     <password> for user
         -g "<groupname>[;gid]" Add a group
+        -e          Export smbpasswd file to stdout
+        -i "<path>" Import smbpassword
+                    required arg: "<path>" - full file path in container to import
+
 
     The 'command' (if provided and valid) will be run instead of samba
 
@@ -74,13 +76,33 @@ Will get you the same settings as
 
 ### Start an instance creating users and shares:
 
-    docker run -p 139:139 -p 445:445 -d dreamcat4/samba \
-                -u "example1;badpass" \
-                -u "example2;badpass" \
+    docker run  -p 139:139 -p 445:445 -d dreamcat4/samba \
+                -g "group2;130" \
+                -u "user1;badpass1" \
+                -u "user2;badpass2;1002;;group2" \
                 -s "public;/share" \
-                -s "users;/srv;no;no;no;example1,example2" \
-                -s "example1 private;/example1;no;no;no;example1" \
-                -s "example2 private;/example2;no;no;no;example2"
+                -s "users;/srv;no;no;no;user1,user2" \
+                -s "user1 private;/user1;no;no;no;user1" \
+                -s "user2 private;/user2;no;no;no;user2"
+
+### Export - Import smbpasswd file
+
+This will avoid plaintext passwords.
+
+Generate new smbpasswd file:
+
+    smbpasswd_file="$HOME/.smb/smbpasswd.container1"
+    install -d -m 0700 "$HOME/.smb"
+    install -m 0600 /dev/null "$smbpasswd_file"
+    docker run  -p 139:139 -p 445:445 -d dreamcat4/samba \
+                -u "user1;badpass1" -u "user2;badpass2" -e >> $smbpasswd_file
+
+Import smbpasswd file:
+
+    docker run  -p 139:139 -p 445:445 -d \
+                -v $smbpasswd_file:/root/.smbpasswd \
+                dreamcat4/samba -u "user1" -u "user2" -i "/root/.smbpasswd"
+
 
 # User Feedback
 

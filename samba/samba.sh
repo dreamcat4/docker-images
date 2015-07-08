@@ -27,17 +27,6 @@ fi
 
 set -o nounset                              # Treat unset variables as an error
 
-### import: import a smbpasswd file
-# Arguments:
-#   file) file to import
-# Return: user(s) added to container
-import() { local name id file="${1}"
-    while read name id; do
-        useradd "$name" -M -u "$id"
-    done < <(cut -d: -f1,2 --output-delimiter=' ' $file)
-    pdbedit -i smbpasswd:$file
-}
-
 ### share: Add share
 # Arguments:
 #   share) share name
@@ -88,7 +77,7 @@ user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups=
     [ "$extra_groups" ] && ua_args="$ua_args --groups $extra_groups"
 
     useradd "$name" -M $ua_args
-    echo "$passwd" | tee - | smbpasswd -s -a "$name"
+    [ "$passwd" ] && echo "$passwd" | tee - | smbpasswd -s -a "$name"
 }
 
 ### group: add a group
@@ -102,6 +91,23 @@ group() { local name="${1}" gid="${2:-}"
     groupadd "$name" $ua_args
 }
 
+### export: export a smbpasswd file
+# Outputs to stdout the hased lines for import later on
+export_() {
+    pdbedit --list --smbpasswd-style
+}
+
+### import: import a smbpasswd file
+# Arguments:
+#   file) file to import
+# Return: user(s) added to container
+import() { local name uid file="${1}"
+    while read name uid; do
+        [ "$(id -u "$name" 2> /dev/null)" ] || useradd "$name" -M -u "$uid"
+    done < <(cut -d: -f1,2 --output-delimiter=' ' $file)
+    pdbedit -i smbpasswd:$file
+}
+
 ### usage: Help
 # Arguments:
 #   none)
@@ -110,8 +116,6 @@ usage() { local RC=${1:-0}
     echo "Usage: ${0##*/} [-opt] [command]
 Options (fields in '[]' are optional, '<>' are required):
     -h          This help
-    -i \"<path>\" Import smbpassword
-                required arg: \"<path>\" - full file path in container to import
     -s \"<name;/path>[;browse;readonly;guest;users]\" Configure a share
                 required arg: \"<name>;<comment>;</path>\"
                 <name> is how it's called for clients
@@ -127,6 +131,9 @@ Options (fields in '[]' are optional, '<>' are required):
                 <username> for user
                 <password> for user
     -g \"<groupname>[;gid]\" Add a group
+    -e          Export smbpasswd file to stdout
+    -i \"<path>\" Import smbpasswd
+                required arg: \"<path>\" - full file path in container to import
 
 The 'command' (if provided and valid) will be run instead of samba
 " >&2
@@ -135,14 +142,15 @@ The 'command' (if provided and valid) will be run instead of samba
 
 cd /tmp
 
-while getopts ":hi:t:u:s:" opt; do
+while getopts ":hs:t:u:g:ei:" opt; do
     case "$opt" in
         h) usage ;;
-        i) import "$OPTARG" ;;
         s) eval share $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
+        t) timezone "$OPTARG" ;;
         u) eval user  $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
         g) eval group $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
-        t) timezone "$OPTARG" ;;
+        e) export_ ;;
+        i) import   "$OPTARG" ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
