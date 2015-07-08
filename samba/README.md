@@ -45,7 +45,7 @@ OR set local storage:
                     [users] allowed default:'all' or list of allowed users
         -t ""       Configure timezone
                     possible arg: "[timezone]" - zoneinfo timezone for container
-        -u "<username;password>"       Add a user
+        -u "<username;password>[;uid;group;extra_groups]" Add a user
                     required arg: "<username>;<passwd>"
                     <username> for user
                     <password> for user

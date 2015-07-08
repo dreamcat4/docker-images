@@ -77,9 +77,17 @@ timezone() { local timezone="${1:-EST5EDT}"
 # Arguments:
 #   name) for user
 #   password) for user
+#   uid) uid for user
+#   group) primary group or gid for user (group must exist)
+#   extra_groups) supplemental groups or gids for user (groups must exist)
 # Return: user added to container
-user() { local name="${1}" passwd="${2}"
-    useradd "$name" -M
+user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups="${5:-}"
+    local ua_args=""
+    [ "$uid" ] && ua_args="$ua_args -o -u $uid"
+    [ "$gid" ] && ua_args="$ua_args -g $gid"
+    [ "$extra_groups" ] && ua_args="$ua_args --groups $extra_groups"
+
+    useradd "$name" -M $ua_args
     echo "$passwd" | tee - | smbpasswd -s -a "$name"
 }
 
@@ -103,7 +111,7 @@ Options (fields in '[]' are optional, '<>' are required):
                 [users] allowed default:'all' or list of allowed users
     -t \"\"       Configure timezone
                 possible arg: \"[timezone]\" - zoneinfo timezone for container
-    -u \"<username;password>\"       Add a user
+    -u \"<username;password>[;uid;group;extra_groups]\" Add a user
                 required arg: \"<username>;<passwd>\"
                 <username> for user
                 <password> for user
