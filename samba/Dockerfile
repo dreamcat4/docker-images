@@ -9,6 +9,11 @@ ENV S6_LOGGING="1"
 # ENV S6_KILL_GRACETIME="3000"
 
 
+# Install pipework
+ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
+RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
+
+
 # Install samba
 RUN export DEBIAN_FRONTEND='noninteractive' && \
     apt-get update -qq && \

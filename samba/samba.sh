@@ -16,6 +16,13 @@
 #      REVISION: 1.0
 #===============================================================================
 
+
+if [ "$pipework_wait" ]; then
+    echo "Waiting for pipework to bring up $pipework_wait..."
+    pipework --wait -i $pipework_wait
+fi
+
+
 set -o nounset                              # Treat unset variables as an error
 
 ### import: import a smbpasswd file
