@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu-debootstrap:14.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 # Install samba
