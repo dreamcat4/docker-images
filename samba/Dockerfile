@@ -32,11 +32,14 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     echo '   force user = smbuser' >> /etc/samba/smb.conf && \
     echo '   force group = users' >> /etc/samba/smb.conf && \
     echo '' >> /etc/samba/smb.conf
+
+
+# Launch script
 COPY samba.sh /usr/bin/
 
+
+# Default container settings
 VOLUME ["/etc/samba"]
-
 EXPOSE 139 445
-
 ENTRYPOINT ["/init","/usr/bin/samba.sh"]
 
