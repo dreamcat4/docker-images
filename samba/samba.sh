@@ -10,10 +10,12 @@
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: David Personette (dperson@gmail.com),
+#       CREATOR: David Personette (dperson@gmail.com),
+#    MAINTAINER: Dreamcat4 (dreamcat4@gmail.com),
 #  ORGANIZATION:
 #       CREATED: 09/28/2014 12:11
-#      REVISION: 1.0
+#       UPDATED: 07/08/2015 21:11
+#      REVISION: 2.0.0
 #===============================================================================
 
 
