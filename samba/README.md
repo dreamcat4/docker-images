@@ -18,17 +18,18 @@ By default there are no shares configured, additional ones can be added.
 
 ## Hosting a Samba instance
 
-    sudo docker run -p 139:139 -p 445:445 -d dreamcat4/samba
+    docker run -p 139:139 -p 445:445 -d dreamcat4/samba
 
 OR set local storage:
 
-    sudo docker run --name samba -p 139:139 -p 445:445 \
+    docker run --name samba -p 139:139 -p 445:445 \
                 -v /path/to/directory:/mount \
                 -d dreamcat4/samba
 
 ## Configuration
 
-    sudo docker run -it --rm dreamcat4/samba -h
+    docker run -it --rm dreamcat4/samba -h
+
     Usage: samba.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
@@ -62,17 +63,17 @@ ENVIROMENT VARIABLES (only available with `docker run`)
 Any of the commands can be run at creation with `docker run` or later with
 `docker exec samba.sh` (as of version 1.3 of docker).
 
-    sudo docker run -p 139:139 -p 445:445 -d dreamcat4/samba -t EST5EDT
+    docker run -p 139:139 -p 445:445 -d dreamcat4/samba -t EST5EDT
 
 Will get you the same settings as
 
-    sudo docker run --name samba -p 139:139 -p 445:445 -d dreamcat4/samba
-    sudo docker exec samba samba.sh -t EST5EDT ls -AlF /etc/localtime
-    sudo docker restart samba
+    docker run --name samba -p 139:139 -p 445:445 -d dreamcat4/samba
+    docker exec samba samba.sh -t EST5EDT ls -AlF /etc/localtime
+    docker restart samba
 
 ### Start an instance creating users and shares:
 
-    sudo docker run -p 139:139 -p 445:445 -d dreamcat4/samba \
+    docker run -p 139:139 -p 445:445 -d dreamcat4/samba \
                 -u "example1;badpass" \
                 -u "example2;badpass" \
                 -s "public;/share" \
