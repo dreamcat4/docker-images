@@ -103,6 +103,38 @@ Import smbpasswd file:
                 -v $smbpasswd_file:/root/.smbpasswd \
                 dreamcat4/samba -u "user1" -u "user2" -i "/root/.smbpasswd"
 
+## Docker compose
+
+Sorry there isn't an example specifically for compose. However you can adapt from this `crane.yml` file which is very similar:
+
+    containers:
+
+      smb.plaintext.password:
+        image: dreamcat4/samba
+        run:
+          net: none
+          cmd: -t "Europe/London" -u "sambauser1;password;1000;users;operator" -s "samba_sharename1;/share/mount;yes;no;no;sambauser1"
+          volume:
+            - /my_hdd/sambauser1/s/share/folder:/share/mount
+          detach: true
+          env:
+            - pipework_wait=eth0
+            - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.101
+
+      smb.with.mounted.smbpasswd.file:
+        image: dreamcat4/samba
+        run:
+          net: none
+          cmd: -t "Europe/London" -u "smbuserB;password;1000;;root" -s "samba_sharenameB;/share/mount;yes;no;no;smbuserB" -i "/root/.smbpasswd"
+          volume:
+            - /my_hdd/smbuserB/s/share/folder:/share/mount
+            - /my_hdd/smbuserB/s/.smbpasswd:/root/.smbpasswd
+          detach: true
+          env:
+            - pipework_wait=eth0
+            - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.101
+
+The extra `pipework_` env variables are for setting up alternative networking with the `dreamcat4/pipework` helper image. They are not needed if you are using docker's build in networking.
 
 # User Feedback
 
