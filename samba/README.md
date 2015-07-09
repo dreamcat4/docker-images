@@ -4,7 +4,7 @@
 
 # Samba
 
-Samba docker container
+A docker image of Samba v4.1.6+. [DockerHub Page](https://registry.hub.docker.com/u/dreamcat4/samba/).
 
 # What is Samba?
 
