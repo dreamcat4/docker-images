@@ -6,9 +6,9 @@
 
 ![dependencies docker-compose-1.3.0](https://img.shields.io/badge/dependencies-docker--compose--1.3.0-green.svg)
 
-For documentation go ---> [here](https://github.com/dreamcat4/docker-images/blob/master/pipework/0.%20Introduction.md).
+For documentation ---> [here](https://github.com/dreamcat4/docker-images/blob/master/pipework/0.%20Introduction.md).
 
-Page on DockerHub go ---> [here](https://registry.hub.docker.com/u/dreamcat4/pipework/).
+Page on DockerHub ---> [here](https://registry.hub.docker.com/u/dreamcat4/pipework/).
 
 ### Status
 
