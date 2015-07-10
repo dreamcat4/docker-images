@@ -1,8 +1,25 @@
-/*.yml
-/mc2xml/mc2xml
 /*
 
 !/pipework
 !/pipework/*
+
+!/tvh
+!/tvh/*
+/tvh/config/config/channels
+/tvh/config/config/adapters
+/tvh/config/config/bouquets
+/tvh/config/config/network
+/tvh/config/config/users/id+
+/tvh/config/config/epg/xmltv/uk/atlas/region/south
+
+#!/tvheadend
+#!/tvheadend/*
+/tvheadend/uk-atlas-api-key
+
+!/samba
+!/samba/*
+
+!/ps3netsrv
+!/ps3netsrv/*
 
 *.html

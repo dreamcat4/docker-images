@@ -26,3 +26,9 @@ Dreamcat4's Docker Images (Trusted Builds)
 - [dreamcat4/tvh.ubuntu.build.*](tvh/ubuntu.build/README.md)
 
 
+## dreamcat4/ps3netsrv
+**_A docker image of ps3netsrv_**
+
+- [dreamcat4/ps3netsrv](ps3netsrv/README.md)
+
+
