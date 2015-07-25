@@ -4,19 +4,44 @@
 
 All user configuration is performed in the web interface. Therefore there is no pre-seeded `/config` files. You are recommended to bind-mount all of your needed host folders, and backup independantly your `sonarr` config directory with some scripted / scheduled task.
 
+### Media folders
+
+You will use sonarr's web interface to specify which folders sonarr must use.
+
+Sonarr may be given read-only access to your top-level media folder. From there, you should grant sonarr write access in 2 subfolders of your main `/media` folder:
+
+For example: 1) `TvStaging` and 2) `TvShows`. However they can be given any name you wish.
+
+1) The 1st folder is where sonarr will instruct your torrent client to download new episodes to.
+
+2) The 2nd folder is sonarr's managed media folder. When a download completes, lets assume it appears in the first `TvStaging` folder. Then sonarr will MOVE (unix `mv` cmd) the downloaded file (or files) into it's destination. Which is the sonarr managed media folder. In this example we have it called `TvShows`. Because that's what sonarr is most commonly used for.
+
+The unix `mv` move operation is usually most effecient when BOTH the source + destination paths are are inside the same mountpoint. To avoid lots of copying large files. And that is the reason we mount the parent folder `/media` into a docker volume. It does not mean sonarr will be managing your ENTIRE `/media` folder. Only the subdirectories that you will later specify.
+
+If you have other unrelated folders inside your `/media` folder (music, games etc). Then set the uid/gid and folder permissions to ensure that `sonarr` cannot read or write to the other folders.
+
 ### File permissions
 
-The container has a `sonarr` user and group, with `uid:gid` of `8989:8989` which can be verified on the cmdline:
+The container has a `sonarr` user and group, with a default `uid:gid` of `8989:8989`. Which can be checked inside of the running container.
+
+The sonar server is always being launched as the `sonarr` user and group. There are several different strategies to permissions management. Depending upon whether or not other user accounts also need to have write access to the same files / directories.
+
+#### Change the sonarr user's uid and gid
+
+This can be done at runtime by setting the following docker env vars:
 
 ```sh
-$ docker exec sonarr sh -c "cat /etc/passwd | grep sonarr ; cat /etc/group | grep sonarr"
-sonarr:x:9898:9898:Also known as nzbdrone - runs mono NzbDrone.exe:/config:/bin/sh
-sonarr:x:9898:
+sonarr_uid=XXX
+sonarr_gid=YYY
 ```
 
-Since the sonar server is always being launched as that process user & group. Then the simplest solution is to keep the container's user as `sonarr`. And just permit yourself file access using the group level writable permissions bits e.g. chmod `0664` and `0775`.
+By specifying the uid and gid as a number, this lets you control which folder(s) the sonar daemon can read/write to.
 
-On host side you will need to create a `sonarr` group, adding your own user account to be a member of the same group gid (`8989`). Just copy-paste these commands:
+#### Add your host user account to the sonarrr group
+
+If you do not change sonarr's gid number to match your other accounts, then you can instead permit your own host account(s) file access to sonarr's folders by making the group permissions writable e.g. chmod `0664` and `0775`.
+
+On the host side you will need to create a `sonarr` group, adding your own user account to be a member of the same group gid (the default value of sonarr's gid is `8989`). Copy-paste these commands:
 
 ```sh
 sudo groupadd -g 8989 sonarr
@@ -25,30 +50,28 @@ sudo usermod -a -G sonarr $(id -un)
 
 ### Docker Compose
 
-Sorry there is no example for Compose at this time. But it is something like this:
+Sorry there is no example for Docker Compose at this time. But you may do something similar:
 
 ```sh
+crane.yml:
+
+containers:
+
   sonarr:
     image: dreamcat4/sonarr
     run:
       net: none
       volume:
         - /my/sonarr/config/folder:/config
-        - /my/torrent/downloads/folder:/downloads
-        - /my/managed/media/folder/of/tvshows:/tv
+        - /my/media/top/level/folder:/media
       env:
-        - eth0_up=true
+        - sonarr_uid=65534
+        - sonarr_gid=44
         - pipework_wait=eth0
         - pipework_cmd_eth0=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.15
       detach: true
 ```
 
-Where the `pipework_*` env variables are used to setup networking using `dreamcat4/pipework`. Else use docker native networking.
+The `pipework_` variables are used to setup networking with the `dreamcat4/pipework` helper image.
 
-You can mount any media or downloads folders into the sonarr container. However the start script sets permissions only on these recognized mountpoints:
 
-```sh
-chown -R sonarr:sonarr /opt/NzbDrone /config /torrents /downloads /media /tv
-```
-
-You can edit in the `entrypoint.sh` script to your liking.

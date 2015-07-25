@@ -36,7 +36,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC \
 # RUN groupadd -g 9898 sonarr
 RUN useradd -c "Also known as nzbdrone - runs mono NzbDrone.exe" \
     -u 9898 --shell /bin/sh -d /config sonarr \
- && install -o sonarr -g sonarr -d /config
+ && install -o sonarr -g sonarr -d /config /media
 
 
 # Launch script
@@ -45,7 +45,7 @@ RUN chmod +x /entrypoint.sh
 
 
 # Default container settings
-VOLUME /config
+VOLUME /config /media
 EXPOSE 8989 9898
 ENTRYPOINT ["/init","/entrypoint.sh"]
 
