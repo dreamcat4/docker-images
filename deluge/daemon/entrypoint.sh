@@ -10,9 +10,17 @@ _cleanup ()
 trap _cleanup TERM INT QUIT HUP
 
 
+# Set the uid:gid to run as
+[ "$(id -u debian-deluged)" -eq "$deluge_uid" ] || usermod  -o -u "$deluge_uid" debian-deluged
+[ "$(id -g debian-deluged)" -eq "$deluge_gid" ] || groupmod -o -g "$deluge_gid" debian-deluged
+
+
 # Set folder permissions
 chown -R debian-deluged:debian-deluged /config
-chown    debian-deluged:debian-deluged /torrents /downloads
+
+# chown -r /downloads & /torrents only if owned by root. We asume that means it's a docker volume
+[ "$(stat -c %u:%g /torrents )" -eq "0:0" ] && chown debian-deluged:debian-deluged /torrents
+[ "$(stat -c %u:%g /downloads)" -eq "0:0" ] && chown debian-deluged:debian-deluged /downloads
 
 
 # Set timezone as specified in /config/etc/timezone
