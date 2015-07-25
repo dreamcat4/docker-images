@@ -30,22 +30,16 @@ RUN mkdir -p /config/.var/lib/locales/ /config/.usr/lib/ \
 # # c. Create your own config pieces for tvheadend - must be taken from an existing setup
 
 ADD config/core/default+ /config/
-ADD config/plugins/3rd.party/autopriority+ /config/
-ADD config/plugins/3rd.party/autoremoveplus+ /config/
-ADD config/plugins/3rd.party/batchrenamer+ /config/
-ADD config/plugins/3rd.party/categorize+ /config/
-ADD config/plugins/3rd.party/labelplus+ /config/
-ADD config/plugins/3rd.party/libtorrentconfig+ /config/
-ADD config/plugins/3rd.party/movetools+ /config/
-ADD config/plugins/3rd.party/myscheduler+ /config/
-ADD config/plugins/3rd.party/webapi+ /config/
-ADD config/plugins/official/autoadd+ /config/
 ADD config/plugins/official/blocklist+ /config/
-ADD config/plugins/official/execute+ /config/
-ADD config/plugins/official/label+ /config/
 ADD config/plugins/official/notifications+ /config/
-ADD config/plugins/official/scheduler+ /config/
 ADD config/plugins/official/web+ /config/
+ADD config/plugins/third.party/autopriority+ /config/
+ADD config/plugins/third.party/autoremoveplus+ /config/
+ADD config/plugins/third.party/batchrenamer+ /config/
+ADD config/plugins/third.party/labelplus+ /config/
+ADD config/plugins/third.party/libtorrentconfig+ /config/
+ADD config/plugins/third.party/myscheduler+ /config/
+ADD config/plugins/third.party/webapi+ /config/
 ADD config/users/deluge+ /config/
 
 

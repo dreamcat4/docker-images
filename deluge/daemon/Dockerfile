@@ -49,7 +49,16 @@ RUN mkdir -p /root/.config && ln -s /config /root/.config/deluge
 
 # Global config
 ADD config/core/default+ /config/
+ADD config/plugins/official/blocklist+ /config/
+ADD config/plugins/official/notifications+ /config/
 ADD config/plugins/official/web+ /config/
+ADD config/plugins/third.party/autopriority+ /config/
+ADD config/plugins/third.party/autoremoveplus+ /config/
+ADD config/plugins/third.party/batchrenamer+ /config/
+ADD config/plugins/third.party/labelplus+ /config/
+ADD config/plugins/third.party/libtorrentconfig+ /config/
+ADD config/plugins/third.party/myscheduler+ /config/
+ADD config/plugins/third.party/webapi+ /config/
 ADD config/users/deluge+ /config/
 
 
