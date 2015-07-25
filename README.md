@@ -14,6 +14,18 @@ Dreamcat4's Docker Images (Trusted Builds)
 - [dreamcat4/samba](samba/README.md)
 
 
+## dreamcat4/deluge
+**_A docker image of deluge 1.3.6+_**
+
+- [dreamcat4/deluge/daemon](deluge/daemon/README.md)
+
+
+## dreamcat4/sonarr
+**_A docker image of sonarr 2.0.0.3357+_**
+
+- [dreamcat4/sonarr](sonarr/master/README.md)
+
+
 ## dreamcat4/tvheadend
 **_A docker image of Tvheadend server_**
 
