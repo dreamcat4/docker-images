@@ -28,7 +28,7 @@ Daemon port: This setting is entirely optional and not needed. Just leave as the
 
 This image comes with some vanilla default configuration.
 
-However you can go one step further and build your own `/config` image, with your own customized pre-seeded configuration settings. Including localization and timezone for your country / region / language. Having your own config image will make reseting / config regeneration a breeze. See the accompanying [`dreamcat4/deluge.config`](deluge/config/README.md) image for more information how to build.
+However you can go one step further and build your own `/config` image, with your own customized pre-seeded configuration settings. Including localization and timezone for your country / region / language. Having your own config image will make reseting / config regeneration a breeze. See the accompanying [`dreamcat4/deluge.config`](https://github.com/dreamcat4/docker-images/tree/master/deluge/config) image for more information how to build.
 
 ### Allow Remote Connections
 
