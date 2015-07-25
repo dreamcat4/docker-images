@@ -24,6 +24,12 @@ Daemon port: This setting is entirely optional and not needed. Just leave as the
 
     deluge_daemon_port=58846
 
+### Config
+
+This image comes with some vanilla default configuration.
+
+However you can go one step further and build your own `/config` image, with your own customized pre-seeded configuration settings. Including localization and timezone for your country / region / language. Having your own config image will make reseting / config regeneration a breeze. See the accompanying [`dreamcat4/deluge.config`](deluge/config/README.md) image for more information how to build.
+
 ### Allow Remote Connections
 
 Leave this setting unchecked. Normally the "Allow Remote Connections" option is used to bind the deluge daemon's TCP port to `0.0.0.0` (all local interfaces). However for the way this docker image is specifically setup, the container's start script will smartly forward the port using `socat` utility to the correct or most appropriate lan interface. Either it will use the one you specify with `deluge_lan_interface` docker environment variable. Else determine you LAN gateway's default nic route and have the deluge daemon available on that nic only (and localhost). By not checking this option, it ensures that your deluge daemon is not accidentally being exposed on your `deluge_wan_interface` too. Where typically your wan nic would be linked to your host's `ppp0`, `tun0` or something like that for VPN provider / VPN gateway.
@@ -61,15 +67,15 @@ Sorry there is no example for Compose at this time. But it is something like thi
     run:
       net: none
       cmd: --loglevel=debug
+      volumes-from:
+        - deluge.config
       volume:
         - /my/torrents/folder:/torrents
         - /my/downloads/folder:/downloads
-      volumes-from:
-        - deluge.config
       env:
         - pipework_wait=eth0 eth1
-        - pipework_cmd_eth0=eth0 -i eth0 @CONTAINER_NAME@ dhcp 192.168.1.1
-        - pipework_cmd_eth1=ppp0 -i eth1 @CONTAINER_NAME@ dhcp 10.10.0.2
+        - pipework_cmd_eth0=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.1
+        - pipework_cmd_eth1=ppp0 -i eth1 @CONTAINER_NAME@ 10.10.0.2
         - deluge_lan_interface=eth0
         - deluge_wan_interface=eth1
       detach: true
