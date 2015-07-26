@@ -52,7 +52,7 @@ ADD config/users/admin+ /config/
 
 
 # Configure hts home dir and /recordings folders
-RUN usermod -a -G video hts -d /config && install -o hts -g video -d /recordings
+RUN usermod -a -G video hts -d /config && install -o hts -g video -d /config /recordings
 
 
 # Launch script
@@ -61,7 +61,7 @@ RUN chmod +x /entrypoint.sh
 
 
 # Default container settings
-VOLUME /recordings
+VOLUME /config /recordings
 EXPOSE 9981 9982
 ENTRYPOINT ["/init","/entrypoint.sh","-u","hts","-g","video","-c","/config"]
 
