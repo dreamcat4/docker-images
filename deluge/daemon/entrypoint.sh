@@ -11,8 +11,8 @@ trap _cleanup TERM INT QUIT HUP
 
 
 # Set the uid:gid to run as
-[ "$(id -u debian-deluged)" -eq "$deluge_uid" ] || usermod  -o -u "$deluge_uid" debian-deluged
-[ "$(id -g debian-deluged)" -eq "$deluge_gid" ] || groupmod -o -g "$deluge_gid" debian-deluged
+[ "$deluge_uid" ] && usermod  -o -u "$deluge_uid" debian-deluged
+[ "$deluge_gid" ] && groupmod -o -g "$deluge_gid" debian-deluged
 
 
 # Set folder permissions
