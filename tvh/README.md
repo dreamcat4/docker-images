@@ -68,10 +68,38 @@ Same image tags are available for the Debugging version.
 
 By default, the `:latest` image tag maps onto the latest official 'Stable' release of tvheadend. e.g. `v4.0.4` at this time of writing.
 
-### Config
+### Configuration
 
 * The default configuration folder is `VOLUME /config`. A docker volume. It is not some `.hts` folder or anything else like that.
 * The `VOLUME /config` is pre-seeded from the docker Build context `config/`.
+
+### File permissions
+
+The container has an `hts` user and `video` group, with a default `uid:gid` of `101:44`. Which can be checked inside of the running container.
+
+The tvheadend server is always being launched as the `hts:video` user and group. There are several different strategies to permissions management. Depending upon whether or not other user accounts also need to have write access to the same files / directories.
+
+#### Change the hts:video uid and gid
+
+This can be done at runtime by setting the following docker env vars:
+
+```sh
+hts_uid=XXX
+video_gid=YYY
+```
+
+By specifying the uid and gid as a number, this lets you control which folder(s) tvheadend can read/write to.
+
+#### Add your host user account to the video group
+
+If you do not change tvheadend's `:video` gid number to match your other accounts, then you can instead permit your own host account(s) file access to the recordings folders by making the group permissions writable e.g. chmod `0664` and `0775`.
+
+On the host side you will need a `video` group, adding your own user account to be a member of the same group (typically gid `44`). Copy-paste these commands:
+
+```sh
+sudo groupadd -g 44 video
+sudo usermod -a -G video $(id -un)
+```
 
 ### Usage
 

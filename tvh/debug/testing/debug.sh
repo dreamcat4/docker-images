@@ -25,9 +25,16 @@ crash_uid="$(stat -c %u /crash)"
 crash_gid="$(stat -c %g /crash)"
 crash_rwx="$(stat -c %a /crash)"
 
+# Set the uid:gid to run as
+[ "$hts_uid" ]   && usermod  -o -u "$hts_uid"   hts
+[ "$video_gid" ] && groupmod -o -g "$video_gid" video
+
 # Set folder permissions
-chown -R hts:video /config /recordings
-chown -R hts:video /crash && chmod u+rwx /crash
+chown -R hts:video /config; chown -R --from=:44 :video /dev
+chown hts:video /crash && chmod u+rwx /crash
+
+# chown -r /recordings only if owned by root. We asume that means it's a docker volume
+[ "$(stat -c %u:%g /recordings)" -eq "0:0" ] && chown hts:video /recordings
 
 # Set timezone as specified in /config/etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
