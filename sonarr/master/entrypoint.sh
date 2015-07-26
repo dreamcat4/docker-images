@@ -2,8 +2,8 @@
 
 
 # Set the uid:gid to run as
-[ "$(id -u sonarr)" -eq "$sonarr_uid" ] || usermod  -o -u "$sonarr_uid" sonarr
-[ "$(id -g sonarr)" -eq "$sonarr_gid" ] || groupmod -o -g "$sonarr_gid" sonarr
+[ "$sonarr_uid" ] && usermod  -o -u "$sonarr_uid" sonarr
+[ "$sonarr_gid" ] && groupmod -o -g "$sonarr_gid" sonarr
 
 
 # Set folder permissions
