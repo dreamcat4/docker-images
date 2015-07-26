@@ -21,6 +21,25 @@ Default port: 38008
 Whitelist: x.x.x.x, where x is 0-255 or * (e.g 192.168.1.* to allow only connections from 192.168.1.0-192.168.1.255)
 ```
 
+You may specify your own unique command line arguments in the regular docker fashion. As shown in the above `--help`. For example:
+
+```sh
+docker run -v /path/to/my/ps3/GAMES:/games dreamcat4/ps3netsrv /games 38009 192.168.1.*
+```
+
+### File permissions
+
+By default ps3netsrv will run as an alias of the user `nobody`. Meaning the default `uid:gid` of `ps3netsrv:ps3netsrv` is `65534:65534`
+
+You can change the uid and gid to your liking by setting the following docker env vars:
+
+```sh
+ps3netsrv_uid=XXX
+ps3netsrv_gid=YYY
+```
+
+By specifying the uid and gid as a number, this lets you control which folder(s) ps3netsrv has read/write access to.
+
 #### Crane
 
 ```yaml
