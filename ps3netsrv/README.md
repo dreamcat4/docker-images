@@ -29,16 +29,16 @@ docker run -v /path/to/my/ps3/GAMES:/games dreamcat4/ps3netsrv /games 38009 192.
 
 ### File permissions
 
-By default ps3netsrv will run as an alias of the user `nobody`. Meaning the default `uid:gid` of `ps3netsrv:ps3netsrv` is `65534:65534`
+By default ps3netsrv will run as the `ps3netsrv` user and group. With a default `uid:gid` of `38008:38008`. Same as it's TCP port number.
 
-You can change the uid and gid to your liking by setting the following docker env vars:
+You can change it's UID and GID to your liking by setting the following docker env vars:
 
 ```sh
 ps3netsrv_uid=XXX
 ps3netsrv_gid=YYY
 ```
 
-By specifying the uid and gid as a number, this lets you control which folder(s) ps3netsrv has read/write access to.
+By specifying an alternative uid and gid as a number, this lets you control which folder(s) ps3netsrv has read/write access to.
 
 #### Crane
 

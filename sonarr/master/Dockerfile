@@ -32,9 +32,10 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC \
  && $_apt_clean
 
 
-# Setup deluge home dir and /torrents, /downloads folders
-RUN useradd -c "Also known as nzbdrone - runs mono NzbDrone.exe" \
-    -u 9898 --shell /bin/sh -d /config sonarr \
+# Setup sonarr /config dir and /media folder
+RUN groupadd -o -g 9898 sonarr \
+ && useradd -o -c "Also known as nzbdrone - runs mono NzbDrone.exe" \
+    -u 9898 -N -g sonarr --shell /bin/sh -d /config sonarr \
  && install -o sonarr -g sonarr -d /config /media
 
 

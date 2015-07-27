@@ -16,7 +16,8 @@ ADD https://github.com/dreamcat4/ps3netsrv/raw/master/release/linux/ps3netsrv-x8
 RUN chmod +x /ps3netsrv
 
 # Setup ps3netsrv user
-RUN useradd -o -c "ps3netsrv" -u 65534 --shell /bin/sh ps3netsrv
+RUN groupadd -o -g 38008 ps3netsrv \
+ && useradd -o -c "ps3netsrv" -u 38008 -N -g ps3netsrv --shell /bin/sh ps3netsrv
 
 # Launch script
 ADD entrypoint.sh /entrypoint.sh

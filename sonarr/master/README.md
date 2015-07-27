@@ -22,20 +22,16 @@ If you have other unrelated folders inside your `/media` folder (music, games et
 
 ### File permissions
 
-The container has a `sonarr` user and group, with a default `uid:gid` of `8989:8989`. Which can be checked inside of the running container.
+By default sonarr will run as the `sonarr` user and group. With a default `uid:gid` of `8989:8989`. The same as it's TCP port number.
 
-The sonar server is always being launched as the `sonarr` user and group. There are several different strategies to permissions management. Depending upon whether or not other user accounts also need to have write access to the same files / directories.
-
-#### Change the sonarr user's uid and gid
-
-This can be done at runtime by setting the following docker env vars:
+You can change it's UID and GID to your liking by setting the following docker env vars:
 
 ```sh
 sonarr_uid=XXX
 sonarr_gid=YYY
 ```
 
-By specifying the uid and gid as a number, this lets you control which folder(s) the sonar daemon can read/write to.
+By specifying an alternative uid and gid as a number, this lets you control which folder(s) sonarr has read/write access to.
 
 #### Add your host user account to the sonarrr group
 
