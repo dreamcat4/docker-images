@@ -37,9 +37,10 @@ RUN mkdir -p /config/.var/lib/locales/ /config/.usr/lib/ \
  && ln -s /config/.usr/lib/locale /usr/lib/
 
 
-# Setup deluge home dir and /torrents, /downloads folders
-RUN install -o debian-deluged -g debian-deluged -d /config /torrents /downloads \
- && usermod --shell /bin/sh -d /config debian-deluged
+# Setup the deluge user
+RUN groupmod -o -g 8112 --new-name deluge debian-deluged \
+ && usermod -o -u 8112 --login deluge --shell /bin/sh -d /config debian-deluged \
+ && install -o deluge -g deluge -d /config /torrents /downloads
 
 
 # Setup cmdline access to deluge-console

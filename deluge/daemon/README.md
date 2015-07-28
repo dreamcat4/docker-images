@@ -10,30 +10,26 @@ Daemon (for GTK and other API clients) is accessible on port `58846` on the lan_
 
 ### File permissions
 
-The container has a `debian-deluged` user and group, with a default `uid:gid` of `101:103` or something like that. Which can be checked inside of the running container.
+By default deluge will run as the `deluge` user and group. With a default `uid:gid` of `8112:8112`. Same as it's TCP port number for the web access.
 
-The deluge daemon is always being launched as the `debian-deluged` user and group. There are several different strategies to permissions management. Depending upon whether or not other user accounts also need to have write access to the same files / directories.
-
-#### Change the debian-deluged uid and gid
-
-This can be done at runtime by setting the following docker env vars:
+You can change it's UID and GID to your liking by setting the following docker env vars:
 
 ```sh
 deluge_uid=XXX
 deluge_gid=YYY
 ```
 
-By specifying the uid and gid as a number, this lets you control which folder(s) deluge can read/write to.
+By specifying an alternative uid and gid as a number, this lets you control which folder(s) deluge has read/write access to.
 
-#### Add your host user account to the debian-deluged group
+#### Add your host user account to the deluge group
 
 If you do not change deluge's gid number to match your other accounts, then you can instead permit your own host account(s) file access to the delueg folders by making the group permissions writable e.g. chmod `0664` and `0775`.
 
-On the host side you will need to create a `debian-deluged` group, adding your own user account to be a member of the same group gid (the default value of sonarr's gid is `103`). Copy-paste these commands:
+On the host side you will need to create a `deluge` group, adding your own user account to be a member of the same group gid (the default value of sonarr's gid is `103`). Copy-paste these commands:
 
 ```sh
-sudo groupadd -g 103 debian-deluged
-sudo usermod -a -G debian-deluged $(id -un)
+sudo groupadd -g 103 deluge
+sudo usermod -a -G deluge $(id -un)
 ```
 
 ### Networking

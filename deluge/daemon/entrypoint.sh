@@ -11,16 +11,16 @@ trap _cleanup TERM INT QUIT HUP
 
 
 # Set the uid:gid to run as
-[ "$deluge_uid" ] && usermod  -o -u "$deluge_uid" debian-deluged
-[ "$deluge_gid" ] && groupmod -o -g "$deluge_gid" debian-deluged
+[ "$deluge_uid" ] && usermod  -o -u "$deluge_uid" deluge
+[ "$deluge_gid" ] && groupmod -o -g "$deluge_gid" deluge
 
 
 # Set folder permissions
-chown -R debian-deluged:debian-deluged /config
+chown -R deluge:deluge /config
 
 # chown -r /downloads & /torrents only if owned by root. We asume that means it's a docker volume
-[ "$(stat -c %u:%g /torrents )" -eq "0:0" ] && chown debian-deluged:debian-deluged /torrents
-[ "$(stat -c %u:%g /downloads)" -eq "0:0" ] && chown debian-deluged:debian-deluged /downloads
+[ "$(stat -c %u:%g /torrents )" -eq "0:0" ] && chown deluge:deluge /torrents
+[ "$(stat -c %u:%g /downloads)" -eq "0:0" ] && chown deluge:deluge /downloads
 
 
 # Set timezone as specified in /config/etc/timezone
@@ -76,7 +76,7 @@ _deluged_args="$@"
 
 
 # Start the deluge daemon. web UI should start automatically based on the default config
-sudo -E su "debian-deluged" << EOF
+sudo -E su "deluge" << EOF
 	set -x
 	deluged --do-not-daemonize $_wan_if_flag $_deluged_args
 EOF
