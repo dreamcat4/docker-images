@@ -51,8 +51,9 @@ ADD config/dvr/recordings+ /config/
 ADD config/users/admin+ /config/
 
 
-# Configure hts home dir and /recordings folders
-RUN usermod -a -G video hts -d /config && install -o hts -g video -d /config /recordings
+# Configure the hts user account and it's folders
+RUN usermod -o -u 9981 -a -G video -d /config hts \
+ && install -o hts -g video -d /config /recordings
 
 
 # Launch script

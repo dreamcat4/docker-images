@@ -27,6 +27,7 @@ crash_rwx="$(stat -c %a /crash)"
 
 # Set the uid:gid to run as
 [ "$hts_uid" ]   && usermod  -o -u "$hts_uid"   hts
+[ "$hts_gid" ]   && groupmod -o -u "$hts_gid"   hts
 [ "$video_gid" ] && groupmod -o -g "$video_gid" video
 
 # Set folder permissions
