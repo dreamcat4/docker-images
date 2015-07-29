@@ -10,7 +10,7 @@ Daemon (for GTK and other API clients) is accessible on port `58846` on the lan_
 
 ### File permissions
 
-By default deluge will run as the `deluge` user and group. With a default `uid:gid` of `8112:8112`. Same as it's TCP port number for the web access.
+By default deluge will run as the `deluge` user and group. With a default `uid:gid` of `8112:8112`. Same as it's web interface TCP port number. So you will never forget.
 
 You can change it's UID and GID to your liking by setting the following docker env vars:
 

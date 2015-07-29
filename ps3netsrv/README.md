@@ -29,7 +29,7 @@ docker run -v /path/to/my/ps3/GAMES:/games dreamcat4/ps3netsrv /games 38009 192.
 
 ### File permissions
 
-By default ps3netsrv will run as the `ps3netsrv` user and group. With a default `uid:gid` of `38008:38008`. Same as it's TCP port number.
+By default ps3netsrv will run as the `ps3netsrv` user and group. With a default `uid:gid` of `38008:38008`. Same as it's TCP port number. So you will never forget.
 
 You can change it's UID and GID to your liking by setting the following docker env vars:
 

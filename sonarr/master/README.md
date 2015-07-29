@@ -22,7 +22,7 @@ If you have other unrelated folders inside your `/media` folder (music, games et
 
 ### File permissions
 
-By default sonarr will run as the `sonarr` user and group. With a default `uid:gid` of `8989:8989`. The same as it's TCP port number.
+By default sonarr will run as the `sonarr` user and group. With a default `uid:gid` of `8989:8989`. The same as it's TCP port number. So you will never forget.
 
 You can change it's UID and GID to your liking by setting the following docker env vars:
 
