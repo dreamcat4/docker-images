@@ -14,5 +14,5 @@ RUN chmod +x /usr/sbin/stacktrace
 
 # Debugging '/crash' volume to save core dump etc.
 VOLUME /crash
-ENTRYPOINT ["/init","/debug.sh","-u","hts","-g","video","-c","/config", \
+ENTRYPOINT ["/init","/debug.sh","-u","hts","-g","hts","-c","/config", \
 "--fork","--dump","--logfile","/crash/tvheadend.log"]

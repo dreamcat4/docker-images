@@ -75,30 +75,28 @@ By default, the `:latest` image tag maps onto the latest official 'Stable' relea
 
 ### File permissions
 
-The container has an `hts` user and `video` group, with a default `uid:gid` of `101:44`. Which can be checked inside of the running container.
+By default tvheadend will run as the `hts` user and `hts` group. With a default `uid:gid` of `9981:9981`. The same as it's TCP port number. So you will never forget.
 
-The tvheadend server is always being launched as the `hts:video` user and group. There are several different strategies to permissions management. Depending upon whether or not other user accounts also need to have write access to the same files / directories.
-
-#### Change the hts:video uid and gid
-
-This can be done at runtime by setting the following docker env vars:
+You can change it's UID and GID to your liking by setting the following docker env vars:
 
 ```sh
 hts_uid=XXX
-video_gid=YYY
+hts_gid=YYY
 ```
 
-By specifying the uid and gid as a number, this lets you control which folder(s) tvheadend can read/write to.
+By specifying your own uid and gid numbers for `hts`, this lets you control which folder(s) tvheadend has read/write access to.
 
-#### Add your host user account to the video group
+We have also added the `hts` user to the `video` group, as a supplementary group. So there should be no problems reading / writing to your mounted `/dev/dvb/` adapters. Therefore running as the `video` group is not needed / never necessary.
 
-If you do not change tvheadend's `:video` gid number to match your other accounts, then you can instead permit your own host account(s) file access to the recordings folders by making the group permissions writable e.g. chmod `0664` and `0775`.
+#### Add your host user account to the hts group
 
-On the host side you will need a `video` group, adding your own user account to be a member of the same group (typically gid `44`). Copy-paste these commands:
+If you do not change tvheadend's `hts` gid number to match your other accounts, then you can instead permit your own host account(s) file access to tvheadend's folders by making the group permissions writable e.g. chmod `0664` and `0775`.
+
+On the host side you will need to create an `hts` group, adding your own user account to be a member of the same group gid (default value `9981`). Copy-paste these commands:
 
 ```sh
-sudo groupadd -g 44 video
-sudo usermod -a -G video $(id -un)
+sudo groupadd -g 9981 hts
+sudo usermod -a -G hts $(id -un)
 ```
 
 ### Usage

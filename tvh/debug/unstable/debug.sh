@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # This script will take a coredump & immediate gdb backtrace upon segfault
 # While tvheadend is running will log --debug all --trace all
@@ -28,14 +28,11 @@ crash_rwx="$(stat -c %a /crash)"
 # Set the uid:gid to run as
 [ "$hts_uid" ]   && usermod  -o -u "$hts_uid"   hts
 [ "$hts_gid" ]   && groupmod -o -u "$hts_gid"   hts
-[ "$video_gid" ] && groupmod -o -g "$video_gid" video
 
 # Set folder permissions
-chown -R hts:video /config; chown -R --from=:44 :video /dev
-chown hts:video /crash && chmod u+rwx /crash
-
+chown -R hts:hts /config
 # chown -r /recordings only if owned by root. We asume that means it's a docker volume
-[ "$(stat -c %u:%g /recordings)" -eq "0:0" ] && chown hts:video /recordings
+[ "$(stat -c %u:%g /recordings)" -eq "0:0" ] && chown hts:hts /recordings
 
 # Set timezone as specified in /config/etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
@@ -80,9 +77,11 @@ echo "Saved: dmesg --> /crash/dmesg.new"
 # Clear umask
 umask 0
 
+# Copy "$@" special variable into a regular variable
+_tvheadend_args="$@"
+
 # Start tvheadend
-echo /usr/bin/tvheadend "$@"
-     /usr/bin/tvheadend "$@"
+/usr/bin/tvheadend $_tvheadend_args
 
 # Echo full trace to stdout
 tvh_pid="$(ps -o pid= -C tvheadend | head -1 | tr -d ' ')"

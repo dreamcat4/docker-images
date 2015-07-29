@@ -54,7 +54,7 @@ ADD config/users/admin+ /config/
 # Configure the hts user account and it's folders
 RUN groupmod -o -g 9981 hts \
  && usermod -o -u 9981 -a -G video -d /config hts \
- && install -o hts -g video -d /config /recordings
+ && install -o hts -g hts -d /config /recordings
 
 
 # Launch script
@@ -65,5 +65,5 @@ RUN chmod +x /entrypoint.sh
 # Default container settings
 VOLUME /config /recordings
 EXPOSE 9981 9982
-ENTRYPOINT ["/init","/entrypoint.sh","-u","hts","-g","video","-c","/config"]
+ENTRYPOINT ["/init","/entrypoint.sh","-u","hts","-g","hts","-c","/config"]
 
