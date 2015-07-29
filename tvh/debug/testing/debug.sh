@@ -26,8 +26,8 @@ crash_gid="$(stat -c %g /crash)"
 crash_rwx="$(stat -c %a /crash)"
 
 # Set the uid:gid to run as
-[ "$hts_uid" ]   && usermod  -o -u "$hts_uid"   hts
-[ "$hts_gid" ]   && groupmod -o -u "$hts_gid"   hts
+[ "$hts_uid" ] && usermod  -o -u "$hts_uid" hts
+[ "$hts_gid" ] && groupmod -o -g "$hts_gid" hts
 
 # Set folder permissions
 chown -R hts:hts /config
