@@ -130,6 +130,8 @@ Sorry there isn't an example specifically for compose. However you can adapt fro
             - /my_hdd/smbuserB/s/share/folder:/share/mount
             - /my_hdd/smbuserB/s/.smbpasswd:/root/.smbpasswd
           detach: true
+          memory: 500m
+          memory-swap: 600m
           env:
             - pipework_wait=eth0
             - pipework_cmd=eth0 -i eth0 @CONTAINER_NAME@ 192.168.1.101
