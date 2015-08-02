@@ -10,7 +10,7 @@
 chown -R sonarr:sonarr /opt/NzbDrone /config
 
 # chown -r the /media folder only if owned by root. We asume that means it's a docker volume
-[ "$(stat -c %u:%g /media)" -eq "0:0" ] && chown sonarr:sonarr /media
+[ "$(stat -c %u:%g /media)" = "0:0" ] && chown sonarr:sonarr /media
 
 
 # Disable the logfile on disk (because we have docker logs instead)

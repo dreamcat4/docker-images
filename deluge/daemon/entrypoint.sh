@@ -19,8 +19,8 @@ trap _cleanup TERM INT QUIT HUP
 chown -R deluge:deluge /config
 
 # chown -r /downloads & /torrents only if owned by root. We asume that means it's a docker volume
-[ "$(stat -c %u:%g /torrents )" -eq "0:0" ] && chown deluge:deluge /torrents
-[ "$(stat -c %u:%g /downloads)" -eq "0:0" ] && chown deluge:deluge /downloads
+[ "$(stat -c %u:%g /torrents )" = "0:0" ] && chown deluge:deluge /torrents
+[ "$(stat -c %u:%g /downloads)" = "0:0" ] && chown deluge:deluge /downloads
 
 
 # Set timezone as specified in /config/etc/timezone

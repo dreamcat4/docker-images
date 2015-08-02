@@ -32,7 +32,7 @@ crash_rwx="$(stat -c %a /crash)"
 # Set folder permissions
 chown -R hts:hts /config
 # chown -r /recordings only if owned by root. We asume that means it's a docker volume
-[ "$(stat -c %u:%g /recordings)" -eq "0:0" ] && chown hts:hts /recordings
+[ "$(stat -c %u:%g /recordings)" = "0:0" ] && chown hts:hts /recordings
 
 # Set timezone as specified in /config/etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
