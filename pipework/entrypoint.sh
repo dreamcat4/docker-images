@@ -12,7 +12,8 @@ done
 [ "$_pipework_debug" ] && _debug="sh -x"
 [ "$_pipework_sleep" ] && sleep $_pipework_sleep
 
-_default_cleanup_wait="22" # for dhclient
+# _default_cleanup_wait="22" # for dhclient
+_default_cleanup_wait="0" # for dhcp default busybox udhcpc
 _pipework="$_debug /sbin/pipework"
 _args="$@"
 
