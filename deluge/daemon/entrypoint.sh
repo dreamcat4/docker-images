@@ -71,6 +71,10 @@ else
 fi
 
 
+# Ensure $HOSTNAME can be pinged otherwise WAN networking will not work
+ping -q -c1 $(hostname) > /dev/null 2>&1 || echo "$_lan_ip $(hostname)" >> /etc/hosts
+
+
 # Copy "$@" special variable into a regular variable
 _deluged_args="$@"
 
