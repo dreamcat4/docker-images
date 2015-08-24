@@ -17,8 +17,11 @@ dpkg-reconfigure -f noninteractive tzdata
 
 
 if [ "$pipework_wait" ]; then
-	echo "Waiting for pipework to bring up $pipework_wait..."
-	pipework --wait -i $pipework_wait
+	for _pipework_if in $pipework_wait; do
+		echo "Waiting for pipework to bring up $_pipework_if..."
+		pipework --wait -i $_pipework_if
+	done
+	sleep 1
 fi
 
 
