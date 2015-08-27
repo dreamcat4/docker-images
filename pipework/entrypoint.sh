@@ -362,9 +362,14 @@ _process_container ()
         # Run pipework
         _run_pipework;
 
-        pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
+        pipework_host_route_varname="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
         pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
-        [ "$_pipework_host_routes" ] || [ "$pipework_host_routes" ] || [ "$pipework_host_route" ] &&_create_host_route "$c12id" "${pipework_cmd#pipework }";
+
+        if [ "$_pipework_host_routes" ] || [ "$pipework_host_routes" ] || [ "$pipework_host_route" ]; then
+            _create_host_route "$c12id" "${pipework_cmd#pipework }";
+        fi
+
+
     done
 }
 
@@ -480,7 +485,7 @@ _manual ()
             # Run pipework
             _run_pipework;
 
-            pipework_host_route_var="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
+            pipework_host_route_varname="$(echo "$pipework_cmd_varname" | sed -e 's/pipework_cmd/pipework_host_route/g')"
             pipework_host_route="$(eval echo "\$$pipework_host_route_varname")"
 
             if [ "$_pipework_host_routes" ] || [ "$pipework_host_route" ]; then
