@@ -345,7 +345,7 @@ _process_container ()
     eval $_pipework_vars
     [ "$_pipework_key" ] && [ "$_pipework_key" != "$pipework_key" ] && return 0
 
-    _pipework_cmds="$(env | grep -o -e '[^=]*pipework_cmd[^=]*')"
+    _pipework_cmds="$(env | grep -o -e '[^=]*pipework_cmd[^=]*' | sort)"
     [ "$_pipework_cmds" ]  || return 0
 
     if [ "$event" = "die" ]; then
