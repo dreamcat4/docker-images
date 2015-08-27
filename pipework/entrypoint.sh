@@ -333,7 +333,7 @@ _process_container ()
 {
     c12id="$(echo "$1" | cut -c1-12)" # container_id
     event="$2" # start|stop
-    unset $(env | grep -e "^pipework.*" | cut -d= -f1)
+    unset $(env | grep -e ".*pipework.*" | cut -d= -f1)
 
     _pipework_vars="$(docker inspect --format '{{range $index, $val := .Config.Env }}{{printf "%s\"\n" $val}}{{end}}' $c12id \
         | grep -e 'pipework_cmd.*=\|^pipework_key=\|pipework_host_route.*='| sed -e 's/^/export "/g')"
