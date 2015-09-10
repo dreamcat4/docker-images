@@ -9,7 +9,7 @@ for _var in $_global_vars; do
     eval "_pipework_${_var}=\"${_value}\""
 done
 
-[ "$_pipework_debug" ] && _debug="sh -x"
+[ "$_pipework_debug" ] && _debug="sh -x" && set -x
 [ "$_pipework_sleep" ] && sleep $_pipework_sleep
 
 # _default_cleanup_wait="22" # for dhclient
