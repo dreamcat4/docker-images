@@ -147,8 +147,8 @@ _decrement_ipv4 ()
     ipv4_address_hex="$(printf "%02x%02x%02x%02x\n" $ipv4_address_spaced)"
     ipv4_address_uint32="$(printf "%u\n" 0x${ipv4_address_hex})"
     ipv4_address="$(printf "obase=256\n$(expr $ipv4_address_uint32 - 1)\n" | bc | tr ' ' . | cut -c2- | sed -e 's/255/254/g')"
-    [ "$ipv4_address" != "${ipv4_address%.0*}" ] && _decrement_ipv4 "$ipv4_address"
-    printf "$ipv4_address\n"
+    [ "$ipv4_address" != "${ipv4_address%.000}" ] && _decrement_ipv4 "$ipv4_address" "quiet"
+    [ "$2" = "quiet" ] || printf "$ipv4_address\n"
 }
 
 _decrement_ipv6 ()
@@ -175,7 +175,9 @@ _create_host_route ()
     c12id="$1" ; pipework_cmd="$2"
     set $pipework_cmd ; unset _arping
 
-    [ "$_pipework_host_route_arping" ] || [ "$pipework_host_route_arping" ] && _arping=true
+    if [ "$_pipework_host_route_arping" ] || [ "$pipework_host_route_arping" ]; then
+        _arping=true
+    fi
 
     [ "$2" = "-i" ] && cont_if="$3" || \
     cont_if="eth1"
