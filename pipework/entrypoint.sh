@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _pipework_image_name="dreamcat4/pipework"
-_global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters cleanup_wait retry_delay inter_delay"
+_global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters cleanup_wait retry_delay inter_delay route_add_delay"
 
 for _var in $_global_vars; do
     _value="$(eval echo \$${_var})"
@@ -283,6 +283,8 @@ _create_host_route ()
             ip -f $proto addr add $last_ip/$netmask dev $macvlan_ifname
             # bring up the interface
             ip link set $macvlan_ifname up
+
+            [ "$_pipework_route_add_delay" ] && sleep $_pipework_route_add_delay
 
             if [ "$_debug" ]; then
                 # add a new route to container's ip address
