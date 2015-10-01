@@ -1,5 +1,4 @@
-FROM ubuntu-debootstrap:14.04
-# FROM ubuntu-debootstrap:15.04 # For curl-7.42
+FROM ubuntu-debootstrap:15.10
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
@@ -16,7 +15,7 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 # Install networking utils / other dependancies
-RUN apt-get update -qq && apt-get install -qqy netcat-openbsd jq lsof isc-dhcp-client arping ndisc6 fping sipcalc bc && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy netcat-openbsd jq lsof net-tools udhcpc isc-dhcp-client dhcpcd5 arping ndisc6 fping sipcalc bc && $_apt_clean
 
 # # Install curl-7.42 for unix sockets support
 # RUN echo deb http://gb.archive.ubuntu.com/ubuntu/ wily main > /etc/apt/sources.list.d/curl-7.42.list \
