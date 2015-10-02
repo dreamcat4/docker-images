@@ -20,14 +20,14 @@ RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install jackett dependancies
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy curl unzip sudo libmono-cil-dev libcurl4-openssl-dev \
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy curl bzip2 sudo libmono-cil-dev libcurl4-openssl-dev \
  && $_apt_clean
 
 
 # Download jackett
 ENV jackett_version="0.6.7"
-RUN curl -Lo /tmp/jackett.zip https://github.com/zone117x/Jackett/releases/download/v${jackett_version}/Jackett.Mono.v${jackett_version}.zip \
- && unzip /tmp/jackett.zip -d /jackett ; rm -f /tmp/jackett.zip
+RUN curl -Lo /tmp/jackett.tar.bz2 https://jackett.net/Download/v${jackett_version}/Jackett.Mono.v${jackett_version}.tar.bz2 \
+ && mkdir /jackett && tar -xjf /tmp/jackett.tar.bz2 --strip-components=1 -C /jackett; rm -f /tmp/jackett.tar.bz2
 
 
 # Setup sonarr /config dir and /media folder
