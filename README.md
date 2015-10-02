@@ -26,6 +26,12 @@ Dreamcat4's Docker Images (Trusted Builds)
 - [dreamcat4/sonarr](sonarr/master/README.md)
 
 
+## dreamcat4/jackett
+**_A docker image of jackett 0.6.7+_**
+
+- [dreamcat4/jackett](jackett/master/README.md)
+
+
 ## dreamcat4/tvheadend
 **_A docker image of Tvheadend server_**
 
