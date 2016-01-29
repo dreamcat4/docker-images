@@ -11,9 +11,9 @@ Public IRC Servers <--- ZNC <--- IRSSI <--- TMUX Session <--- SSH <--- Client co
 
 Thanks to TMUX, simultaneous ssh / irssi logins are supported. So you can have the same irssi session open on multiple machines no problem.
 
-Current status:
+### Status
 
-Have basic working chain of services. Everything comes up automatically.
+We now have basic and reliable working chain of services. Everything comes up automatically. All with basic and generic settings.
 
 Left todo:
 
@@ -27,6 +27,67 @@ Not done here, may be left unsolved forever:
 * SSH port forwarding the znc server's IRC port for other external irc clients (i.e. weechat etc)
 * Web based tty access with nginx / wetty / tty.js.
 
+### Irssi Scripts
+
+All of the latest irssi scripts are already downloaded into the container with `git`. In fact, every time irssi program is restarted, we run the following command automatically:
+
+```sh
+cd /scripts.irssi.org && git pull
+```
+
+So no need to worry about that. They are always be kept fully up-to-date with every container restart. Or just manually `/quit` from the irssi program. And it will update them.
+
+To add a new script just create a symlink into your irssi scripts folder. For example:
+
+```sh
+ln -s /scripts.irssi.org/scripts/SCRIPTNAME.pl /config/irssi/scripts/autorun/
+```
+
+Should then auto-load the script named `SCRIPTNAME`. More information at:
+
+https://scripts.irssi.org/
+
+### Not met script dependancies
+
+So why isn't / aren't my optional irssi script(s) working then?!!?
+
+Well many optional irssi scripts also require their own specific APT dependancy(ies). Which are not installed by default. Without me knowing what you actually require, those required pkgs may be missing from this docker container image. So please let me know here if you believe there is something important that should always be included in the base image.
+
+You can check for missing irssi script dependancies in this partial list:
+
+```sh
+docker exec -it CONTAINER_NAME bash [return]
+gunzip -k -c /usr/share/doc/irssi-scripts/README.Debian.gz [return]
+
+```
+
+Which covers the most popular irssi scripts. Other clues may be in the `script.pl` perl module dependancies itself. BTW - AFAIKT my docker image does not specifically try to install or include the CPAN package manager for Perl.
+
+### Weed Irssi Theme
+
+Is also downloaded with git. And the entire theme files are all located in the `/weed` folder. This theme is not updated automatically, but you can manually upgrade it to the latest head with the following command:
+
+```sh
+cd /weed && git pull
+```
+
+Note: The `weed` theme no longer seems to be actively maintained. So any suggestions for a better future irssi theme are more than welcome. It's just that `ronilaukkarinen/weed` seems to be the best / most popular irssi theme at this current time.
+
+### Editing config files
+
+The text editor `nano` is included for simple editing of configuration files. e.g. `nano /config/irssi/config`. Be careful to do that under the right unix user instead of `root`.
+
+For example:
+
+```sh
+sudo su -l znc [return]
+nano /config/znc/configs/znc.conf [return]
+
+# or
+sudo su -l irssi [return]
+nano /config/irssi/config [return]
+```
+
 ### Configuration
 
 Pre-seeded Configuration Files:
@@ -39,13 +100,15 @@ For ssh terminal access you can put your existing ssh public key (e.g. `id_rsa.p
 
 ZNC Configuration:
 
-By web browser:
+Primarily you will want to change the znc admin username and password to something else more secure. And to be your own IRC nickname.
 
 The znc server will be configurable from any standard web browser, available on SSL protocol `https://$your_container_ip:6697`. The default username and password for znc admin user is `znc:znc`. It is recommended to then goto manage users --> Duplicate the default `znc` user with your own IRC nick name.
 
-Be text file:
+The `znc.conf` text file can also be edited directly. It is stored in the usual loacation at `/config/znc/configs/znc.conf`
 
-The `znc.conf` file is stored in the usual loacation at `/config/znc/configs/znc.conf`
+IRSSI Config:
+
+Assuming that you have changed the znc username and password, then you must also change those `/server` lines in the irssi config file. To use your new znc nick name and password. This file is located at `/config/irssi/config`.
 
 IRC Logs:
 
