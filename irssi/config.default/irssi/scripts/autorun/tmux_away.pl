@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/tmux_away.pl

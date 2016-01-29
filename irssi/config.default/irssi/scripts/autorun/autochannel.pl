@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/autochannel.pl

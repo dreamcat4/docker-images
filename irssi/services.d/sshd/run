@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv sh
+
+# Launch ssh server, stay in foreground
+/usr/sbin/sshd -D $sshd_args
+

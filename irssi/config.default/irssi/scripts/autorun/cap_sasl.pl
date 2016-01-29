@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/cap_sasl.pl

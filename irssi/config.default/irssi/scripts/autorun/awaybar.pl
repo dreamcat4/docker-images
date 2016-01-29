@@ -1,0 +1,1 @@
+/weed/scripts/awaybar.pl

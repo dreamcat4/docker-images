@@ -1,0 +1,2 @@
+Welcome to the BitlBee server at %h.
+This server is running BitlBee version %v.

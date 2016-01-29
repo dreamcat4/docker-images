@@ -1,0 +1,620 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$irssi_uid" ] && usermod  -o -u "$irssi_uid" irssi
+[ "$irssi_gid" ] && groupmod -o -g "$irssi_gid" irssi
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/irssi/config" ] || cp -Rf "/etc/config.preseed/irssi" "/config"
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/irssi )" = "irssi:irssi" ] || chown -R irssi:irssi /config/irssi
+
+
+if [ "$pipework_wait" ]; then
+	for _pipework_if in $pipework_wait; do
+		echo "irssi: Waiting for pipework to bring up $_pipework_if..."
+		pipework --wait -i $_pipework_if
+	done
+	sleep 1
+fi
+
+
+# Update irssi scripts
+cd /scripts.irssi.org && git pull && cd /
+
+
+# Alias 'irssi' to connect to running tmux session
+touch ~/.profile ~/.bashrc
+grep -q "alias irssi" ~/.profile || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.profile
+grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.bashrc
+
+
+sudo -E su "irssi" << EOF
+	set -x
+
+	# Generate ssh key pair
+	if [ ! -e "/config/irssi/.ssh/authorized_keys" ]; then
+		ssh-keygen -q -t rsa -N "" -f id_rsa
+		cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+	fi
+
+
+	# Alias 'irssi' to connect to running tmux session
+	touch ~/.profile ~/.bashrc
+	grep -q "alias irssi" ~/.profile || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.profile
+	grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.bashrc
+
+
+	# Launch irssi in tmux where $tmux_socket and $tmux_session are declared in the Dockerfile ENV
+	# sleep 3
+	sleep 1
+	script -q -e /dev/null -c "tmux -S $tmux_socket -u new-session -d -s $tmux_session -x 120 -y 40 /usr/bin/irssi --home=/config/irssi $irssi_args"
+EOF
+
+
+# Block while tmux session is still running
+while true; do
+	script -q -e /dev/null -c "tmux -S $tmux_socket -u list-sessions -F '#{session_name}'" | grep -q "$tmux_session" || break
+	sleep 3
+done
+
+
+
+
+# [ ** ] To connect to this ZNC you need to connect to it as your IRC server
+# [ ** ] using the port that you supplied.  You have to supply your login info
+# [ ** ] as the IRC server password like this: user/network:pass.
+# [ ** ]
+# [ ** ] Try something like this in your IRC client...
+# [ ** ] /server <znc_server_ip> +6697 dreamcat4:<pass>
+# [ ** ]
+# [ ** ] To manage settings, users and networks, point your web browser to
+# [ ** ] https://<znc_server_ip>:6697/
+
+
+
+
+# root@irssi:/# irssi --help
+# Usage:
+#   irssi [OPTION...]
+
+# Help Options:
+#   -?, --help                  Show help options
+
+# Application Options:
+#   --config=PATH               Configuration file location (~/.irssi/config)
+#   --home=PATH                 Irssi home dir location (~/.irssi)
+#   -c, --connect=SERVER        Automatically connect to server/network
+#   -w, --password=PASSWORD     Autoconnect password
+#   -p, --port=PORT             Autoconnect port
+#   -!, --noconnect             Disable autoconnecting
+#   -n, --nick                  Specify nick to use
+#   -h, --hostname              Specify host name to use
+#   -d, --dummy                 Use the dummy terminal mode
+#   -v, --version               Display irssi version
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# gunzip -k -c /usr/share/doc/irssi-scripts/README.Debian.gz
+# irssi-scripts for Debian
+# ------------------------
+
+# Some frequently asked questions with answers:
+# Q: How do I run scripts?
+# A: In irssi do /script load script.pl . There is a default alias for
+#    /script load to /run in newer versions of irssi.
+# Q: How do I rerun scripts?
+# A: Just do /script load script.pl .
+# Q: How do I unload scripts?
+# A: Just do /script unload script.pl .
+# Q: How do I run scripts automatically at startup?
+# A: Put them into ~/.irssi/scripts/autorun/ directory. Or better would be if
+#    you placed them in ~/.irssi/scripts/ (or kept them in the default
+#    installation directory) and created symlinks to autorun directory
+#    (eg. cd ~/.irssi/scripts/autorun/ ; ln -s ../script.pl .)
+
+# Thanks to Stefan 'tommie' Tomanek for this explanation.
+
+
+
+
+
+
+# Almost all scripts can also be downloaded from http://scripts.irssi.org/.
+#  .
+#  A list of included scripts
+#  .
+#    8-ball -- the 8-ball game
+#    accent -- this script strips the hungarian accents
+#    active_notice -- shows notices into the active channel
+#    active_notify -- notify messages into the active window or broadcast
+#    act -- reset window activity status. defines command /act
+#    aidle -- antyidler with random time
+#    ai -- puts people on ignore if they do a public away.
+#    akftp -- full configurable FTP advertiser for Irssi
+#    akilluser -- akill a specified nick
+#    alame -- converts towards lame speech
+#    anotherway -- another auto away script
+#    antiplenk -- notices users who plenk
+#    apm -- shows your battery status in your Statusbar
+#    armeija -- ignores people bringin up boring/repeated subjects
+#    ascii -- ascii-art bassed on figlet.
+#    auto_away -- sets an away message automatically when you're idle
+#    autoaway -- automatically goes  away after defined inactivity
+#    autochannel -- auto add channels to channel list on join
+#    autocycle -- auto regain ops in empty opless channels
+#    autolimit -- does an autolimit for a channel
+#    autoopper -- auto-op script with dynamic address support and random delay
+#    autorealname -- print realname of everyone who join to channels
+#    autorejoinpunish -- kickbans or knockouts people who use autorejoin on kick
+#    autoreminder -- this script Reminds people to do stuff! :)
+#    autoversion -- auto-CTCP Version on every joining nick
+#    autovoice -- autovoice
+#    auto_whois -- /WHOIS all the users who send you a private message.
+#    autowhois -- /WHOIS all the users who send you a private message.
+#    autowrap -- automatically wraps long sent messages
+#    away2web --  write /away information to a file to be used on web pages
+#    awaybar -- provides a menubar item with away message
+#    away_hilight_notice -- notice your away message
+#    awaylogcnt -- displays in statusbar number of messages in awaylog
+#    away -- away with reason, unaway, and autoaway
+#    awayproxy -- sets nick away when client discconects from the irssi-proxy
+#    away_verbose -- displays a verbose away/back message in the channels
+#    badword -- configurable badword kickbanning script
+#    bandwidth -- shows bandwidth usage in statusbar
+#    ban -- bans several nicks/masks on channel
+#    bantime -- print time when ban was set in a nicer way
+#    beepaway -- only beep when you are away
+#    beep_beep -- runs arbitrary command instead of system beep
+#    beep -- replaces your terminal bell by a command specified via /set
+#    bestoiber -- stoibers your messages
+#    bgta -- bytes Gallery of the TAilor Script
+#    binary -- converts what you type into 2-base string representation.
+#    bitlbee_blist -- bitlbee buddy list
+#    bitlbee_join_notice -- bitlbee join notice
+#    bitlbee_nick_change -- shows an IM nickchange in an Irssi way
+#    bitlbee_tab_completion -- intelligent Tab-completion for BitlBee commands
+#    bitlbee_typing_notice -- typing notification for Bitlbee
+#    blowjob -- crypt IRC communication with blowfish encryption
+#    bmi -- a simple body mass index calculator for  depression
+#    calc -- simple /calc mechanism
+#    callerid -- reformats CallerID Messages on Hybrid & Ratbox to be Easier
+#    cap_sasl -- PLAIN SASL authentication mechanism
+#    centericq -- indicates how many new messages you have in your centericq
+#    cgrep -- lists users on the channel matching the specified regexp
+#    challenge -- run a challenge response oper thingie
+#    chanact -- adds new powerful and customizable [Act: ...] item
+#    chanfull_duden -- notify if Channellimit is reached
+#    chanfull -- notifies the user when some channel limit is reached
+#    chanpeak -- log maximum number of people ever been in a channel
+#    chansearch -- searches for specific channels
+#    chanshare -- display people who are in more than one channel with you
+#    chansort -- sort all channel and query windows
+#    chansync -- /who a channel and optionaly executes a command
+#    chops -- simulates BitchXs /CHOPS and /NOPS commands.
+#    cleanpublic -- removes colors and other  formatting from public channels
+#    clipboard -- better quoting of content from clipboard
+#    cloneprot -- parses OperServ notices
+#    clones --  display clones in the active channel
+#    colorkick --  kicking users for using colors or blinks
+#    colorswap -- swap between green and white format for public messages.
+#    connectcmd -- run arbitrary shell commands while [dis]connecting to a server
+#    countdown --  adds public channel command for counting down something
+#    country -- print the country name in /WHOIS replies
+#    cp1250_kick -- Kicks people using cp1250 charset
+#    crapbuster -- removes CRAP or CLIENTCRAP messages from your buffer
+#    cron -- allows one to execute commands  at given interval/time
+#    cwho -- cached WHO
+#    dancer_forwardfix -- fix problem with channel forwarding on the Dancer ircd
+#    dancer_hide_477 -- this script hides the 477 numerics from the dancer IRCd
+#    dau -- write like an idiot
+#    dcc_ip -- this script sets dcc_own_ip when starting a DCC send or chat
+#    dccmove -- Move completed dcc gets to the subfolder done
+#    dccself -- starts a dcc chat with yourself on that host/port.
+#    dccstat -- Shows verbose or short information of dcc send/gets on statusbar
+#    defaultchanmode -- allows your client to automatically set desired chanmode
+#    df -- adds an item which displays the current disk usage.
+#    dice -- a dice Simulator for Roleplaying in Channels or just for fun.
+#    dictcomplete -- caching dictionary based tab completion
+#    dispatch -- this scripts sends unknown commands to the server
+#    doc -- manage tips  url help in a doc file in the keyword=definition form
+#    doublefilter -- filters msgs which appear the same on different channels
+#    eliza -- answers to /msgs using Chatbot::Eliza when youre away
+#    emaildb1.0 -- a script for accessing an email MySQL database  through irc
+#    eng_no_translate_dpryo -- english->norwegian translation
+#    events -- expand event mode and emit event mode {channel,user,server}
+#    exec_clean -- execute process whose parent window has been closed
+#    fakectcp -- sends fake ctcp replies to a client using a fake ctcp list
+#    figlet -- safe figlet implementation
+#    file -- a command to output content of files in various  ways
+#    findbot -- public command @find script
+#    find -- finds a nick by real name, if hes on a channel with you
+#    fleech -- fserve leecher - helps you download files from file servers
+#    follow -- automatically switch to active windows
+#    foo -- rot n+i encryption and decryption
+#    foreach_user -- extends the /foreach command to have /foreach user
+#    fortune -- send a random fortune cookie to an user in channel
+#    forward -- forward incoming messages to another nick
+#    freenode_filter -- this script will filter some Freenode IRCD servernotices
+#    friends_peder -- basicly an autoop script with a nice interface
+#    friends_shasta -- maintains list of people you know
+#    fserve -- file server for irssi
+#    fuckem -- simulates the BitchX /FUCKEM command
+#    getop -- automatically request op from random opped person
+#    gimmie -- a bot script
+#    google -- This script queries google.com and returns the results
+#    go -- activates a window given a name/partial name
+#    gpgvalidator -- have gpg-based trusting features in your irssi client
+#    grep -- GREP command
+#    guts -- adds the uppercased version of the tab completes
+#    hddtemp -- adds a statusbar item which shows temperatures of harddisks
+#    hello -- this script allows you to greet the channel youre living
+#    hideauth -- stops eggdrop passwords showing up
+#    hide -- a little interface to irssis activity_hide_* settings
+#    highlite -- shows events happening in all channels
+#    hignore -- if you use this command in a query it will ignore the host
+#    hilightwin -- print hilighted messages to window named hilight
+#    history_search -- search within your typed history as you type
+#    hlbot -- floods the channel about things that are hapening in your server
+#    hl -- responds to !hl counterstrike.server
+#    hostname -- list all IP addresses on all interfaces found on your machine
+#    identify-md5 -- MD5 NickServ identification script for SorceryNet
+#    idlesince -- adds 'idle since' line to whois replies.
+#    idletime -- retrieves the idletime of any nick
+#    idonkey -- equips Irssi with an interface to mldonkey
+#    ignore_log -- script to log ignored messages
+#    ignoreoc -- ignore messages from people not on your channels
+#    il -- adds a statusbar item which show length of the inputline
+#    imdb -- automatically lookup IMDB-numbers in nicknames
+#    iMPD -- this controls Music Player Daemon from the familiar irssi interface
+#    invitejoin -- this script will join a channel if somebody invites you to it
+#    ipupdate -- auto /set dcc_own_ip IP on connect.
+#    irccomplete -- adds words from IRC to your tab-completion list
+#    ircgallery -- show IRC gallery information on /WHOIS or /GALLERY
+#    ircgmessagenotify -- review IRC galleria.net and says when you have messages
+#    ircops -- display IrcOps in current channel
+#    ircsec -- secures your conversation
+#    irssiBlaster -- display the song played by mp3blaster
+#    isdn -- displays incoming ISDN calls
+#    itime -- internet Time statusbar item
+#    ixmmsa -- announces which _file_ is currently playing.
+#    joininfo -- reports WHOIS information and channel list
+#    kblamehost -- kicks (and bans) people with >= 4 dots in theirs hostname
+#    keepnick -- try to get your nick back when it becomes available.
+#    kenny -- autodekennyfies /kenny, adds /kenny, /dekenny
+#    kernel -- fetches the version(s) of the latest Linux kernel(s).
+#    kicks -- enhances /k /kb and /kn with some nice options.
+#    kill_fake_gets -- checks if there are old identical sends and closes them
+#    kline_warning -- shows a warning in the statuswindow
+#    l33tmusic -- show playing xmms song in channel or in a statusbar
+#    lastspoke -- remembers what people said last on what channels
+#    len -- if you try to get a nick with 11 characters but only 9 are allowed
+#    leodict -- translates via dict.leo.org
+#    licq -- licq statusbar thingy
+#    linkchan -- link several channels on several networks
+#    listen -- display what mp3 you are playing in which software
+#    loadavg -- display a loadavg statusbar item using vm.loadavg
+#    localize -- localizes users using traceroute
+#    log2ansi -- convert mirc color and irssi interal formatting to ansi colors
+#    logcompress -- compress logfiles then theyre rotated
+#    logresume -- print last n lines of logs when opening queries/channels
+#    ls -- show all nicks matching regex in the current channel
+#    mailcheck_imap -- staturbar item which indicates how many new emails
+#    mailcheck_mbox_flux -- polls your unix mailbox for new mail
+#    mailcheck_pop3_kimmo -- POP3 new mail notification
+#    mangle -- translates your messages into Morse code, rot13 and other
+#    map -- generates simple tree of IRC network based on the output of the LINKS
+#    mass_hilight_blocker -- disables hilighting for messages of some nicks
+#    miodek -- simple wordkick system
+#    mkick -- mass kick
+#    mkshorterlink -- automatically shortens links
+#    mldonkey_bandwidth -- shows your mldonkeys current down- and upload rate
+#    modelist -- cache of invites and ban exceptions in channel
+#    modelist-r -- cache of invites, ban exceptions and reops in channel
+#    mood -- keeps track of the channel mood
+#    morse -- turns your messages into morse or spelling code
+#    mouse -- control irssi using mouse clicks and gestures
+#    mpg123 -- display current mpg123 track
+#    multipaste -- helps pasting multiple lines to a channel
+#    my_beep -- runs arbitrary command instead of system beep
+#    mygoogle -- query Google
+#    myimdb -- query imdb
+#    mysqlurllogger -- logs urls to MySQL database
+#    nact -- adds an item which displays the current network activity
+#    newsline -- brings various newstickers to Irssi
+#    news -- news reader
+#    nickban -- a simple nick banner. If it encounters a nick it bans its host
+#    nickcolor -- assign a different color for each nick
+#    nickident -- identify to nickserv
+#    nickignore -- ignores nick changes when only the case or special characters
+#    nicklist -- draws a nicklist to another terminal
+#    nickmix-c0ffee -- the number of chars you want to keep from your orig nick
+#    nickmix_pasky -- perturbates given nick (or just a word) in certain way
+#    nickserv -- this script will authorize you into NickServ
+#    niq -- bitchX like Nickcompletion at line start plus statusbar
+#    nm -- right aligned nicks depending on longest nick
+#    nocaps -- replaces lines in ALL CAPS with something easier on the eyes
+#    nocollide -- automatically changes nick when certain amount of colissions
+#    noisyquery -- prints an info about a newly started Query
+#    nopl -- replaces polish national characters with their corresponding letters
+#    norepeat -- stops public repeating
+#    noteserve -- utilizes NoteServ to implement a buddylist
+#    noticemove -- prints private notices from people in the channel
+#    notonline -- answers $nick: No. if youre away and someone asks are you online
+#    ogg123 -- display current ogg123 track
+#    oidenty -- oidentd support for irssi
+#    on -- tries to fit into Irssis usage style more than emulating ircII.
+#    ontv -- turns irssi into a tv program guide
+#    oops -- turns ls in the beginning of a sent line into the names
+#    openurl -- stores URLs in a list and launches mail, web or ftp software
+#    operit -- perform certain action on request authenticated by the IRC operator
+#    operview -- reformats some server notices
+#    opnotice -- send a notice to the ops in a channel
+#    opnotify -- hilights window refnumber in statusbar
+#    osd -- an OnScreenDisplay it shows who is talking to you, on what IRC Network
+#    page-c0ffee -- ignore pages
+#    page_reeler -- display and send CTCP PAGE
+#    pager -- notifies people if they send you a private message or a DCC chat
+#    paste_derwan -- pasting lines to specified targets
+#    paste_huggie -- paste reformats pieces of text typically pasted
+#    paste_kimmoke -- start and stop recording and then replay without linebreaks
+#    pelix --  this script allows you flood shit.
+#    people -- userlist with autoopping, autokicking etc.
+#    pggb_sound -- does CTCP SOUNDs and other similar things.
+#    phpdoc -- display all functions of the famous language
+#    poison -- equips Irssi with an interface to giFT
+#    postpone -- postpones messages sent to a split user
+#    ppl -- port of asmodeans /ppl command from skuld3
+#    query -- give you more control over when to jump to query windows
+#    queryresume -- restores the last lines of a query on re-creation
+#    quiet -- adds support for +q (quiet user) channel modes to irssi
+#    quitrand -- random quit messages - based on quitmsg
+#    quizgr -- turns irssi into a quiz bot. Has greek language
+#    quizmaster -- a trivia script for Irssi
+#    quiz -- turns irssi into a quiz bot
+#    q_username -- prints the Q username in right format
+#    rainbow -- prints colored text. Rather simple than sophisticated
+#    randaway -- random away-messages
+#    randname -- random /set real_name taken from a file
+#    relm -- keeps last 15 messages in cache
+#    remote -- lets you run commands remotely via /msg and a password
+#    repeat -- hide duplicate lines
+#    resize_split -- resizes a split window when it is made active
+#    rk -- kicks random nick from ops lusers | all on channel
+#    romajibind -- dynamic romaji binds
+#    romaji -- translates romaji to hiragana or katakana in text enclosed in ^R
+#    rot13 -- ROT13 encoding and reverse :)
+#    rotator -- displaye changeing statusbar item to show irssi is still running
+#    sana_cmd -- translates english-finnish-english.
+#    sana -- sanakirja info bot
+#    schwaebisch -- translates your messages from German to swabian
+#    screen_away -- set (un)away, if screen is attached/detached
+#    scripthelp -- bebProvides access to scripts help
+#    scriptinfo -- Access script information
+#    scroller -- scrolls specified text on the status bar
+#    seen -- tell people when other people were online
+#    servercomplete -- tab complete servers and userhosts
+#    seti -- tell ppl how far youve gotten with you SETI@home  workunit.
+#    shortenurl -- use http://42.pl/url/ to make smaller URLs
+#    showhilight -- show hilight messages in active window
+#    showhost -- show host kicks
+#    showmode -- show modes in parts, quits, kicks, topic changes or actions
+#    smiley -- very useful smiley-flooder
+#    sms -- address-book with smssender, for now supports only Polish operators
+#    snmpup -- queries remote hosts running snmpd for its uptime and cpu usage
+#    spambot -- oper script to kill Spam Bots
+#    special_complete -- complete irssi special variables
+#    spellcheck -- checks for spelling errors using Aspell
+#    sping -- checks latency between current server and [server]
+#    stocks -- prints the stats for German stocks
+#    synccheck -- script checking channel synchronization
+#    sysinfo277-irssi -- cross-platform/architecture system information script
+#    sysinfo_dg -- prints system information
+#    sysinfoplus -- Linux system information
+#    tab_stop -- replaces the evil inverted
+#    target -- advances IRC warfare to the next level
+#    thankop -- remembers the last person oping you on a channel
+#    thistory -- keeps information about the most recent topics of the channels
+#    timer -- provides /timer command for mIRC/BitchX type timer functionality
+#    tinyurl -- create a tinyurl from a long one
+#    title -- display configurable title as XTerm title
+#    tlock -- locks current or specified topic on [channel]
+#    topic-diff -- this script shows you changes in the topic.
+#    topicsed -- editing channel topics by regexps
+#    topics -- records a topic history and locks the channel topic
+#    trackbar -- shows a bar where youve last read a window
+#    tracknick -- lets you see them with the real nick all the time
+#    trigger -- execute a command or replace text
+#    trustweb -- illustrates the trust between ops
+#    tvmusor -- asks for the current tv-lineup
+#    twirssi -- send twitter updates using /tweet
+#    twprompt -- bitchXs CrackRock3 animated prompt bar
+#    twsocials -- IRC version of Social Commands
+#    twtopic -- animated Topic bar
+#    UNIBG-autoident -- automatically  ident  when you reconnect
+#    upgradeinfo -- statusbaritem notifying you about updated binary
+#    u -- show all nicks  matching regex in the current channel.
+#    uptime -- try a little harder to figure out client uptime
+#    urlgrab -- captures urls said in channel and private messages and save
+#    url_log -- logs urls to textfile or/and database
+#    url -- grabs URLs in messages and allows you to open them on the fly
+#    urlplot -- URL grabber with HTML generation and cmd execution
+#    userhost -- adds a -cmd option to the /USERHOST builtin command
+#    users -- implements /USERS
+#    version-stat -- shows top[0-9]+ irc client versions in a channel
+#    verstats -- draws a diagram of the used clients in a channel
+#    vowels -- silly script, removes vowels, idea taken from  #Linuxnews
+#    warnkick -- warns you if someone kicks you out of a channel
+#    washnicks -- removes annoying characters from nicks
+#    watch -- watch for irssi
+#    whitelist -- specific nicks or hosts and ignore messages from anyone
+#    whois -- hilights @ in whois channel reply
+#    whos -- this script allows  you to  view all users  on a specific server
+#    wilm -- whois on a person who sent you last private message
+#    wkb -- a simple word kickbanner
+#    wlstat -- adds a window list in the status area.
+#    wordcompletition -- adds words from IRC to your tab-completion list
+#    wordscramble -- scrambles all the letters in a word except the first and last
+#    xauth -- undernet X Service Authentication Program
+#    xcmd -- makes Undernets X commands easier and faster to use
+#    xdccget -- advances downloading from XDCC bots
+#    xetra -- brings the stock exchanges of the world to your irssi
+#    xlist -- better readable listing of channel names
+#    xmms2 -- Returns XMMS-InfoPipe data
+#    xmmsinfo -- /xmmsinfo to tell what youre currently playing
+#    xmms -- XMMS-InfoPipe front-end - allow /np [-help] [dest]
+#    xqf -- automatically sends xqf data to irssi and optionally licq
+
+
+
+
+
+
+
+
+
+# Additional script dependency information:
+
+# Generally, all additional packages at least three scripts depend on will be
+# added to Suggests:, all additional packages at least twenty scripts depend on
+# will be added to Recommends:.
+
+# Script                  Needs
+
+# ascii                   figlet (non-free)
+# autovoice               perl-modules
+# awayproxy               mail-transport-agent
+# bandwidth               mrtgutils
+# bantime                 libtime-duration-perl
+# bgta                    libnet-google-perl
+#                         libwww-perl
+# blowjob                 libcompress-zlib-perl
+#                         libcrypt-cbc-perl
+#                         libcrypt-blowfish-perl
+# cap_sasl                libcrypt-blowfish-perl
+#                         libcrypt-dh-perl
+#                         libcrypt-openssl-bignum-perl
+# centericq               centericq
+# challenge.pl            oftc-hybrid-respond (not in Etch)
+# chansearch              libwww-perl
+# charsetwars             perl
+# clipboard               perl-tk
+# countdown               perl-modules
+# dau                     perl-modules
+#                         figlet (non-free)
+# dcc_ip                  lynx
+#                         net-tools
+# dictcomplete            wordlist
+# eliza                   libchatbot-eliza-perl
+# emaildb1.0              libdbi-perl
+# eng_no_translate_dpryo  libwww-perl
+# figlet                  figlet (non-free)
+# fortune                 fortune-mod
+#                         fortunes-min and/or
+#                         fortunes-de and/or
+#                         fortunes-it
+# google                  libwww-perl
+# gpgvalidator            gnupg
+# hlbot                   perl
+# hddtemp                 hddtemp
+# hostname                libsocket6-perl
+#                         net-tools
+# identify-md5            perl
+# idlesince               perl-modules
+# idonkey                 libwww-perl
+#                         screen
+#                         mldonkey-server
+# imdb                    libwww-perl
+# iMPD                    perl-modules
+#                         mpc
+# ipupdate                net-tools
+#                         libwww-perl
+# ircgmessagenotify       libwww-perl
+# ircsec                  libcrypt-cbc-perl
+# irssiBlaster            mp3blaster
+#                         lsof
+# isdn                    isdnlog
+# ixmmsa                  libxmms-perl
+# l33tmusic               libxmms-perl
+# leodict                 libwww-perl
+# licq                    licq
+# linkshort               libwww-perl
+# listen                  id3
+#                         lsof
+# localize                libwww-perl
+#                         traceroute
+# mailcheck_imap          libio-socket-ssl-perl
+# mailcheck_pop3_kimmo    perl-modules
+# mkshorterlink           libwww-perl
+# mldonkey_bandwidth      libwww-perl
+#                         mldonkey-server
+# mpg123                  mpg321 or mpg123
+# mygoogle                libwww-perl
+# myimdb                  libwww-perl
+# mysqlurllogger          libdbi-perl
+#                         mysql-server
+# news                    libnews-nntpclient-perl
+# newsline                libunicode-string-perl
+#                         libwww-perl
+#                         libxml-rss-perl
+# nicklist                perl
+# norepeat                perl
+# ogg123                  vorbis-tools
+# oidenty                 oidentd
+# ontv                    libwww-perl
+# openurl                 www-browser
+#                         ncftp
+#                         mutt
+# osd                     xosd-bin (>= 2.2.7-1)
+# people                  libcrypt-passwdmd5-perl
+# pggb_sound              libwww-perl
+#                         sox
+# poison                  giftd
+# query                   perl-modules
+# queryresume             libtimedate-perl
+# recode                  libtext-iconv-perl
+# sana                    lynx
+# sana_cmd                libwww-perl
+# screen_away             screen
+# seti                    setiathome (contrib, only in Sarge)
+# shortenurl              libwww-perl
+# snmpup                  libnet-snmp-perl
+# stocks                  libwww-perl
+# twirrsi                 libnet-twitter-perl
+#                         libwww-shorten-perl
+# twsocials               libdbi-perl
+# url                     www-browser
+# url_log                 libdbi-perl
+#                         libwww-perl
+#                         www-browser
+# urlgrab                 www-browser
+# urlplot                 perl
+#                         www-browser
+# wordcompletition        mysql
+#                         libdbi-perl
+# xetra                   libwww-perl
+# xmms                    xmms-infopipe
+# xmms2                   xmms-infopipe
+# xmmsinfo                libmp3-info-perl
+#                         xmms
+# xqf                     xqf
+# spellcheck.pl		aspell
+# 			libtext-aspell-perl
+# 			perl
+# logresume.pl		perl
+

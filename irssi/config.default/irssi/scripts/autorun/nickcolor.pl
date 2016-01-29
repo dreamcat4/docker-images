@@ -1,0 +1,1 @@
+/weed/scripts/nickcolor.pl

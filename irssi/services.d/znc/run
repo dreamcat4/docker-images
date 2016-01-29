@@ -1,0 +1,55 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$znc_uid" ] && usermod  -o -u "$znc_uid" znc
+[ "$znc_gid" ] && groupmod -o -g "$znc_gid" znc
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/znc/configs/znc.conf" ] || cp -Rf "/etc/config.preseed/znc" "/config"
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/znc )" = "znc:znc" ] || chown -R znc:znc /config/znc
+[ "$(stat -c %U:%G /logs )" = "znc:znc" ] || chown -R znc:znc /logs
+
+
+if [ "$pipework_wait" ]; then
+	for _pipework_if in $pipework_wait; do
+		echo "znc: Waiting for pipework to bring up $_pipework_if..."
+		pipework --wait -i $_pipework_if
+	done
+	sleep 1
+fi
+
+
+
+sudo -E su "znc" << EOF
+	set -x
+	# Check the pem file exists in /config/znc, else make one
+	[ -e "/config/znc/znc.pem" ] || znc --datadir /config/znc --makepem
+
+	# Launch znc
+	znc --datadir /config/znc --foreground --debug $znc_args
+EOF
+
+
+# root@irssi:/# znc --help
+# [ ** ] USAGE: znc [options]
+# [ ** ] Options are:
+# [ ** ] 	-h, --help         List available command line options (this page)
+# [ ** ] 	-v, --version      Output version information and exit
+# [ ** ] 	-f, --foreground   Don't fork into the background
+# [ ** ] 	-D, --debug        Output debugging information (Implies -f)
+# [ ** ] 	-n, --no-color     Don't use escape sequences in the output
+# [ ** ] 	-r, --allow-root   Don't complain if ZNC is run as root
+# [ ** ] 	-c, --makeconf     Interactively create a new config
+# [ ** ] 	-s, --makepass     Generates a password for use in config
+# [ ** ] 	-p, --makepem      Generates a pemfile for use with SSL
+# [ ** ] 	-d, --datadir      Set a different ZNC repository (default is ~/.znc)
+
+
+
+
+

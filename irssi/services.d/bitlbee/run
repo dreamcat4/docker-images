@@ -1,0 +1,71 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$bitlbee_uid" ] && usermod  -o -u "$bitlbee_uid" bitlbee
+[ "$bitlbee_gid" ] && groupmod -o -g "$bitlbee_gid" bitlbee
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/bitlbee/bitlbee.conf" ] || cp -Rf "/etc/config.preseed/bitlbee" "/config"
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/bitlbee )" = "bitlbee:bitlbee" ] || chown -R bitlbee:bitlbee /config/bitlbee
+
+
+
+sudo -E su "bitlbee" << EOF
+	set -x
+
+	# Launch bitlbee
+	/usr/sbin/bitlbee -p 6667 -D -P /config/bitlbee/bitlbee.pid -c /config/bitlbee/bitlbee.conf -d /config/bitlbee $bitlbee_args
+
+	# Block while bitlbee is still running
+	set +x
+	while true; do
+		ps $(cat /config/bitlbee/bitlbee.pid) > /dev/null || break
+		sleep 10
+	done
+  rm "/config/bitlbee/bitlbee.pid"
+
+EOF
+
+
+
+
+
+
+
+
+
+
+
+
+# root@irssi:/# bitlbee -h
+# Usage: bitlbee [-D/-F [-i <interface>] [-p <port>] [-n] [-v]] [-I]
+#                [-c <file>] [-d <dir>] [-x] [-h]
+
+# An IRC-to-other-chat-networks gateway
+
+#   -I  Classic/InetD mode. (Default)
+#   -D  Daemon mode. (one process serves all)
+#   -F  Forking daemon. (one process per client)
+#   -u  Run daemon as specified user.
+#   -P  Specify PID-file (not for inetd mode)
+#   -i  Specify the interface (by IP address) to listen on.
+#       (Default: 0.0.0.0 (any interface))
+#   -p  Port number to listen on. (Default: 6667)
+#   -n  Don't fork.
+#   -v  Be verbose (only works in combination with -n)
+#   -c  Load alternative configuration file
+#   -d  Specify alternative user configuration directory
+#   -x  Command-line interface to password encryption/hashing
+#   -h  Show this help page.
+#   -V  Show version info.
+
+
+
+
+
+

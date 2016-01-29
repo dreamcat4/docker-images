@@ -1,0 +1,110 @@
+settings = {
+  core = {
+    real_name = "irssi";
+    user_name = "irssi";
+    nick = "irssi";
+  };
+  "fe-text" = { actlist_sort = "refnum"; };
+  "fe-common/core" = {
+    # theme = "dark_winter";
+    theme = "weed";
+  };
+};
+
+znc_username = "znc";
+znc_password = "znc";
+
+servers = (
+  {
+    chatnet = "bitlbee";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/bitlbee:YOUR_ZNC_PASSWORD";
+    password = "znc/bitlbee:znc";
+  },
+  {
+    chatnet = "efnet";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/efnet:YOUR_ZNC_PASSWORD";
+    password = "znc/efnet:znc";
+  },
+  {
+    chatnet = "freenode";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/freenode:YOUR_ZNC_PASSWORD";
+    password = "znc/freenode:znc";
+  },
+  {
+    chatnet = "gnome";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/gnome:YOUR_ZNC_PASSWORD";
+    password = "znc/gnome:znc";
+  },
+  {
+    chatnet = "mozilla";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/mozilla:YOUR_ZNC_PASSWORD";
+    password = "znc/mozilla:znc";
+  },
+  {
+    chatnet = "oftc";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/oftc:YOUR_ZNC_PASSWORD";
+    password = "znc/oftc:znc";
+  },
+);
+
+chatnets = {
+
+  bitlbee = {
+    type = "IRC";
+  };
+
+  efnet = {
+    type = "IRC";
+  };
+
+  freenode = {
+    type = "IRC";
+  };
+
+  gnome = {
+    type = "IRC";
+  };
+
+  oftc = {
+    type = "IRC";
+  };
+};
+
+
+
+
+
+
+
+
+

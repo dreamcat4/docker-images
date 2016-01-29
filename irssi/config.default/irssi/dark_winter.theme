@@ -1,0 +1,254 @@
+# dark_winter.theme - 7th of April 2005
+# by Miia "Myrtti" Ranta, myrtti@gmail.com 
+# Myrtti @IRCNet, freenode, Undernet
+#
+# based on
+# hv.theme - 16/3/04
+# Irssi-theme (c) cubik
+# feel free to use, alter & etc..
+
+# default foreground color (%N) - -1 is the "default terminal color"
+default_color = "-1";
+
+# print timestamp/servertag at the end of line, not at beginning
+info_eol = "false";
+
+# these characters are automatically replaced with specified color
+# (dark grey by default)
+replaces = { "=" = "%K$*%N"; };
+
+abstracts = {
+  ##
+  ## generic
+  ##
+
+  # text to insert at the beginning of each non-message line
+  line_start = "%K~%w~%W~%N";
+
+  # timestamp styling, nothing by default
+  timestamp = "%m[%N$*%m]%N";
+
+  # any kind of text that needs hilighting, default is to bold
+  hilight = "%_$*%_";
+
+  # any kind of error message, default is bright red
+  error = "%R$*%N";
+
+  # channel name is printed
+  channel = "%m$*%N";
+
+  # nick is printed
+  nick = "$*";
+
+  # nick host is printed
+  nickhost = "[%w$*]%N";
+
+  # server name is printed
+  server = "%_$*%_";
+
+  # some kind of comment is printed
+  comment = "%M[%N$*%M]%N";
+
+  # reason for something is printed (part, quit, kick, ..)
+  reason = "{comment $*}";
+
+  # mode change is printed ([+o nick])
+  mode = "{comment $*}";
+
+  ##
+  ## channel specific messages
+  ##
+
+  # highlighted nick/host is printed (joins)
+  channick_hilight = "%M$*%N";
+  chanhost_hilight = "{nickhost %K$*%N}";
+
+  # nick/host is printed (parts, quits, etc.)
+  channick = "%p$*%N";
+  chanhost = "{nickhost %K$*%N}";
+
+  # highlighted channel name is printed
+  channelhilight = "%p$*%N";
+
+  # ban/ban exception/invite list mask is printed
+  ban = "%p$*%N";
+
+  ##
+  ## messages
+  ##
+
+  # the basic styling of how to print message, $0 = nick mode, $1 = nick
+  msgnick = "%w<%M$0%N$1-%w>%n %|";
+
+  # message from you is printed. "msgownnick" specifies the styling of the
+  # nick ($0 part in msgnick) and "ownmsgnick" specifies the styling of the
+  # whole line.
+
+  # Example1: You want the message text to be green:
+  #  ownmsgnick = "{msgnick $0 $1-}%g";
+  # Example2.1: You want < and > chars to be yellow:
+  #  ownmsgnick = "%Y{msgnick $0 $1-%Y}%n";
+  #  (you'll also have to remove <> from replaces list above)
+  # Example2.2: But you still want to keep <> grey for other messages:
+  #  pubmsgnick = "%K{msgnick $0 $1-%K}%n";
+  #  pubmsgmenick = "%K{msgnick $0 $1-%K}%n";
+  #  pubmsghinick = "%K{msgnick $1 $0$2-%n%K}%n";
+  #  ownprivmsgnick = "%K{msgnick  $*%K}%n";
+  #  privmsgnick = "%K{msgnick  %R$*%K}%n";
+
+  # $0 = nick mode, $1 = nick
+  ownmsgnick = "{msgnick $0 $1-}%m";
+  ownnick = "%m$*%N";
+
+  # public message in channel, $0 = nick mode, $1 = nick
+  pubmsgnick = "{msgnick $0 $1-}";
+  pubnick = "%N$*%N";
+
+  # public message in channel meant for me, $0 = nick mode, $1 = nick
+  pubmsgmenick = "{msgnick $0 $1-}%U";
+  menick = "%0%P$*%N";
+
+  # public highlighted message in channel
+  # $0 = highlight color, $1 = nick mode, $2 = nick
+  pubmsghinick = "{msgnick $1 $0$2-}%K%U";
+
+  # channel name is printed with message
+  msgchannel = "%K:%c$*%N";
+
+  # private message, $0 = nick, $1 = host
+  privmsg = "%m$0%K[$1-] %m>> %m";
+
+  # private message from you, $0 = "msg", $1 = target nick
+  ownprivmsg = "%m$0%K[%w$1-%K] %m>>%N ";
+
+  # own private message in query
+  ownprivmsgnick = "{msgnick  $*}";
+  ownprivnick = "%p$*%N";
+
+  # private message in query
+  privmsgnick = "{msgnick  %P$*%N}";
+
+  ##
+  ## Actions (/ME stuff)
+  ##
+
+  # used internally by this theme
+  action_core = "%b * $*";
+
+  # generic one that's used by most actions
+  action = "{action_core $*} ";
+
+  # own action, both private/public
+  ownaction = "{action $*}";
+
+  # own action with target, both private/public
+  ownaction_target = "{action_core $0}%K:%c$1%N ";
+
+  # private action sent by others
+  pvtaction = "%W (*) $*%N ";
+  pvtaction_query = "{action $*}";
+
+  # public action sent by others
+  pubaction = "{action $*}";
+
+
+  ##
+  ## other IRC events
+  ##
+
+  # whois
+  whois = "%# $[8]0 : $1-";
+
+  # notices
+  ownnotice = "[%r$0%K(%R$1-%K)]%N ";
+  notice = "%K-%M$*%K-%N ";
+  pubnotice_channel = "%K:%m$*";
+  pvtnotice_host = "%K(%m$*%K)";
+  servernotice = "%g!$*%N ";
+
+  # CTCPs
+  ownctcp = "[%r$0%K(%R$1-%K)] ";
+  ctcp = "%r$*%N";
+
+  # wallops
+  wallop = "%W$*%N: ";
+  wallop_nick = "%N$*";
+  wallop_action = "%W * $*%N ";
+
+  # netsplits
+  netsplit = "%R$*%N";
+  netjoin = "%C$*%N";
+
+  # /names list
+  names_prefix = "";
+  names_nick = "[%_$0%_$1-] ";
+  names_nick_op = "{names_nick $*}";
+  names_nick_halfop = "{names_nick $*}";
+  names_nick_voice = "{names_nick $*}";
+  names_users = "[%p$*%N]";
+  names_channel = "%P$*%N";
+
+  # DCC
+  dcc = "%g$*%N";
+  dccfile = "%_$*%_";
+
+  # DCC chat, own msg/action
+  dccownmsg = "[%r$0%K($1-%K)%N] ";
+  dccownnick = "%R$*%N";
+  dccownquerynick = "%W$*%N";
+  dccownaction = "{action $*}";
+  dccownaction_target = "{action_core $0}%K:%c$1%N ";
+
+  # DCC chat, others
+  dccmsg = "[%G$1-%K(%g$0%K)%N] ";
+  dccquerynick = "%G$*%N";
+  dccaction = "%W (*dcc*) $*%N %|";
+
+  ##
+  ## statusbar
+  ##
+
+  # default background for all statusbars. You can also give
+  # the default foreground color for statusbar items.
+  sb_background = "%0";
+
+
+  # default backround for "default" statusbar group
+  #sb_default_bg = "%k";
+  # background for prompt / input line
+  # sb_prompt_bg = "%N";
+  # background for info statusbar
+  # sb_info_bg = "%k";
+  # background for topicbar (same default)
+  sb_topic_bg = "%0%M";
+
+  # text at the beginning of statusbars. sb-item already puts
+  # space there,so we don't use anything by default.
+  sbstart = "";
+  # text at the end of statusbars. Use space so that it's never
+  # used for anything.
+  sbend = " ";
+
+  topicsbstart = "{sbstart $*}";
+  topicsbend = "{sbend $*}";
+
+  prompt = "%K[%N$*%K]%n ";
+
+  sb = " %m[%W$*%m]%n";
+  sbmode = "%K(%m+%w$*%K)%n";
+  sbaway = " %K(%c.zZz%N%K)%n";
+  sbservertag = ":$0";
+
+  # activity in statusbar
+
+  # ',' separator
+  sb_act_sep = "%m$*";
+  # normal text
+  sb_act_text = "%m$*";
+  # public message
+  sb_act_msg = "%G$*";
+  # hilight
+  sb_act_hilight = "%Y$*";
+  # hilight with specified color, $0 = color, $1 = text
+  sb_act_hilight_color = "$0$1-%n";
+};
