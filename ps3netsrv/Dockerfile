@@ -1,4 +1,4 @@
-FROM ubuntu-debootstrap:14.04
+FROM ubuntu:xenial-20160125
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"

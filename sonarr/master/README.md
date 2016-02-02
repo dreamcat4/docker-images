@@ -57,6 +57,9 @@ containers:
     image: dreamcat4/sonarr
     run:
       net: none
+      log-opt:
+        - max-size=10m
+        - max-file=2
       volume:
         - /my/sonarr/config/folder:/config
         - /my/media/top/level/folder:/media

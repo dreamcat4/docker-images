@@ -1,5 +1,4 @@
-FROM ubuntu-debootstrap:15.10
-#FROM ubuntu-debootstrap:16.04
+FROM ubuntu:xenial-20160125
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
@@ -25,7 +24,7 @@ RUN apt-get update && apt-get install -y wget git sudo znc \
  libtime-duration-perl bitlbee bitlbee-plugin-otr \
  libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
  irssi irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
- tmux openssh-server socat nano nmap && $_apt_clean
+ tmux openssh-server socat nano less nmap man && $_apt_clean
 
 
 # Download scripts from https://scripts.irssi.org, and the irssi theme 'weed'

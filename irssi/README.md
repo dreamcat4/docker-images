@@ -57,8 +57,7 @@ You can check for missing irssi script dependancies in this partial list:
 
 ```sh
 docker exec -it CONTAINER_NAME bash [return]
-gunzip -k -c /usr/share/doc/irssi-scripts/README.Debian.gz [return]
-
+gunzip -k -c /usr/share/doc/irssi-scripts/README.Debian.gz | less [return]
 ```
 
 Which covers the most popular irssi scripts. Other clues may be in the `script.pl` perl module dependancies itself. BTW - AFAIKT my docker image does not specifically try to install or include the CPAN package manager for Perl.

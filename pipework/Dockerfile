@@ -1,4 +1,4 @@
-FROM ubuntu-debootstrap:15.10
+FROM ubuntu:xenial-20160125
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
@@ -15,13 +15,7 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 # Install networking utils / other dependancies
-RUN apt-get update -qq && apt-get install -qqy netcat-openbsd jq lsof net-tools udhcpc isc-dhcp-client dhcpcd5 arping ndisc6 fping sipcalc bc && $_apt_clean
-
-# # Install curl-7.42 for unix sockets support
-# RUN echo deb http://gb.archive.ubuntu.com/ubuntu/ wily main > /etc/apt/sources.list.d/curl-7.42.list \
-#  && echo deb http://gb.archive.ubuntu.com/ubuntu/ wily-proposed main > /etc/apt/sources.list.d/curl-7.42.list \
-#  && apt-get update -qq && apt-get install -qqy curl \
-#  && rm /etc/apt/sources.list.d/curl-7.42.list && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy netcat-openbsd curl jq lsof net-tools udhcpc isc-dhcp-client dhcpcd5 arping ndisc6 fping sipcalc bc && $_apt_clean
 
 # workaround for dhclient error due to ubuntu apparmor profile - http://unix.stackexchange.com/a/155995
 # dhclient: error while loading shared libraries: libc.so.6: cannot open shared object file: Permission denied
