@@ -1,0 +1,10 @@
+server {
+        listen 443;
+
+        root /www;
+        index index.html index.htm;
+
+        ssl on;
+        ssl_certificate /ssl/server.crt;
+        ssl_certificate_key /ssl/server.key;
+}
