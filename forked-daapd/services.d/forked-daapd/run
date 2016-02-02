@@ -1,0 +1,51 @@
+#!/usr/bin/with-contenv sh
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/forked-daapd.conf" ] || cp "/etc/forked-daapd.conf.docker" "/config/forked-daapd.conf"
+
+
+# Set the uid:gid to run as
+[ "$daapd_uid" ] && usermod  -o -u "$daapd_uid" deluge
+[ "$daapd_gid" ] && groupmod -o -g "$daapd_gid" deluge
+
+# chown -r /music only if owned by root. We asume that means it's a docker volume
+[ "$(stat -c %u:%g /music )" = "0:0" ] && chown daapd:daapd /config /music
+
+
+if [ "$pipework_wait" ]; then
+	for _pipework_if in $pipework_wait; do
+		echo "Waiting for pipework to bring up $_pipework_if..."
+		pipework --wait -i $_pipework_if
+	done
+	sleep 1
+fi
+
+
+# Copy "$@" special variable into a regular variable
+_fdaapd_args="$@"
+
+
+# Usage: forked-daapd [options]
+# Options:
+#   -d <number>    Log level (0-5)
+#   -D <dom,dom..> Log domains
+#   -c <file>      Use <file> as the configfile
+#   -P <file>      Write PID to specified file
+#   -f             Run in foreground
+#   -b <id>        ffid to be broadcast
+#   -v             Display version information
+#
+# Available log domains:
+# config, daap, db, httpd, http, main, mdns, misc, rsp, scan,
+# xcode, event, remote, dacp, ffmpeg, artwork, player, raop,
+# laudio, dmap, dbperf, spotify, lastfm, cache, mpd
+
+
+forked-daapd -f -c /config/forked-daapd.conf $_fdaapd_args
+
+
+
+
+
+

@@ -1,0 +1,2 @@
+#!/usr/bin/execlineb -P
+avahi-daemon --no-chroot
