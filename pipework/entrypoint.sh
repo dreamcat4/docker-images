@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _pipework_image_name="dreamcat4/pipework"
-_global_vars="run_mode host_routes host_route_arping up_time key cmd sleep debug event_filters cleanup_wait retry_delay inter_delay route_add_delay"
+_global_vars="run_mode host_routes host_route_arping host_route_protocols up_time key cmd sleep debug event_filters cleanup_wait retry_delay inter_delay route_add_delay"
 
 for _var in $_global_vars; do
     _value="$(eval echo \$${_var})"
@@ -11,6 +11,7 @@ done
 
 [ "$_pipework_debug" ] && _debug="sh -x" && set -x
 [ "$_pipework_sleep" ] && sleep $_pipework_sleep
+[ "$_pipework_host_route_protocols" ] || _pipework_host_route_protocols="inet"
 
 # _default_cleanup_wait="22" # for dhclient
 _default_cleanup_wait="0" # for dhcp default busybox udhcpc
@@ -191,7 +192,7 @@ _create_host_route ()
     [ -f /var/run/netns/$_pid ] && rm -f /var/run/netns/$_pid
     ln -s /proc/${_pid}/ns/net /var/run/netns/$_pid
 
-    for proto in inet inet6; do
+    for proto in $_pipework_host_route_protocols; do
         ip_and_netmask="$(ip netns exec $_pid ip -o -f $proto addr show $cont_if | tr -s ' ' | cut -d ' ' -f4)"
 
         [ "$ip_and_netmask" ] || continue
