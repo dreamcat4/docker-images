@@ -58,7 +58,7 @@ EOF
 
 # Block while tmux session is still running
 while true; do
-	script -q -e /dev/null -c "tmux -S $tmux_socket -u list-sessions -F '#{session_name}'" | grep -q "$tmux_session" || break
+	script -q -e /dev/null -c "tmux -S $tmux_socket -u list-sessions -F '#{session_name}'" | grep -q "^$tmux_session$" || break
 	sleep 3
 done
 
