@@ -1,5 +1,21 @@
 # Jackett
 
+This container runs 2 services simultaneously:
+
+1. The 'new' jackett (of [Jackett/Jackett](https://github.com/Jackett/Jackett)) is available on TCP port `9117`
+
+2. The 'old' legacy jackett --> is renamed to 'Jackett-public', to still provide public indexers. This is now available on TCP `9118`
+
+Credit: @raspdealer
+
+NOTES:
+
+* Both instances run as the same shared `jackett` unix user account, and run simultaneously
+* They each have their own sepeate config folders located inside of `/config/.config/`
+* Logging is mixed up, going to same stdout/stderr `docker logs` command
+* Cmdline flags can be passed with 2 separate docker env vars, `$_jackett_args` and `$_jackett_public_args`
+* The legacy jackett-public old version may break anytime in the future
+
 ### Configuration
 
 All user configuration is performed in the web interface. Therefore there is no pre-seeded `/config` files. You are recommended to bind-mount all of your needed host folders, and backup independantly your `jackett` config directory with some scripted / scheduled task.

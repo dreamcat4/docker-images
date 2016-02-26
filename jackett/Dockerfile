@@ -25,9 +25,15 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy cu
 
 
 # Download jackett
-ENV jackett_version="0.7.164"
+ENV jackett_version="0.7.182"
 RUN curl -Lo /tmp/jackett.tar.gz https://github.com/Jackett/Jackett/releases/download/v${jackett_version}/Jackett.Binaries.Mono.tar.gz \
- && mkdir /jackett && tar -xzf /tmp/jackett.tar.gz --strip-components=1 -C /jackett; rm -f /tmp/jackett.tar.gz
+ && mkdir /jackett && tar -xzf /tmp/jackett.tar.gz --strip-components=1 -C /jackett && rm -f /tmp/jackett.tar.gz
+
+
+# # Download jackett-public
+ENV jackett_public_version="0.6.45.2"
+RUN curl -Lo /tmp/jackett-public.tar.gz https://github.com/dreamcat4/Jackett-public/releases/download/v${jackett_public_version}/Jackett-public.Binaries.Mono.tar.gz \
+ && mkdir /jackett-public && tar -xzf /tmp/jackett-public.tar.gz --strip-components=1 -C /jackett-public && rm -f /tmp/jackett-public.tar.gz
 
 
 # Setup sonarr /config dir and /media folder
@@ -40,6 +46,11 @@ RUN groupadd -o -g 9117 jackett \
 ADD config /config/
 
 
+# Start scripts
+ENV S6_LOGGING="0"
+ADD services.d /etc/services.d
+
+
 # Launch script
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -47,8 +58,8 @@ RUN chmod +x /entrypoint.sh
 
 # Default container settings
 VOLUME /config
-EXPOSE 9117
-ENTRYPOINT ["/init","/entrypoint.sh"]
+EXPOSE 9117 9118
+ENTRYPOINT ["/init"]
 
 
 
