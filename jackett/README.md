@@ -12,6 +12,7 @@ NOTES:
 
 * Both instances run as the same shared `jackett` unix user account, and run simultaneously
 * They each have their own sepeate config folders located inside of `/config/.config/`
+* Logging is mixed up, going to same stdout/stderr `docker logs` command
 * Cmdline flags can be passed with 2 separate docker env vars, `$_jackett_args` and `$_jackett_public_args`
 * The legacy jackett-public old version may break anytime in the future
 
