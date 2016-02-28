@@ -25,7 +25,7 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy cu
 
 
 # Download jackett
-ENV jackett_version="0.7.182"
+ENV jackett_version="0.7.184"
 RUN curl -Lo /tmp/jackett.tar.gz https://github.com/Jackett/Jackett/releases/download/v${jackett_version}/Jackett.Binaries.Mono.tar.gz \
  && mkdir /jackett && tar -xzf /tmp/jackett.tar.gz --strip-components=1 -C /jackett && rm -f /tmp/jackett.tar.gz
 
