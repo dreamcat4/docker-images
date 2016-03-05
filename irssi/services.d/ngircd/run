@@ -1,0 +1,45 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$ngircd_uid" ] && usermod  -o -u "$ngircd_uid" ngircd
+[ "$ngircd_gid" ] && groupmod -o -g "$ngircd_gid" ngircd
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/ngircd/ngircd.conf" ] || cp -Rf "/etc/config.preseed/ngircd" "/config"
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/ngircd )" = "ngircd:ngircd" ] || chown -R ngircd:ngircd /config/ngircd
+
+
+sudo -E su "ngircd" << EOF
+	set -x
+
+	# test that the config file is OK
+	echo | /usr/sbin/ngircd --nodaemon --config /config/ngircd/ngircd.conf --configtest > /config/ngircd/ngircd.configtest.output.ini
+
+EOF
+
+
+# Launch ngircd
+/usr/sbin/ngircd --nodaemon --config /config/ngircd/ngircd.conf
+
+
+# # ngircd --help
+# ngIRCd 22.1-IDENT+IPv6+IRCPLUS+PAM+SSL+SYSLOG+ZLIB-x86_64/pc/linux-gnu
+# Copyright (c)2001-2014 Alexander Barton (<alex@barton.de>) and Contributors.
+# Homepage: <http://ngircd.barton.de/>
+
+# This is free software; see the source for copying conditions. There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+#   -f, --config <f>   use file <f> as configuration file
+#   -n, --nodaemon     don't fork and don't detach from controlling terminal
+#   -p, --passive      disable automatic connections to other servers
+#   -t, --configtest   read, validate and display configuration; then exit
+#   -V, --version      output version information and exit
+#   -h, --help         display this help and exit
+
+

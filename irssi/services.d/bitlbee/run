@@ -19,7 +19,14 @@ sudo -E su "bitlbee" << EOF
 	set -x
 
 	# Launch bitlbee
-	/usr/sbin/bitlbee -p 6667 -D -P /config/bitlbee/bitlbee.pid -c /config/bitlbee/bitlbee.conf -d /config/bitlbee $bitlbee_args
+	# /usr/sbin/bitlbee -D -p 6111 -P /config/bitlbee/bitlbee.pid -c /config/bitlbee/bitlbee.conf -d /config/bitlbee $bitlbee_args
+	#	/usr/sbin/bitlbee -D -n -v -p 6111 -P /config/bitlbee/bitlbee.pid -c /config/bitlbee/bitlbee.conf -d /config/bitlbee $bitlbee_args
+
+	# export BITLBEE_DEBUG=1
+
+	# Need to fork with -F to avoid libpurple restarting crashing bug
+	/usr/sbin/bitlbee -F -p 6111 -P /config/bitlbee/bitlbee.pid -c /config/bitlbee/bitlbee.conf -d /config/bitlbee $bitlbee_args
+	sleep 1
 
 	# Block while bitlbee is still running
 	set +x

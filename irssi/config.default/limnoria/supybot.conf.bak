@@ -1,0 +1,3119 @@
+
+######
+# Althrough it is technically possible to do so, we do not recommend that
+# you edit this file with a text editor.
+# Whenever possible, do it on IRC using the Config plugin, which
+# checks values you set are valid before writing them to the
+# configuration.
+# Moreover, if you edit this file while the bot is running, your
+# changes may be lost.
+######
+
+
+###
+# Determines the bot's default nick.
+#
+# Default value: supybot
+###
+supybot.nick: supybot
+
+###
+# Determines what alternative nicks will be used if the primary nick
+# (supybot.nick) isn't available. A %s in this nick is replaced by the
+# value of supybot.nick when used. If no alternates are given, or if all
+# are used, the supybot.nick will be perturbed appropriately until an
+# unused nick is found.
+#
+# Default value: %s` %s_
+###
+supybot.nick.alternates: %s` %s_
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default.
+#
+# Default value: limnoria
+###
+supybot.ident: supybot
+
+###
+# Determines the real name which the bot sends to the server. A standard
+# real name using the current version of the bot will be generated if
+# this is left empty.
+#
+# Default value: 
+###
+supybot.user: 
+
+###
+# Determines what networks the bot will connect to.
+#
+# Default value:  
+###
+supybot.networks: ngircd
+
+###
+# Determines what password will be used on barton. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.barton.password: supybot/barton:supybot
+
+###
+# Space-separated list of servers the bot will connect to for barton.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.barton.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on barton.
+#
+# Default value:  
+###
+supybot.networks.barton.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.barton.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# barton.
+#
+# Default value: False
+###
+supybot.networks.barton.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to barton but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.barton.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to barton.
+#
+# Default value: 
+###
+supybot.networks.barton.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.barton.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.barton.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.barton.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.barton.umodes: 
+
+###
+# Determines what SASL username will be used on barton. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.barton.sasl.username: 
+
+###
+# Determines what SASL password will be used on barton.
+#
+# Default value: 
+###
+supybot.networks.barton.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on barton. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.barton.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.barton.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.barton.socksproxy: 
+
+###
+# Determines what password will be used on bitlbee. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.password: supybot/bitlbee:supybot
+
+###
+# Space-separated list of servers the bot will connect to for bitlbee.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on bitlbee.
+#
+# Default value:  
+###
+supybot.networks.bitlbee.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# bitlbee.
+#
+# Default value: False
+###
+supybot.networks.bitlbee.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to bitlbee but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.bitlbee.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to bitlbee.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.bitlbee.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.bitlbee.umodes: 
+
+###
+# Determines what SASL username will be used on bitlbee. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.sasl.username: 
+
+###
+# Determines what SASL password will be used on bitlbee.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on bitlbee. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.bitlbee.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.bitlbee.socksproxy: 
+
+###
+# Determines what password will be used on dalnet. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.dalnet.password: supybot/dalnet:supybot
+
+###
+# Space-separated list of servers the bot will connect to for dalnet.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.dalnet.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on dalnet.
+#
+# Default value:  
+###
+supybot.networks.dalnet.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.dalnet.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# dalnet.
+#
+# Default value: False
+###
+supybot.networks.dalnet.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to dalnet but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.dalnet.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to dalnet.
+#
+# Default value: 
+###
+supybot.networks.dalnet.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.dalnet.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.dalnet.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.dalnet.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.dalnet.umodes: 
+
+###
+# Determines what SASL username will be used on dalnet. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.dalnet.sasl.username: 
+
+###
+# Determines what SASL password will be used on dalnet.
+#
+# Default value: 
+###
+supybot.networks.dalnet.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on dalnet. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.dalnet.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.dalnet.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.dalnet.socksproxy: 
+
+###
+# Determines what password will be used on efnet. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.efnet.password: supybot/efnet:supybot
+
+###
+# Space-separated list of servers the bot will connect to for efnet.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.efnet.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on efnet.
+#
+# Default value:  
+###
+supybot.networks.efnet.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.efnet.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# efnet.
+#
+# Default value: False
+###
+supybot.networks.efnet.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to efnet but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.efnet.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to efnet.
+#
+# Default value: 
+###
+supybot.networks.efnet.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.efnet.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.efnet.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.efnet.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.efnet.umodes: 
+
+###
+# Determines what SASL username will be used on efnet. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.efnet.sasl.username: 
+
+###
+# Determines what SASL password will be used on efnet.
+#
+# Default value: 
+###
+supybot.networks.efnet.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on efnet. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.efnet.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.efnet.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.efnet.socksproxy: 
+
+###
+# Determines what password will be used on freenode. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.freenode.password: supybot/freenode:supybot
+
+###
+# Space-separated list of servers the bot will connect to for freenode.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.freenode.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on freenode.
+#
+# Default value:  
+###
+supybot.networks.freenode.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.freenode.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# freenode.
+#
+# Default value: False
+###
+supybot.networks.freenode.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to freenode but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.freenode.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to freenode.
+#
+# Default value: 
+###
+supybot.networks.freenode.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.freenode.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.freenode.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.freenode.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.freenode.umodes: 
+
+###
+# Determines what SASL username will be used on freenode. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.freenode.sasl.username: 
+
+###
+# Determines what SASL password will be used on freenode.
+#
+# Default value: 
+###
+supybot.networks.freenode.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on freenode. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.freenode.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.freenode.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.freenode.socksproxy: 
+
+###
+# Determines what password will be used on gnome. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.gnome.password: supybot/gnome:supybot
+
+###
+# Space-separated list of servers the bot will connect to for gnome.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.gnome.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on gnome.
+#
+# Default value:  
+###
+supybot.networks.gnome.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.gnome.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# gnome.
+#
+# Default value: False
+###
+supybot.networks.gnome.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to gnome but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.gnome.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to gnome.
+#
+# Default value: 
+###
+supybot.networks.gnome.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.gnome.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.gnome.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.gnome.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.gnome.umodes: 
+
+###
+# Determines what SASL username will be used on gnome. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.gnome.sasl.username: 
+
+###
+# Determines what SASL password will be used on gnome.
+#
+# Default value: 
+###
+supybot.networks.gnome.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on gnome. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.gnome.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.gnome.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.gnome.socksproxy: 
+
+###
+# Determines what password will be used on ircnet. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.ircnet.password: supybot/ircnet:supybot
+
+###
+# Space-separated list of servers the bot will connect to for ircnet.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.ircnet.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on ircnet.
+#
+# Default value:  
+###
+supybot.networks.ircnet.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.ircnet.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# ircnet.
+#
+# Default value: False
+###
+supybot.networks.ircnet.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to ircnet but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.ircnet.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to ircnet.
+#
+# Default value: 
+###
+supybot.networks.ircnet.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.ircnet.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.ircnet.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.ircnet.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.ircnet.umodes: 
+
+###
+# Determines what SASL username will be used on ircnet. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.ircnet.sasl.username: 
+
+###
+# Determines what SASL password will be used on ircnet.
+#
+# Default value: 
+###
+supybot.networks.ircnet.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on ircnet. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.ircnet.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.ircnet.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.ircnet.socksproxy: 
+
+###
+# Determines what password will be used on mozilla. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.mozilla.password: supybot/mozilla:supybot
+
+###
+# Space-separated list of servers the bot will connect to for mozilla.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.mozilla.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on mozilla.
+#
+# Default value:  
+###
+supybot.networks.mozilla.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.mozilla.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# mozilla.
+#
+# Default value: False
+###
+supybot.networks.mozilla.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to mozilla but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.mozilla.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to mozilla.
+#
+# Default value: 
+###
+supybot.networks.mozilla.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.mozilla.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.mozilla.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.mozilla.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.mozilla.umodes: 
+
+###
+# Determines what SASL username will be used on mozilla. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.mozilla.sasl.username: 
+
+###
+# Determines what SASL password will be used on mozilla.
+#
+# Default value: 
+###
+supybot.networks.mozilla.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on mozilla. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.mozilla.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.mozilla.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.mozilla.socksproxy: 
+
+###
+# Determines what password will be used on ngircd. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.ngircd.password: supybot/ngircd:supybot
+
+###
+# Space-separated list of servers the bot will connect to for ngircd.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.ngircd.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on ngircd.
+#
+# Default value:  
+###
+supybot.networks.ngircd.channels: #local
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.ngircd.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# ngircd.
+#
+# Default value: False
+###
+supybot.networks.ngircd.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to ngircd but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.ngircd.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to ngircd.
+#
+# Default value: 
+###
+supybot.networks.ngircd.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.ngircd.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.ngircd.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.ngircd.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.ngircd.umodes: 
+
+###
+# Determines what SASL username will be used on ngircd. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.ngircd.sasl.username: 
+
+###
+# Determines what SASL password will be used on ngircd.
+#
+# Default value: 
+###
+supybot.networks.ngircd.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on ngircd. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.ngircd.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.ngircd.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.ngircd.socksproxy: 
+
+###
+# Determines what password will be used on oftc. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.oftc.password: supybot/oftc:supybot
+
+###
+# Space-separated list of servers the bot will connect to for oftc. Each
+# will be tried in order, wrapping back to the first when the cycle is
+# completed.
+#
+# Default value: 
+###
+supybot.networks.oftc.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on oftc.
+#
+# Default value:  
+###
+supybot.networks.oftc.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.oftc.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# oftc.
+#
+# Default value: False
+###
+supybot.networks.oftc.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to oftc but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.oftc.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to oftc.
+#
+# Default value: 
+###
+supybot.networks.oftc.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.oftc.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.oftc.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.oftc.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.oftc.umodes: 
+
+###
+# Determines what SASL username will be used on oftc. This should be the
+# bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.oftc.sasl.username: 
+
+###
+# Determines what SASL password will be used on oftc.
+#
+# Default value: 
+###
+supybot.networks.oftc.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on oftc. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.oftc.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.oftc.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.oftc.socksproxy: 
+
+###
+# Determines what password will be used on quakenet. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.quakenet.password: supybot/quakenet:supybot
+
+###
+# Space-separated list of servers the bot will connect to for quakenet.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.quakenet.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on quakenet.
+#
+# Default value:  
+###
+supybot.networks.quakenet.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.quakenet.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# quakenet.
+#
+# Default value: False
+###
+supybot.networks.quakenet.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to quakenet but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.quakenet.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to quakenet.
+#
+# Default value: 
+###
+supybot.networks.quakenet.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.quakenet.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.quakenet.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.quakenet.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.quakenet.umodes: 
+
+###
+# Determines what SASL username will be used on quakenet. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.quakenet.sasl.username: 
+
+###
+# Determines what SASL password will be used on quakenet.
+#
+# Default value: 
+###
+supybot.networks.quakenet.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on quakenet. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.quakenet.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.quakenet.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.quakenet.socksproxy: 
+
+###
+# Determines what password will be used on undernet. Yes, we know that
+# technically passwords are server-specific and not network-specific,
+# but this is the best we can do right now.
+#
+# Default value: 
+###
+supybot.networks.undernet.password: supybot/undernet:supybot
+
+###
+# Space-separated list of servers the bot will connect to for undernet.
+# Each will be tried in order, wrapping back to the first when the cycle
+# is completed.
+#
+# Default value: 
+###
+supybot.networks.undernet.servers: 127.0.0.1:6697
+
+###
+# Space-separated list of channels the bot will join only on undernet.
+#
+# Default value:  
+###
+supybot.networks.undernet.channels:  
+
+###
+# Determines what key (if any) will be used to join the channel.
+#
+# Default value: 
+###
+supybot.networks.undernet.channels.key: 
+
+###
+# Determines whether the bot will attempt to connect with SSL sockets to
+# undernet.
+#
+# Default value: False
+###
+supybot.networks.undernet.ssl: True
+
+###
+# Determines whether the bot will connect in plain text to undernet but
+# require STARTTLS before authentication. This is ignored if the
+# connection already uses SSL.
+#
+# Default value: False
+###
+supybot.networks.undernet.requireStarttls: False
+
+###
+# Determines what certificate file (if any) the bot will use to connect
+# with SSL sockets to undernet.
+#
+# Default value: 
+###
+supybot.networks.undernet.certfile: 
+
+###
+# Determines what nick the bot will use on this network. If empty,
+# defaults to supybot.nick.
+#
+# Default value: 
+###
+supybot.networks.undernet.nick: 
+
+###
+# Determines the bot's ident string, if the server doesn't provide one
+# by default. If empty, defaults to supybot.ident.
+#
+# Default value: 
+###
+supybot.networks.undernet.ident: 
+
+###
+# Determines the real name which the bot sends to the server. If empty,
+# defaults to supybot.user
+#
+# Default value: 
+###
+supybot.networks.undernet.user: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. If empty, defaults to supybot.protocols.irc.umodes
+#
+# Default value: 
+###
+supybot.networks.undernet.umodes: 
+
+###
+# Determines what SASL username will be used on undernet. This should be
+# the bot's account name. Due to the way SASL works, you can't use any
+# grouped nick.
+#
+# Default value: 
+###
+supybot.networks.undernet.sasl.username: 
+
+###
+# Determines what SASL password will be used on undernet.
+#
+# Default value: 
+###
+supybot.networks.undernet.sasl.password: 
+
+###
+# Determines what SASL ECDSA key (if any) will be used on undernet. The
+# public key must be registered with NickServ for SASL ECDSA-NIST256P-
+# CHALLENGE to work.
+#
+# Default value: 
+###
+supybot.networks.undernet.sasl.ecdsa_key: 
+
+###
+# Determines what SASL mechanisms will be tried and in which order.
+#
+# Default value: ecdsa-nist256p-challenge external plain
+###
+supybot.networks.undernet.sasl.mechanisms: ecdsa-nist256p-challenge external plain
+
+###
+# If not empty, determines the hostname of the socks proxy that will be
+# used to connect to this network.
+#
+# Default value: 
+###
+supybot.networks.undernet.socksproxy: 
+
+###
+# Determines how urls should be formatted.
+#
+# Default value: <%s>
+###
+supybot.reply.format.url: <%s>
+
+###
+# Determines how timestamps printed for human reading should be
+# formatted. Refer to the Python documentation for the time module to
+# see valid formatting characters for time formats.
+#
+# Default value: %Y-%m-%dT%H:%M:%S%z
+###
+supybot.reply.format.time: %Y-%m-%dT%H:%M:%S%z
+
+###
+# Determines whether elapsed times will be given as "1 day, 2 hours, 3
+# minutes, and 15 seconds" or as "1d 2h 3m 15s".
+#
+# Default value: False
+###
+supybot.reply.format.time.elapsed.short: False
+
+###
+# Determines the absolute maximum length of the bot's reply -- no reply
+# will be passed through the bot with a length greater than this.
+#
+# Default value: 131072
+###
+supybot.reply.maximumLength: 131072
+
+###
+# Determines whether the bot will break up long messages into chunks and
+# allow users to use the 'more' command to get the remaining chunks.
+#
+# Default value: True
+###
+supybot.reply.mores: True
+
+###
+# Determines what the maximum number of chunks (for use with the 'more'
+# command) will be.
+#
+# Default value: 50
+###
+supybot.reply.mores.maximum: 50
+
+###
+# Determines how long individual chunks will be. If set to 0, uses our
+# super-tweaked, get-the-most-out-of-an-individual-message default.
+#
+# Default value: 0
+###
+supybot.reply.mores.length: 0
+
+###
+# Determines how many mores will be sent instantly (i.e., without the
+# use of the more command, immediately when they are formed). Defaults
+# to 1, which means that a more command will be required for all but the
+# first chunk.
+#
+# Default value: 1
+###
+supybot.reply.mores.instant: 1
+
+###
+# Determines whether the bot will send multi-message replies in a single
+# message. This defaults to True in order to prevent the bot from
+# flooding. If this is set to False the bot will send multi-message
+# replies on multiple lines.
+#
+# Default value: True
+###
+supybot.reply.oneToOne: True
+
+###
+# Determines whether the bot will reply with an error message when it is
+# addressed but not given a valid command. If this value is False, the
+# bot will remain silent, as long as no other plugins override the
+# normal behavior.
+#
+# Default value: True
+###
+supybot.reply.whenNotCommand: True
+
+###
+# Determines whether error messages that result from bugs in the bot
+# will show a detailed error message (the uncaught exception) or a
+# generic error message.
+#
+# Default value: False
+###
+supybot.reply.error.detailed: False
+
+###
+# Determines whether the bot will send error messages to users in
+# private. You might want to do this in order to keep channel traffic to
+# minimum. This can be used in combination with
+# supybot.reply.error.withNotice.
+#
+# Default value: False
+###
+supybot.reply.error.inPrivate: False
+
+###
+# Determines whether the bot will send error messages to users via
+# NOTICE instead of PRIVMSG. You might want to do this so users can
+# ignore NOTICEs from the bot and not have to see error messages; or you
+# might want to use it in combination with supybot.reply.errorInPrivate
+# so private errors don't open a query window in most IRC clients.
+#
+# Default value: False
+###
+supybot.reply.error.withNotice: False
+
+###
+# Determines whether the bot will *not* provide details in the error
+# message to users who attempt to call a command for which they do not
+# have the necessary capability. You may wish to make this True if you
+# don't want users to understand the underlying security system
+# preventing them from running certain commands.
+#
+# Default value: False
+###
+supybot.reply.error.noCapability: False
+
+###
+# Determines whether the bot will reply privately when replying in a
+# channel, rather than replying to the whole channel.
+#
+# Default value: False
+###
+supybot.reply.inPrivate: False
+
+###
+# Determines whether the bot will reply with a notice when replying in a
+# channel, rather than replying with a privmsg as normal.
+#
+# Default value: False
+###
+supybot.reply.withNotice: False
+
+###
+# Determines whether the bot will reply with a notice when it is sending
+# a private message, in order not to open a /query window in clients.
+#
+# Default value: True
+###
+supybot.reply.withNoticeWhenPrivate: True
+
+###
+# Determines whether the bot will always prefix the user's nick to its
+# reply to that user's command.
+#
+# Default value: True
+###
+supybot.reply.withNickPrefix: True
+
+###
+# Determines whether the bot should attempt to reply to all messages
+# even if they don't address it (either via its nick or a prefix
+# character). If you set this to True, you almost certainly want to set
+# supybot.reply.whenNotCommand to False.
+#
+# Default value: False
+###
+supybot.reply.whenNotAddressed: False
+
+###
+# Determines whether the bot will allow you to send channel-related
+# commands outside of that channel. Sometimes people find it confusing
+# if a channel-related command (like Filter.outfilter) changes the
+# behavior of the channel but was sent outside the channel itself.
+#
+# Default value: False
+###
+supybot.reply.requireChannelCommandsToBeSentInChannel: False
+
+###
+# Supybot normally replies with the full help whenever a user misuses a
+# command. If this value is set to True, the bot will only reply with
+# the syntax of the command (the first line of the help) rather than the
+# full help.
+#
+# Default value: False
+###
+supybot.reply.showSimpleSyntax: False
+
+###
+# Determines what prefix characters the bot will reply to. A prefix
+# character is a single character that the bot will use to determine
+# what messages are addressed to it; when there are no prefix characters
+# set, it just uses its nick. Each character in this string is
+# interpreted individually; you can have multiple prefix chars
+# simultaneously, and if any one of them is used as a prefix the bot
+# will assume it is being addressed.
+#
+# Default value: 
+###
+supybot.reply.whenAddressedBy.chars: @
+
+###
+# Determines what strings the bot will reply to when they are at the
+# beginning of the message. Whereas prefix.chars can only be one
+# character (although there can be many of them), this variable is a
+# space-separated list of strings, so you can set something like '@@ ??'
+# and the bot will reply when a message is prefixed by either @@ or ??.
+#
+# Default value:  
+###
+supybot.reply.whenAddressedBy.strings:  
+
+###
+# Determines whether the bot will reply when people address it by its
+# nick, rather than with a prefix character.
+#
+# Default value: True
+###
+supybot.reply.whenAddressedBy.nick: True
+
+###
+# Determines whether the bot will reply when people address it by its
+# nick at the end of the message, rather than at the beginning.
+#
+# Default value: False
+###
+supybot.reply.whenAddressedBy.nick.atEnd: False
+
+###
+# Determines what extra nicks the bot will always respond to when
+# addressed by, even if its current nick is something else.
+#
+# Default value:  
+###
+supybot.reply.whenAddressedBy.nicks:  
+
+###
+# Determines whether the bot will unidentify someone when that person
+# changes their nick. Setting this to True will cause the bot to track
+# such changes. It defaults to False for a little greater security.
+#
+# Default value: False
+###
+supybot.followIdentificationThroughNickChanges: False
+
+###
+# Determines whether the bot will always join a channel when it's
+# invited. If this value is False, the bot will only join a channel if
+# the user inviting it has the 'admin' capability (or if it's explicitly
+# told to join the channel using the Admin.join command).
+#
+# Default value: False
+###
+supybot.alwaysJoinOnInvite: False
+
+###
+# Determines what message the bot replies with when a command succeeded.
+# If this configuration variable is empty, no success message will be
+# sent.
+###
+supybot.replies.success: The operation succeeded.
+
+###
+# Determines what error message the bot gives when it wants to be
+# ambiguous.
+###
+supybot.replies.error: An error has occurred and has been logged. Please\
+                       contact this bot\'s administrator for more\
+                       information.
+
+###
+# Determines what error message the bot gives to the owner when it wants
+# to be ambiguous.
+###
+supybot.replies.errorOwner: An error has occurred and has been logged. Check\
+                            the logs for more information.
+
+###
+# Determines what message the bot replies with when someone tries to use
+# a command that requires being identified or having a password and
+# neither credential is correct.
+###
+supybot.replies.incorrectAuthentication: Your hostmask doesn\'t match or\
+                                         your password is wrong.
+
+###
+# Determines what error message the bot replies with when someone tries
+# to accessing some information on a user the bot doesn't know about.
+###
+supybot.replies.noUser: I can\'t find %s in my user database. If you didn\'t\
+                        give a user name, then I might not know what your\
+                        user is, and you\'ll need to identify before this\
+                        command might work.
+
+###
+# Determines what error message the bot replies with when someone tries
+# to do something that requires them to be registered but they're not
+# currently recognized.
+###
+supybot.replies.notRegistered: You must be registered to use this command.\
+                               If you are already registered, you must\
+                               either identify (using the identify command)\
+                               or add a hostmask matching your current\
+                               hostmask (using the "hostmask add" command).
+
+###
+# Determines what error message is given when the bot is telling someone
+# they aren't cool enough to use the command they tried to use.
+###
+supybot.replies.noCapability: You don\'t have the %s capability. If you\
+                              think that you should have this capability, be\
+                              sure that you are identified before trying\
+                              again. The \'whoami\' command can tell you if\
+                              you\'re identified.
+
+###
+# Determines what generic error message is given when the bot is telling
+# someone that they aren't cool enough to use the command they tried to
+# use, and the author of the code calling errorNoCapability didn't
+# provide an explicit capability for whatever reason.
+###
+supybot.replies.genericNoCapability: You\'re missing some capability you\
+                                     need. This could be because you\
+                                     actually possess the anti-capability\
+                                     for the capability that\'s required of\
+                                     you, or because the channel provides\
+                                     that anti-capability by default, or\
+                                     because the global capabilities include\
+                                     that anti-capability. Or, it could be\
+                                     because the channel or\
+                                     supybot.capabilities.default is set to\
+                                     False, meaning that no commands are\
+                                     allowed unless explicitly in your\
+                                     capabilities. Either way, you can\'t do\
+                                     what you want to do.
+
+###
+# Determines what error messages the bot sends to people who try to do
+# things in a channel that really should be done in private.
+###
+supybot.replies.requiresPrivacy: That operation cannot be done in a channel.
+
+###
+# Determines what message the bot sends when it thinks you've
+# encountered a bug that the developers don't know about.
+###
+supybot.replies.possibleBug: This may be a bug. If you think it is, please\
+                             file a bug report at\
+                             <https://github.com/ProgVal/Limnoria/issues>.
+
+###
+# A floating point number of seconds to throttle snarfed URLs, in order
+# to prevent loops between two bots snarfing the same URLs and having
+# the snarfed URL in the output of the snarf message.
+#
+# Default value: 10.0
+###
+supybot.snarfThrottle: 10.0
+
+###
+# Determines the number of seconds between running the upkeep function
+# that flushes (commits) open databases, collects garbage, and records
+# some useful statistics at the debugging level.
+#
+# Default value: 3600
+###
+supybot.upkeepInterval: 3600
+
+###
+# Determines whether the bot will periodically flush data and
+# configuration files to disk. Generally, the only time you'll want to
+# set this to False is when you want to modify those configuration files
+# by hand and don't want the bot to flush its current version over your
+# modifications. Do note that if you change this to False inside the
+# bot, your changes won't be flushed. To make this change permanent, you
+# must edit the registry yourself.
+#
+# Default value: True
+###
+supybot.flush: True
+
+###
+# Determines what characters are valid for quoting arguments to commands
+# in order to prevent them from being tokenized.
+#
+# Default value: "
+###
+supybot.commands.quotes: "
+
+###
+# Determines whether the bot will allow nested commands, which rule. You
+# definitely should keep this on.
+#
+# Default value: True
+###
+supybot.commands.nested: True
+
+###
+# Determines what the maximum number of nested commands will be; users
+# will receive an error if they attempt commands more nested than this.
+#
+# Default value: 10
+###
+supybot.commands.nested.maximum: 10
+
+###
+# Supybot allows you to specify what brackets are used for your nested
+# commands. Valid sets of brackets include [], <>, {}, and (). [] has
+# strong historical motivation, but <> or () might be slightly superior
+# because they cannot occur in a nick. If this string is empty, nested
+# commands will not be allowed in this channel.
+#
+# Default value: []
+###
+supybot.commands.nested.brackets: []
+
+###
+# Supybot allows nested commands. Enabling this option will allow nested
+# commands with a syntax similar to UNIX pipes, for example: 'bot: foo |
+# bar'.
+#
+# Default value: False
+###
+supybot.commands.nested.pipeSyntax: False
+
+###
+# Determines what commands have default plugins set, and which plugins
+# are set to be the default for each of those commands.
+###
+supybot.commands.defaultPlugins.addcapability: Admin
+supybot.commands.defaultPlugins.capabilities: User
+supybot.commands.defaultPlugins.disable: Owner
+supybot.commands.defaultPlugins.enable: Owner
+supybot.commands.defaultPlugins.help: Misc
+supybot.commands.defaultPlugins.ignore: Admin
+
+###
+# Determines what plugins automatically get precedence over all other
+# plugins when selecting a default plugin for a command. By default,
+# this includes the standard loaded plugins. You probably shouldn't
+# change this if you don't know what you're doing; if you do know what
+# you're doing, then also know that this set is case-sensitive.
+#
+# Default value: Admin Misc User Owner Config Channel
+###
+supybot.commands.defaultPlugins.importantPlugins: Admin Misc User Owner Config Channel
+supybot.commands.defaultPlugins.list: Misc
+supybot.commands.defaultPlugins.reload: Owner
+supybot.commands.defaultPlugins.removecapability: Admin
+supybot.commands.defaultPlugins.unignore: Admin
+
+###
+# Determines what commands are currently disabled. Such commands will
+# not appear in command lists, etc. They will appear not even to exist.
+#
+# Default value:  
+###
+supybot.commands.disabled:  
+
+###
+# Determines the interval used for the history storage.
+#
+# Default value: 60
+###
+supybot.abuse.flood.interval: 60
+
+###
+# Determines whether the bot will defend itself against command-
+# flooding.
+#
+# Default value: True
+###
+supybot.abuse.flood.command: True
+
+###
+# Determines how many commands users are allowed per minute. If a user
+# sends more than this many commands in any 60 second period, they will
+# be ignored for supybot.abuse.flood.command.punishment seconds.
+#
+# Default value: 12
+###
+supybot.abuse.flood.command.maximum: 12
+
+###
+# Determines how many seconds the bot will ignore users who flood it
+# with commands.
+#
+# Default value: 300
+###
+supybot.abuse.flood.command.punishment: 300
+
+###
+# Determines whether the bot will notify people that they're being
+# ignored for command flooding.
+#
+# Default value: True
+###
+supybot.abuse.flood.command.notify: True
+
+###
+# Determines whether the bot will defend itself against invalid command-
+# flooding.
+#
+# Default value: True
+###
+supybot.abuse.flood.command.invalid: True
+
+###
+# Determines how many invalid commands users are allowed per minute. If
+# a user sends more than this many invalid commands in any 60 second
+# period, they will be ignored for
+# supybot.abuse.flood.command.invalid.punishment seconds. Typically,
+# this value is lower than supybot.abuse.flood.command.maximum, since
+# it's far less likely (and far more annoying) for users to flood with
+# invalid commands than for them to flood with valid commands.
+#
+# Default value: 5
+###
+supybot.abuse.flood.command.invalid.maximum: 5
+
+###
+# Determines how many seconds the bot will ignore users who flood it
+# with invalid commands. Typically, this value is higher than
+# supybot.abuse.flood.command.punishment, since it's far less likely
+# (and far more annoying) for users to flood with invalid commands than
+# for them to flood with valid commands.
+#
+# Default value: 600
+###
+supybot.abuse.flood.command.invalid.punishment: 600
+
+###
+# Determines whether the bot will notify people that they're being
+# ignored for invalid command flooding.
+#
+# Default value: True
+###
+supybot.abuse.flood.command.invalid.notify: True
+
+###
+# Determines the default length of time a driver should block waiting
+# for input.
+#
+# Default value: 1.0
+###
+supybot.drivers.poll: 1.0
+
+###
+# Determines what driver module the bot will use. The default is Socket
+# which is simple and stable and supports SSL. Twisted doesn't work if
+# the IRC server which you are connecting to has IPv6 (most of them do).
+#
+# Default value: default
+###
+supybot.drivers.module: default
+
+###
+# Determines the maximum time the bot will wait before attempting to
+# reconnect to an IRC server. The bot may, of course, reconnect earlier
+# if possible.
+#
+# Default value: 300.0
+###
+supybot.drivers.maxReconnectWait: 300.0
+
+###
+# Determines what directory configuration data is put into.
+#
+# Default value: conf
+###
+supybot.directories.conf: /config/limnoria/conf
+
+###
+# Determines what directory data is put into.
+#
+# Default value: data
+###
+supybot.directories.data: /config/limnoria/data
+
+###
+# Determines what directory temporary files are put into.
+#
+# Default value: tmp
+###
+supybot.directories.data.tmp: /config/limnoria/data/tmp
+
+###
+# Determines what directory files of the web server (templates, custom
+# images, ...) are put into.
+#
+# Default value: web
+###
+supybot.directories.data.web: /config/limnoria/data/web
+
+###
+# Determines what directory backup data is put into. Set it to /dev/null
+# to disable backup (it is a special value, so it also works on Windows
+# and systems without /dev/null).
+#
+# Default value: backup
+###
+supybot.directories.backup: /config/limnoria/backup
+
+###
+# Determines what directories the bot will look for plugins in. Accepts
+# a comma-separated list of strings. This means that to add another
+# directory, you can nest the former value and add a new one. E.g. you
+# can say: bot: 'config supybot.directories.plugins [config
+# supybot.directories.plugins], newPluginDirectory'.
+#
+# Default value:  
+###
+supybot.directories.plugins: /config/limnoria/plugins/PluginDownloader, /config/limnoria/plugins/progval, /config/limnoria/plugins/glolol, /config/limnoria/plugins/spline
+
+###
+# Determines what directory the bot will store its logfiles in.
+#
+# Default value: logs
+###
+supybot.directories.log: /config/limnoria/logs
+
+###
+# Determines what plugins will be loaded.
+#
+# Default value:  
+###
+supybot.plugins: Google Admin NickAuth Misc Utilities AutoMode PluginDownloader User Owner Config Channel
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Admin: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Admin.public: True
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.AutoMode: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.AutoMode.public: True
+
+###
+# Determines whether this plugin is enabled.
+#
+# Default value: True
+###
+supybot.plugins.AutoMode.enable: True
+
+###
+# Determines whether this plugin will automode owners even if they don't
+# have op/halfop/voice/whatever capability.
+#
+# Default value: False
+###
+supybot.plugins.AutoMode.owner: False
+
+###
+# Determines whether the bot will check for 'alternative capabilities'
+# (ie. autoop, autohalfop, autovoice) in addition to/instead of classic
+# ones.
+#
+# Default value: True
+###
+supybot.plugins.AutoMode.alternativeCapabilities: True
+
+###
+# Determines whether the bot will "fall through" to halfop/voicing when
+# auto-opping is turned off but auto-halfopping/voicing are turned on.
+#
+# Default value: True
+###
+supybot.plugins.AutoMode.fallthrough: True
+
+###
+# Determines whether the bot will automatically op people with the
+# <channel>,op capability when they join the channel.
+#
+# Default value: False
+###
+supybot.plugins.AutoMode.op: False
+
+###
+# Determines whether the bot will automatically halfop people with the
+# <channel>,halfop capability when they join the channel.
+#
+# Default value: False
+###
+supybot.plugins.AutoMode.halfop: False
+
+###
+# Determines whether the bot will automatically voice people with the
+# <channel>,voice capability when they join the channel.
+#
+# Default value: False
+###
+supybot.plugins.AutoMode.voice: False
+
+###
+# Determines whether the bot will automatically ban people who join the
+# channel and are on the banlist.
+#
+# Default value: True
+###
+supybot.plugins.AutoMode.ban: True
+
+###
+# Determines how many seconds the bot will automatically ban a person
+# when banning.
+#
+# Default value: 86400
+###
+supybot.plugins.AutoMode.ban.period: 86400
+
+###
+# Determines how many seconds the bot will wait before applying a mode.
+# Has no effect on bans.
+#
+# Default value: 0
+###
+supybot.plugins.AutoMode.delay: 0
+
+###
+# Extra modes that will be applied to a user. Example syntax: user1+o-v
+# user2+v user3-v
+#
+# Default value:  
+###
+supybot.plugins.AutoMode.extra:  
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Channel: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Channel.public: True
+
+###
+# Determines whether the bot will always try to rejoin a channel
+# whenever it's kicked from the channel.
+#
+# Default value: True
+###
+supybot.plugins.Channel.alwaysRejoin: True
+
+###
+# Determines whether the output of 'nicks' will be sent in private. This
+# prevents mass-highlights of a channel's users, accidental or on
+# purpose.
+#
+# Default value: True
+###
+supybot.plugins.Channel.nicksInPrivate: True
+
+###
+# Determines how many seconds the bot will wait before rejoining a
+# channel if kicked and supybot.plugins.Channel.alwaysRejoin is on.
+#
+# Default value: 0
+###
+supybot.plugins.Channel.rejoinDelay: 0
+
+###
+# Determines what part message should be used by default. If the part
+# command is called without a part message, this will be used. If this
+# value is empty, then no part message will be used (they are optional
+# in the IRC protocol). The standard substitutions ($version, $nick,
+# etc.) are all handled appropriately.
+#
+# Default value: $version
+###
+supybot.plugins.Channel.partMsg: $version
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Config: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Config.public: True
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Google: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Google.public: True
+
+###
+# Determines the URL that will be sent to Google for the Referer field
+# of the search requests. If this value is empty, a Referer will be
+# generated in the following format: http://$server/$botName
+#
+# Default value: 
+###
+supybot.plugins.Google.referer: 
+
+###
+# Determines the base URL used for requests.
+#
+# Default value: google.com
+###
+supybot.plugins.Google.baseUrl: google.com
+
+###
+# Determines whether the search snarfer is enabled. If so, messages
+# (even unaddressed ones) beginning with the word 'google' will result
+# in the first URL Google returns being sent to the channel.
+#
+# Default value: False
+###
+supybot.plugins.Google.searchSnarfer: False
+
+###
+# Determines whether the word 'google' in the bot's output will be made
+# colorful (like Google's logo).
+#
+# Default value: False
+###
+supybot.plugins.Google.colorfulFilter: False
+
+###
+# Determines whether results are bolded.
+#
+# Default value: True
+###
+supybot.plugins.Google.bold: True
+
+###
+# Determines whether results are sent in different lines or all in the
+# same one.
+#
+# Default value: False
+###
+supybot.plugins.Google.oneToOne: False
+
+###
+# Determines the maximum number of results returned from the google
+# command.
+#
+# Default value: 3
+###
+supybot.plugins.Google.maximumResults: 3
+
+###
+# Determines what default language is used in searches. If left empty,
+# no specific language will be requested.
+#
+# Default value: lang_en
+###
+supybot.plugins.Google.defaultLanguage: lang_en
+
+###
+# Determines what level of search filtering to use by default. 'active'
+# - most filtering, 'moderate' - default filtering, 'off' - no filtering
+#
+# Default value: moderate
+###
+supybot.plugins.Google.searchFilter: moderate
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Misc: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Misc.public: True
+
+###
+# Determines how many messages the bot will issue when using the 'more'
+# command.
+#
+# Default value: 1
+###
+supybot.plugins.Misc.mores: 1
+
+###
+# Determines whether the bot will list private plugins with the list
+# command if given the --private switch. If this is disabled, non-owner
+# users should be unable to see what private plugins are loaded.
+#
+# Default value: False
+###
+supybot.plugins.Misc.listPrivatePlugins: False
+
+###
+# Sets a custom help string, displayed when the 'help' command is called
+# without arguments.
+#
+# Default value: 
+###
+supybot.plugins.Misc.customHelpString: 
+
+###
+# Determines whether the bot will list unloaded plugins with the list
+# command if given the --unloaded switch. If this is disabled, non-owner
+# users should be unable to see what unloaded plugins are available.
+#
+# Default value: False
+###
+supybot.plugins.Misc.listUnloadedPlugins: False
+
+###
+# Determines the format string for timestamps in the Misc.last command.
+# Refer to the Python documentation for the time module to see what
+# formats are accepted. If you set this variable to the empty string,
+# the timestamp will not be shown.
+#
+# Default value: [%H:%M:%S]
+###
+supybot.plugins.Misc.timestampFormat: [%H:%M:%S]
+
+###
+# Determines whether or not the timestamp will be included in the output
+# of last when it is part of a nested command
+#
+# Default value: False
+###
+supybot.plugins.Misc.last.nested.includeTimestamp: False
+
+###
+# Determines whether or not the nick will be included in the output of
+# last when it is part of a nested command
+#
+# Default value: False
+###
+supybot.plugins.Misc.last.nested.includeNick: False
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.NickAuth: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.NickAuth.public: True
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Owner: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Owner.public: True
+
+###
+# Determines what quit message will be used by default. If the quit
+# command is called without a quit message, this will be used. If this
+# value is empty, the nick of the person giving the quit command will be
+# used. The standard substitutions ($version, $nick, etc.) are all
+# handled appropriately.
+#
+# Default value: $version
+###
+supybot.plugins.Owner.quitMsg: $version
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.PluginDownloader: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.PluginDownloader.public: True
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.User: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.User.public: True
+
+###
+# Determines whether the output of 'user list' will be sent in private.
+# This prevents mass-highlights of people who use their nick as their
+# bot username.
+#
+# Default value: True
+###
+supybot.plugins.User.listInPrivate: True
+
+###
+# Determines whether this plugin is loaded by default.
+###
+supybot.plugins.Utilities: True
+
+###
+# Determines whether this plugin is publicly visible.
+#
+# Default value: True
+###
+supybot.plugins.Utilities.public: True
+
+###
+# Determines whether the bot will always load important plugins (Admin,
+# Channel, Config, Misc, Owner, and User) regardless of what their
+# configured state is. Generally, if these plugins are configured not to
+# load, you didn't do it on purpose, and you still want them to load.
+# Users who don't want to load these plugins are smart enough to change
+# the value of this variable appropriately :)
+#
+# Default value: True
+###
+supybot.plugins.alwaysLoadImportant: True
+
+###
+# Determines what databases are available for use. If this value is not
+# configured (that is, if its value is empty) then sane defaults will be
+# provided.
+#
+# Default value: anydbm dbm cdb flat pickle
+###
+supybot.databases: 
+
+###
+# Determines what filename will be used for the users database. This
+# file will go into the directory specified by the
+# supybot.directories.conf variable.
+#
+# Default value: users.conf
+###
+supybot.databases.users.filename: users.conf
+
+###
+# Determines how long it takes identification to time out. If the value
+# is less than or equal to zero, identification never times out.
+#
+# Default value: 0
+###
+supybot.databases.users.timeoutIdentification: 0
+
+###
+# Determines whether the bot will allow users to unregister their users.
+# This can wreak havoc with already-existing databases, so by default we
+# don't allow it. Enable this at your own risk. (Do also note that this
+# does not prevent the owner of the bot from using the unregister
+# command.)
+#
+# Default value: False
+###
+supybot.databases.users.allowUnregistration: False
+
+###
+# Determines what filename will be used for the ignores database. This
+# file will go into the directory specified by the
+# supybot.directories.conf variable.
+#
+# Default value: ignores.conf
+###
+supybot.databases.ignores.filename: ignores.conf
+
+###
+# Determines what filename will be used for the channels database. This
+# file will go into the directory specified by the
+# supybot.directories.conf variable.
+#
+# Default value: channels.conf
+###
+supybot.databases.channels.filename: channels.conf
+
+###
+# Determines whether the bot will require user registration to use 'add'
+# commands in database-based Supybot plugins.
+#
+# Default value: True
+###
+supybot.databases.plugins.requireRegistration: True
+
+###
+# Determines whether database-based plugins that can be channel-specific
+# will be so. This can be overridden by individual channels. Do note
+# that the bot needs to be restarted immediately after changing this
+# variable or your db plugins may not work for your channel; also note
+# that you may wish to set
+# supybot.databases.plugins.channelSpecific.link appropriately if you
+# wish to share a certain channel's databases globally.
+#
+# Default value: True
+###
+supybot.databases.plugins.channelSpecific: True
+
+###
+# Determines what channel global (non-channel-specific) databases will
+# be considered a part of. This is helpful if you've been running
+# channel-specific for awhile and want to turn the databases for your
+# primary channel into global databases. If
+# supybot.databases.plugins.channelSpecific.link.allow prevents linking,
+# the current channel will be used. Do note that the bot needs to be
+# restarted immediately after changing this variable or your db plugins
+# may not work for your channel.
+#
+# Default value: #
+###
+supybot.databases.plugins.channelSpecific.link: #
+
+###
+# Determines whether another channel's global (non-channel-specific)
+# databases will be allowed to link to this channel's databases. Do note
+# that the bot needs to be restarted immediately after changing this
+# variable or your db plugins may not work for your channel.
+#
+# Default value: True
+###
+supybot.databases.plugins.channelSpecific.link.allow: True
+
+###
+# Determines whether CDB databases will be allowed as a database
+# implementation.
+#
+# Default value: True
+###
+supybot.databases.types.cdb: True
+
+###
+# Determines how often CDB databases will have their modifications
+# flushed to disk. When the number of modified records is greater than
+# this fraction of the total number of records, the database will be
+# entirely flushed to disk.
+#
+# Default value: 0.5
+###
+supybot.databases.types.cdb.maximumModifications: 0.5
+
+###
+# Determines what will be used as the default banmask style.
+#
+# Default value: host
+###
+supybot.protocols.irc.banmask: host
+
+###
+# Determines whether the bot will strictly follow the RFC; currently
+# this only affects what strings are considered to be nicks. If you're
+# using a server or a network that requires you to message a nick such
+# as services@this.network.server then you you should set this to False.
+#
+# Default value: False
+###
+supybot.protocols.irc.strictRfc: False
+
+###
+# Determines what certificate file (if any) the bot will use connect
+# with SSL sockets by default.
+#
+# Default value: 
+###
+supybot.protocols.irc.certfile: 
+
+###
+# Determines what user modes the bot will request from the server when
+# it first connects. Many people might choose +i; some networks allow
+# +x, which indicates to the auth services on those networks that you
+# should be given a fake host.
+#
+# Default value: 
+###
+supybot.protocols.irc.umodes: 
+
+###
+# Determines what vhost the bot will bind to before connecting a server
+# (IRC, HTTP, ...) via IPv4.
+#
+# Default value: 
+###
+supybot.protocols.irc.vhost: 
+
+###
+# Determines what vhost the bot will bind to before connecting a server
+# (IRC, HTTP, ...) via IPv6.
+#
+# Default value: 
+###
+supybot.protocols.irc.vhostv6: 
+
+###
+# Determines how many old messages the bot will keep around in its
+# history. Changing this variable will not take effect until the bot is
+# restarted.
+#
+# Default value: 1000
+###
+supybot.protocols.irc.maxHistoryLength: 1000
+
+###
+# A floating point number of seconds to throttle queued messages -- that
+# is, messages will not be sent faster than once per throttleTime
+# seconds.
+#
+# Default value: 1.0
+###
+supybot.protocols.irc.throttleTime: 1.0
+
+###
+# Determines whether the bot will send PINGs to the server it's
+# connected to in order to keep the connection alive and discover
+# earlier when it breaks. Really, this option only exists for debugging
+# purposes: you always should make it True unless you're testing some
+# strange server issues.
+#
+# Default value: True
+###
+supybot.protocols.irc.ping: True
+
+###
+# Determines the number of seconds between sending pings to the server,
+# if pings are being sent to the server.
+#
+# Default value: 120
+###
+supybot.protocols.irc.ping.interval: 120
+
+###
+# Determines whether the bot will refuse duplicated messages to be
+# queued for delivery to the server. This is a safety mechanism put in
+# place to prevent plugins from sending the same message multiple times;
+# most of the time it doesn't matter, unless you're doing certain kinds
+# of plugin hacking.
+#
+# Default value: False
+###
+supybot.protocols.irc.queuing.duplicates: False
+
+###
+# Determines how many seconds must elapse between JOINs sent to the
+# server.
+#
+# Default value: 0.0
+###
+supybot.protocols.irc.queuing.rateLimit.join: 0.0
+
+###
+# Determines how many bytes the bot will 'peek' at when looking through
+# a URL for a doctype or title or something similar. It'll give up after
+# it reads this many bytes, even if it hasn't found what it was looking
+# for.
+#
+# Default value: 8192
+###
+supybot.protocols.http.peekSize: 8192
+
+###
+# Determines what proxy all HTTP requests should go through. The value
+# should be of the form 'host:port'.
+#
+# Default value: 
+###
+supybot.protocols.http.proxy: 
+
+###
+# If true, uses IPV6_V6ONLY to disable forwaring of IPv4 traffic to IPv6
+# sockets. On *nix, has the same effect as setting kernel variable
+# net.ipv6.bindv6only to 1.
+#
+# Default value: True
+###
+supybot.servers.http.singleStack: True
+
+###
+# Space-separated list of IPv4 hosts the HTTP server will bind.
+#
+# Default value: 0.0.0.0
+###
+supybot.servers.http.hosts4: 0.0.0.0
+
+###
+# Space-separated list of IPv6 hosts the HTTP server will bind.
+#
+# Default value: ::0
+###
+supybot.servers.http.hosts6: ::0
+
+###
+# Determines what port the HTTP server will bind.
+#
+# Default value: 8080
+###
+supybot.servers.http.port: 8080
+
+###
+# Determines whether the server will stay alive if no plugin is using
+# it. This also means that the server will start even if it is not used.
+#
+# Default value: False
+###
+supybot.servers.http.keepAlive: False
+
+###
+# Determines the path of the file served as favicon to browsers.
+#
+# Default value: 
+###
+supybot.servers.http.favicon: 
+
+###
+# Determines whether the bot will ignore unidentified users by default.
+# Of course, that'll make it particularly hard for those users to
+# register or identify with the bot without adding their hostmasks, but
+# that's your problem to solve.
+#
+# Default value: False
+###
+supybot.defaultIgnore: False
+
+###
+# A string that is the external IP of the bot. If this is the empty
+# string, the bot will attempt to find out its IP dynamically (though
+# sometimes that doesn't work, hence this variable).
+#
+# Default value: 
+###
+supybot.externalIP: 
+
+###
+# Determines what the default timeout for socket objects will be. This
+# means that *all* sockets will timeout when this many seconds has gone
+# by (unless otherwise modified by the author of the code that uses the
+# sockets).
+#
+# Default value: 10
+###
+supybot.defaultSocketTimeout: 10
+
+###
+# Determines what file the bot should write its PID (Process ID) to, so
+# you can kill it more easily. If it's left unset (as is the default)
+# then no PID file will be written. A restart is required for changes to
+# this variable to take effect.
+#
+# Default value: 
+###
+supybot.pidFile: 
+
+###
+# Determines whether the bot will automatically thread all commands.
+#
+# Default value: False
+###
+supybot.debug.threadAllCommands: False
+
+###
+# Determines whether the bot will automatically flush all flushers
+# *very* often. Useful for debugging when you don't know what's breaking
+# or when, but think that it might be logged.
+#
+# Default value: False
+###
+supybot.debug.flushVeryOften: False
+
+###
+# Determines what the bot's logging format will be. The relevant
+# documentation on the available formattings is Python's documentation
+# on its logging module.
+#
+# Default value: %(levelname)s %(asctime)s %(name)s %(message)s
+###
+supybot.log.format: %(levelname)s %(asctime)s %(name)s %(message)s
+
+###
+# Determines what the minimum priority level logged to file will be. Do
+# note that this value does not affect the level logged to stdout; for
+# that, you should set the value of supybot.log.stdout.level. Valid
+# values are DEBUG, INFO, WARNING, ERROR, and CRITICAL, in order of
+# increasing priority.
+#
+# Default value: INFO
+###
+supybot.log.level: INFO
+
+###
+# Determines the format string for timestamps in logfiles. Refer to the
+# Python documentation for the time module to see what formats are
+# accepted. If you set this variable to the empty string, times will be
+# logged in a simple seconds-since-epoch format.
+#
+# Default value: %Y-%m-%dT%H:%M:%S
+###
+supybot.log.timestampFormat: %Y-%m-%dT%H:%M:%S
+
+###
+# Determines whether the bot will log to stdout.
+#
+# Default value: True
+###
+supybot.log.stdout: True
+
+###
+# Determines whether the bot's logs to stdout (if enabled) will be
+# colorized with ANSI color.
+#
+# Default value: False
+###
+supybot.log.stdout.colorized: False
+
+###
+# Determines whether the bot will wrap its logs when they're output to
+# stdout.
+#
+# Default value: False
+###
+supybot.log.stdout.wrap: False
+
+###
+# Determines what the bot's logging format will be. The relevant
+# documentation on the available formattings is Python's documentation
+# on its logging module.
+#
+# Default value: %(levelname)s %(asctime)s %(message)s
+###
+supybot.log.stdout.format: %(levelname)s %(asctime)s %(message)s
+
+###
+# Determines what the minimum priority level logged will be. Valid
+# values are DEBUG, INFO, WARNING, ERROR, and CRITICAL, in order of
+# increasing priority.
+#
+# Default value: INFO
+###
+supybot.log.stdout.level: INFO
+
+###
+# Determines whether the bot will separate plugin logs into their own
+# individual logfiles.
+#
+# Default value: False
+###
+supybot.log.plugins.individualLogfiles: False
+
+###
+# Determines what the bot's logging format will be. The relevant
+# documentation on the available formattings is Python's documentation
+# on its logging module.
+#
+# Default value: %(levelname)s %(asctime)s %(message)s
+###
+supybot.log.plugins.format: %(levelname)s %(asctime)s %(message)s
+
+###
+# Determines the bot's default language if translations exist. Currently
+# supported are 'de', 'en', 'es', 'fi', 'fr' and 'it'.
+#
+# Default value: 'en\n'
+###
+supybot.language: en
+
+###
+# These are the capabilities that are given to everyone by default. If
+# they are normal capabilities, then the user will have to have the
+# appropriate anti-capability if you want to override these
+# capabilities; if they are anti-capabilities, then the user will have
+# to have the actual capability to override these capabilities. See
+# docs/CAPABILITIES if you don't understand why these default to what
+# they do.
+#
+# Default value: -owner -admin -trusted
+###
+supybot.capabilities: -owner -admin -trusted
+
+###
+# Determines whether the bot by default will allow users to have a
+# capability. If this is disabled, a user must explicitly have the
+# capability for whatever command they wish to run.
+#
+# Default value: True
+###
+supybot.capabilities.default: True
+
+###
+# Determines what capabilities the bot will never tell to a non-admin
+# whether or not a user has them.
+#
+# Default value:  
+###
+supybot.capabilities.private:  

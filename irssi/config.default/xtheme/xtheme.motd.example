@@ -1,0 +1,10 @@
+This is the services daemon for &network&.
+
+Nickname registrations will expire after &nickexpiry& days.
+Channel registrations will expire after &chanexpiry& days.
+
+Registered users: &myusers&
+Registered channels: &mychans&
+
+The services administrator can add additional information
+here such as where to get additional help with services.

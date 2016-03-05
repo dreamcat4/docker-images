@@ -1,0 +1,59 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$xtheme_uid" ] && usermod  -o -u "$xtheme_uid" xtheme
+[ "$xtheme_gid" ] && groupmod -o -g "$xtheme_gid" xtheme
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/xtheme/xtheme.conf" ] || cp -Rf "/etc/config.preseed/xtheme" "/config"
+mkdir -p /irc/xtheme
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/xtheme )" = "xtheme:xtheme" ] || chown -R xtheme:xtheme /config/xtheme
+[ "$(stat -c %U:%G /irc/xtheme )" = "xtheme:xtheme" ] || chown -R xtheme:xtheme /irc/xtheme
+
+
+# All roads lead to /irc/xtheme
+for _dir in lib log run; do
+	rm -rf /var/$_dir/xtheme
+	ln -sf /irc/xtheme /var/$_dir/xtheme
+done
+
+
+sudo -E su "xtheme" << EOF
+	set -x
+
+	# Launch xtheme-services
+	/usr/bin/xtheme-services -n -c /config/xtheme/xtheme.conf -l /irc/xtheme/xtheme.log -p /config/xtheme/xtheme.pid
+
+EOF
+
+
+
+
+# # xtheme-services --help
+# unknown option -- help
+# usage: xtheme [-dhnvr] [-c conf] [-l logfile] [-p pidfile]
+
+# OPTIONS
+#        atheme-services accepts the following command line options:
+#        -c conf
+#               Specifies an alternate config file for the daemon to load.
+#        -d     Starts in debugging mode.
+#        -h     Prints the help message and exits.
+#        -l logfile
+#               Specifies the log file.
+#        -n     Doesn't  fork  into  the  background, logs messages to stdout as
+#               well as the logfile.
+#        -p pidfile
+#               Specifies the pid file.
+#        -v     Prints the version information and exits.
+
+# +
+# "startup flag -r (read-only) added."
+
+
+

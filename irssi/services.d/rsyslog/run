@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$syslog_uid" ] && usermod  -o -u "$syslog_uid" syslog
+[ "$syslog_gid" ] && groupmod -o -g "$syslog_gid" syslog
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/rsyslog/rsyslog.conf" ] || cp -Rf "/etc/config.preseed/rsyslog" "/config"
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/rsyslog )" = "syslog:syslog" ] || chown -R syslog:syslog /config/rsyslog
+
+
+# Start rsyslog daemon
+rsyslogd -f /config/rsyslog/rsyslog.conf -n
+
+

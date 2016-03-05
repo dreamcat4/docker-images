@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/bitlbee_blist.pl

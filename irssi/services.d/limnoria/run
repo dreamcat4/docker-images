@@ -1,0 +1,58 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$limnoria_uid" ] && usermod  -o -u "$limnoria_uid" limnoria
+[ "$limnoria_gid" ] && groupmod -o -g "$limnoria_gid" limnoria
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/limnoria/supybot.conf" ] || cp -Rf "/etc/config.preseed/limnoria" "/config"
+mkdir -p /irc/limnoria/data /irc/limnoria/backup /irc/limnoria/web /irc/limnoria/logs
+
+
+# chown if don't have permission to write to the config folder
+[ "$(stat -c %U:%G /config/limnoria )" = "limnoria:limnoria" ] || chown -R limnoria:limnoria /config/limnoria
+[ "$(stat -c %U:%G /irc/limnoria )" = "limnoria:limnoria" ] || chown -R limnoria:limnoria /irc/limnoria
+
+
+
+sudo -E su "limnoria" << EOF
+	set -x
+
+	# Launch limnoria
+	cd /config/limnoria
+	/usr/local/bin/supybot supybot.conf
+
+EOF
+
+
+# # supybot --help
+# Usage: supybot [options] configFile
+
+# Options:
+#   --version             show program's version number and exit
+#   -h, --help            show this help message and exit
+#   -P, --profile         enables profiling
+#   -n NICK, --nick=NICK  nick the bot should use
+#   -u USER, --user=USER  full username the bot should use
+#   -i IDENT, --ident=IDENT
+#                         ident the bot should use
+#   -d, --daemon          Determines whether the bot will daemonize.  This is a
+#                         no-op on non-POSIX systems.
+#   --allow-default-owner
+#                         Determines whether the bot will allow its
+#                         defaultCapabilities not to include "-owner", thus
+#                         giving all users the owner capability by default.
+#                         This is dumb, hence we require a command-line option.
+#                         Don't do this.
+#   --allow-root          Determines whether the bot will be allowed to run as
+#                         root.  You don't want this.  Don't do it.  Even if you
+#                         think you want it, you don't.  You're probably dumb if
+#                         you do this.
+#   --debug               Determines whether some extra debugging stuff will be
+#                         logged in this script.
+#   --disable-multiprocessing
+#                         Disables multiprocessing stuff. May lead to
+#                         vulnerabilities.
+

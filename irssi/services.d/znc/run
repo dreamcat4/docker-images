@@ -8,11 +8,11 @@
 
 # Check the config file exists in /config, else copy it in
 [ -e "/config/znc/configs/znc.conf" ] || cp -Rf "/etc/config.preseed/znc" "/config"
+mkdir -p /irc/znc/logs
 
-
-# chown if don't have permission to write to the config folder
+# chown if don't have permission to write to config and logs folders
 [ "$(stat -c %U:%G /config/znc )" = "znc:znc" ] || chown -R znc:znc /config/znc
-[ "$(stat -c %U:%G /logs )" = "znc:znc" ] || chown -R znc:znc /logs
+[ "$(stat -c %U:%G /irc/znc )" = "znc:znc" ] || chown -R znc:znc /irc/znc
 
 
 if [ "$pipework_wait" ]; then
@@ -29,6 +29,11 @@ sudo -E su "znc" << EOF
 	set -x
 	# Check the pem file exists in /config/znc, else make one
 	[ -e "/config/znc/znc.pem" ] || znc --datadir /config/znc --makepem
+
+
+	# Write logging rules
+	[ -e "/config/znc/moddata/log/.registry" ] || echo "rules %21;%26;bitlbee" > /config/znc/moddata/log/.registry
+
 
 	# Launch znc
 	znc --datadir /config/znc --foreground --debug $znc_args

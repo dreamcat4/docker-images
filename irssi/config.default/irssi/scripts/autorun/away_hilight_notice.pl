@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/away_hilight_notice.pl

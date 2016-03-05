@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/bitlbee_tab_completion.pl

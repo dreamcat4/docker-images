@@ -1,1 +1,0 @@
-/scripts.irssi.org/scripts/go.pl

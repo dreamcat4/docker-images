@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/complete_lastspoke.pl

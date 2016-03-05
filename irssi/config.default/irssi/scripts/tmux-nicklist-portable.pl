@@ -1,1 +1,0 @@
-/weed/scripts/tmux-nicklist-portable.pl

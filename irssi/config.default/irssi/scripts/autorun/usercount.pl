@@ -1,1 +1,1 @@
-/weed/scripts/usercount.pl
+/scripts.irssi.org/scripts/usercount.pl

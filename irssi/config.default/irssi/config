@@ -1,20 +1,19 @@
-settings = {
-  core = {
-    real_name = "irssi";
-    user_name = "irssi";
-    nick = "irssi";
-  };
-  "fe-text" = { actlist_sort = "refnum"; };
-  "fe-common/core" = {
-    # theme = "dark_winter";
-    theme = "weed";
-  };
-};
-
-znc_username = "znc";
-znc_password = "znc";
+# default znc_username = "znc";
+# default znc_password = "znc";
+# Change BELOW vv in password = "..." of each servers entry
+# Replace with your NEW znc username / password, as set in znc's webadmin
 
 servers = (
+  {
+    chatnet = "barton";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/barton:YOUR_ZNC_PASSWORD";
+    password = "znc/barton:znc";
+  },
   {
     chatnet = "bitlbee";
     address = "localhost";
@@ -24,6 +23,16 @@ servers = (
     autoconnect = "yes";
     # password = "YOUR_ZNC_USERNAME/bitlbee:YOUR_ZNC_PASSWORD";
     password = "znc/bitlbee:znc";
+  },
+  {
+    chatnet = "dalnet";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/dalnet:YOUR_ZNC_PASSWORD";
+    password = "znc/dalnet:znc";
   },
   {
     chatnet = "efnet";
@@ -56,6 +65,16 @@ servers = (
     password = "znc/gnome:znc";
   },
   {
+    chatnet = "ircnet";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/ircnet:YOUR_ZNC_PASSWORD";
+    password = "znc/ircnet:znc";
+  },
+  {
     chatnet = "mozilla";
     address = "localhost";
     port = "9997";
@@ -64,6 +83,16 @@ servers = (
     autoconnect = "yes";
     # password = "YOUR_ZNC_USERNAME/mozilla:YOUR_ZNC_PASSWORD";
     password = "znc/mozilla:znc";
+  },
+  {
+    chatnet = "ngircd";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/mozilla:YOUR_ZNC_PASSWORD";
+    password = "znc/ngircd:znc";
   },
   {
     chatnet = "oftc";
@@ -75,29 +104,42 @@ servers = (
     # password = "YOUR_ZNC_USERNAME/oftc:YOUR_ZNC_PASSWORD";
     password = "znc/oftc:znc";
   },
+  {
+    chatnet = "quakenet";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/quakenet:YOUR_ZNC_PASSWORD";
+    password = "znc/quakenet:znc";
+  },
+  {
+    chatnet = "undernet";
+    address = "localhost";
+    port = "9997";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    # password = "YOUR_ZNC_USERNAME/undernet:YOUR_ZNC_PASSWORD";
+    password = "znc/undernet:znc";
+  }
 );
 
 chatnets = {
 
-  bitlbee = {
-    type = "IRC";
-  };
-
-  efnet = {
-    type = "IRC";
-  };
-
-  freenode = {
-    type = "IRC";
-  };
-
-  gnome = {
-    type = "IRC";
-  };
-
-  oftc = {
-    type = "IRC";
-  };
+  barton = { type = "IRC"; };
+  bitlbee = { type = "IRC"; };
+  dalnet = { type = "IRC"; };
+  efnet = { type = "IRC"; };
+  freenode = { type = "IRC"; };
+  gnome = { type = "IRC"; };
+  ircnet = { type = "IRC"; };
+  mozilla = { type = "IRC"; };
+  ngircd = { type = "IRC"; };
+  oftc = { type = "IRC"; };
+  quakenet = { type = "IRC"; };
+  undernet = { type = "IRC"; };
 };
 
 
@@ -105,6 +147,189 @@ chatnets = {
 
 
 
+aliases = {
+  J = "join";
+  WJOIN = "join -window";
+  WQUERY = "query -window";
+  LEAVE = "part";
+  BYE = "quit";
+  EXIT = "quit";
+  SIGNOFF = "quit";
+  DESCRIBE = "action";
+  DATE = "time";
+  HOST = "userhost";
+  LAST = "lastlog";
+  SAY = "msg *";
+  WI = "whois";
+  WII = "whois $0 $0";
+  WW = "whowas";
+  W = "who";
+  N = "names";
+  M = "msg";
+  T = "topic";
+  C = "clear";
+  CL = "clear";
+  K = "kick";
+  KB = "kickban";
+  KN = "knockout";
+  BANS = "ban";
+  B = "ban";
+  MUB = "unban *";
+  UB = "unban";
+  IG = "ignore";
+  UNIG = "unignore";
+  SB = "scrollback";
+  UMODE = "mode $N";
+  WC = "window close";
+  WN = "window new hide";
+  SV = "say Irssi $J ($V) - http://irssi.org/";
+  GOTO = "sb goto";
+  CHAT = "dcc chat";
+  RUN = "SCRIPT LOAD";
+  CALC = "exec - if command -v bc >/dev/null 2>&1\\; then printf '%s=' '$*'\\; echo '$*' | bc -l\\; else echo bc was not found\\; fi";
+  SBAR = "STATUSBAR";
+  INVITELIST = "mode $C +I";
+  Q = "QUERY";
+  "MANUAL-WINDOWS" = "set use_status_window off;set autocreate_windows off;set autocreate_query_level none;set autoclose_windows off;set reuse_unused_windows on;save";
+  EXEMPTLIST = "mode $C +e";
+  ATAG = "WINDOW SERVER";
+  UNSET = "set -clear";
+  RESET = "set -default";
+};
+
+
+# for 0.8.18
+# /set hilight_nick_matches_everywhere ON
+
+# and this one (but only matches on the beginning of line)
+# /set hilight_nick_matches ON
 
 
 
+
+settings = {
+  core = {
+    real_name = "znc user";
+    user_name = "znc_user";
+    nick = "znc_user";
+    timestamp_format = "%H:%M:%S";
+  };
+
+  "fe-common/core" = {
+    theme = "solarized-universal";
+    show_names_on_join = "no";
+    use_msgs_window = "yes";
+    autocreate_query_level = "";
+    hilight_nick_matches = "yes";
+    hilight_color = "%M%0";
+    hilight_act_color = "%M%0";
+  };
+
+  "perl/core/scripts" = {
+
+    # adv_windowlist.pl
+    awl_viewer = "no";
+    away_reason = "away from keyboard";
+    autoaway = "300";
+
+    # urlinfo.pl
+    urlinfo_title_unknown = "yes";
+
+    # urlplot.pl
+    url_db_basedir = "/config/irssi/urlplot/";
+    url_log_basedir = "/config/irssi/urlplot/urls/";
+    url_navigate = " file:///config/irssi/urlplot/urls/ircurls.html";
+    url_log_file_autoreload_time = "120";
+    url_csv_chan_logging = "yes";
+    url_csv_logging = "yes";
+    url_log_csv_separator = "\" \"";
+
+    # trackbar22.pl
+    trackbar_string = "_";
+    trackbar_style = "%w";
+    away_hilight_notice_timeout = "30";
+    awl_shared_sbar = "OFF";
+    lastfm_output = " %(%user )is listening to \"%name\" (%album) by %artist";
+    lastfm_use_action = "yes";
+    typofix_format = "%r(old) %G%0new%n";
+
+    twt_channels = "all";
+    twt_color_bitlbee = "lgray ";
+    twt_color_retweet = "black green ";
+    twt_color_hash = "yellow ";
+    twt_color_http = "gray ";
+    twt_color_text = "white ";
+    twt_color_user = "magenta ";
+    awl_mouse = "yes";
+    mouse_scroll = "10";
+    neat_shrink = "no";
+    neat_staircase_shrink = "yes";
+    neat_custom_modes = "no";
+    neat_color_hinick = "yes";
+    neat_color_menick = "yes";
+  };
+  "fe-text" = { actlist_sort = "refnum"; };
+};
+
+logs = { };
+statusbar = {
+  default = {
+    window = {
+      items = {
+        barstart = { priority = "100"; };
+        time = { };
+        user = { };
+        window = { };
+        window_empty = { };
+        lag = { priority = "-1"; };
+        act = { priority = "10"; };
+        more = { priority = "-1"; alignment = "right"; };
+        barend = { priority = "100"; alignment = "right"; };
+      };
+      disabled = "yes";
+    };
+    status_indicators = {
+      items = {
+        awaybar = { alignment = "right"; };
+        usercount = { alignment = "right"; };
+        position = { alignment = "right"; };
+      };
+    };
+    awl_0 = {
+      items = {
+        barstart = { priority = "100"; };
+        awl_0 = { };
+        barend = { priority = "100"; alignment = "right"; };
+      };
+    };
+  };
+};
+ignores = ( );
+keyboard = ( 
+  { key = "meta-[M"; id = "command"; data = "mouse_xterm"; }
+);
+ignores = ( );
+
+
+
+#hilights = (
+#  {
+#    # Workaround for whole-line hilighting (if not using pubmsg_me)
+#    # Must hard-code your nick below
+#    text = ".*znc_user.*";
+#    color = "%M%0";
+#    nick = "no";
+#    word = "no";
+#    regexp = "yes";
+#  },
+#
+#  {
+#    # Other trigger word / keyword hilight example
+#    text = ".*foobar.*";
+#    color = "%G%0";
+#    actcolor = "%G%0";
+#    nick = "no";
+#    word = "no";
+#    regexp = "yes";
+#  }
+#);

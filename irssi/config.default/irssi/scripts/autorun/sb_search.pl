@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/sb_search.pl
