@@ -9,6 +9,8 @@ A docker image of Nginx v1.9.5+. [DockerHub Page](https://registry.hub.docker.co
 
 ### Enable SSL
 
+First, to obtain an SSL certificate: https://letsencrypt.org/getting-started/
+
 To enable SSL, put your certs in a `/ssl` volume and then to enable the `default-ssl` site: `docker run -e nginx_ssl=true dreamcat4/nginx`. You will need the following 2 certificate files in your mounted `/ssl` volume:
 
     /ssl/server.crt
