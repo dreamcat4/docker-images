@@ -76,7 +76,7 @@ user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups=
     [ "$gid" ] && ua_args="$ua_args -g $gid"
     [ "$extra_groups" ] && ua_args="$ua_args --groups $extra_groups"
 
-    useradd "$name" -M $ua_args
+    useradd "$name" -M $ua_args || usermod $ua_args "$name"
     [ "$passwd" ] && echo "$passwd" | tee - | smbpasswd -s -a "$name"
 }
 
@@ -88,7 +88,7 @@ user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups=
 group() { local name="${1}" gid="${2:-}"
     local ua_args=""
     [ "$gid" ] && ua_args="$ua_args -o -g $gid"
-    groupadd "$name" $ua_args
+    groupadd "$name" $ua_args || groupmod $ua_args "$name"
 }
 
 ### export: export a smbpasswd file
