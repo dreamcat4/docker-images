@@ -209,10 +209,27 @@ Limnoria:
 NOTE: YOU SHOULD CHANGE YOUR BOT'S NICK FROM `supybot` ---> `YOUR BOT`
 
 * The config file is located at `/config/limnoria/supybot.conf`
+* The default owner nickname of this bot is `znc_user`
 * The default owner password for this bot is `supybot`
 * Connects to the znc user named `supybot` with znc password `supybot` <-- CHANGE THIS IN YOUR ZNC CONFIG TOO
 * This bot is pre-configured to only connect join the channel `#local` on your own private `ngircd` IRC server
 * Public IRC networks are also pre-configured in `supybot.conf`. They are just all disabled by default except for ngircd
+
+How to identify yourself to the bot as it's owner:
+
+```
+< znc_user> @list --unloaded
+#. supybot# znc_user: Error: You don't have the owner capability. If you think that you should have this capability, be sure that you are identified before trying again. The 'whoami' command can tell you if you're identified.
+
+< znc_user> @whoami
+#. supybot# znc_user: I don't recognize you. You can message me either of these two commands: "user identify <username> <password>" to log in or "user register <username> <password>" to register.
+
+/query supybot user identify znc_user supybot
+<znc_user> user identify znc_user supybot
+-supybot(~supybot@localhost)- The operation succeeded.
+```
+
+You will need to change the owner in `supybot.conf` to your real nick, and change the owner password to something more secure than `supybot` before taking it online to public irc servers.
 
 EXTRA NOTE:
 
