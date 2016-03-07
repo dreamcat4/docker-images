@@ -1,0 +1,1 @@
+/scripts.irssi.org/scripts/tab_stop.pl
