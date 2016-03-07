@@ -267,6 +267,7 @@ settings = {
     neat_custom_modes = "no";
     neat_color_hinick = "yes";
     neat_color_menick = "yes";
+    chansort_autosort = "yes";
   };
   "fe-text" = { actlist_sort = "refnum"; };
 };
