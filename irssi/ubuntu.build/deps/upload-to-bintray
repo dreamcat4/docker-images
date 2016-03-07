@@ -1,0 +1,131 @@
+#!/bin/sh
+
+
+# Source settings
+. /out/bintray-env
+
+# Clear error flag
+unset _error
+
+
+_upload_tarball_to_bintray ()
+{
+	# Create a new version
+	echo curl -sS -i -u${bintray_user}:\${bintray_key} -H "Content-Type: application/json" \
+	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
+	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }"
+
+	bintray_api_resp="$(curl -sS -i -u${bintray_user}:${bintray_key} -H "Content-Type: application/json" \
+	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
+	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }" | tr -d '\"')"
+	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
+
+	if echo "$bintray_api_resp" | grep -qi "already exists"; then
+	  echo "Aborting. Version ${bintray_version} of ${bintray_pkg_name} has already been upladed to bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  return 0
+	fi
+
+	if [ $bintray_api_http_status -ge 400 ]; then
+	  echo "Upload error. Could not create a new pkg version on bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  _error="true"
+	else
+	  echo "$bintray_api_resp"
+	fi
+
+
+	# Upload tarball
+	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:$bintray_version \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1
+
+	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:$bintray_version \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1 | tr -d '\"')"
+	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
+
+	if [ $bintray_api_http_status -ge 400 ]; then
+	  echo "Upload error. Could not upload to bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  _error="true"
+	else
+	  echo "$bintray_api_resp"
+	fi
+
+
+	# Set flags to 'latest', for doing again
+	bintray_version="latest"
+	bintray_file_path="${bintray_pkg_name}/${bintray_pkg_name}-${bintray_version}_linux-x86_64.tar.gz"
+
+	# Create a 'latest' version
+	echo curl -sS -i -u${bintray_user}:\${bintray_key} -H "Content-Type: application/json" \
+	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
+	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }"
+
+	bintray_api_resp="$(curl -sS -i -u${bintray_user}:${bintray_key} -H "Content-Type: application/json" \
+	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
+	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }" | tr -d '\"')"
+
+	if echo "$bintray_api_resp" | grep -qi "already exists"; then
+	  echo "Version '${bintray_version}' already exists."
+	  echo "API response: ^$bintray_api_resp$"
+
+	elif [ $bintray_api_http_status -ge 400 ]; then
+	  echo "Upload error. Could not create a new pkg version '${bintray_version}' on bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  _error="true"
+	else
+	  echo "$bintray_api_resp"
+	fi
+
+	# Upload tarball again, this time as 'latest'
+	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:${bintray_version} \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\?override=1
+
+	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:${bintray_version} \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1 | tr -d '\"')"
+	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
+
+	if [ $bintray_api_http_status -ge 400 ]; then
+	  echo "Upload error. Could not upload to bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  _error="true"
+	else
+	  echo "$bintray_api_resp"
+	fi
+}
+
+
+
+# Queue znc-modules
+bintray_pkg_name="znc-modules"
+bintray_version="$(cat /out/znc_modules_version)"
+bintray_ver_desc="external (non-official) 3rd party modules for znc. linux 64-bit .so libs"
+tarball="znc-modules-${bintray_version}_linux-x86_64.tar.gz"
+bintray_file_path="${bintray_pkg_name}/${tarball}"
+
+# Only upload new versions on Monday - to avoid too many files
+if [ "$(date +%A)" = "Monday" ]; then
+	# Do it
+	_upload_tarball_to_bintray;
+fi
+
+
+# Queue atheme
+bintray_pkg_name="atheme"
+bintray_version="$(cat /out/atheme_version)"
+bintray_ver_desc="linux binaries of atheme-services. ubuntu / debian filesystem layout"
+tarball="atheme-${bintray_version}_linux-x86_64.tar.gz"
+bintray_file_path="${bintray_pkg_name}/${tarball}"
+
+# Do it
+_upload_tarball_to_bintray;
+
+
+
+# Error out if there was an error
+if [ "$_error" ]; then
+	echo "upload-to-bintray: There was an error."
+	exit 1
+fi
+
+
