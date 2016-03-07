@@ -9,9 +9,7 @@ We now have basic and reliable working chain of services. Everything comes up au
 Left todo:
 
 * Improve documentation
-* Rename this image from irssi --> irc
 * Upgrade irssi version, retest the default selection of scripts
-* make bintray upload script for irc-builddeps
 * Configure weechat client
   * Setup glowing-bear web interface
 * Publish on Docker Hub
