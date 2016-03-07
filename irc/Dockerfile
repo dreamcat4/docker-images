@@ -185,13 +185,13 @@ ENV S6_LOGGING="0"
 ADD services.d /etc/services.d
 
 
-# ! temp
-COPY znc-modules-linux-x86_64.tar.gz /tmp/
-RUN tar zxf /tmp/znc-modules-linux-x86_64.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
+# Install external znc-modules
+RUN wget -O /tmp/znc-modules.tar.gz https://dl.bintray.com/dreamcat4/linux/znc-modules/znc-modules-latest_linux-x86_64.tar.gz \
+ && tar zxf /tmp/znc-modules.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
 
-ENV atheme_version="7.2.6"
-COPY atheme-${atheme_version}_linux-x86_64.tar.gz /tmp/atheme-linux-x86_64.tar.gz
-RUN tar zxf /tmp/atheme-linux-x86_64.tar.gz -C / --skip-old-files && $_clean
+# Install atheme
+RUN wget -O /tmp/atheme.tar.gz https://dl.bintray.com/dreamcat4/linux/atheme/atheme-latest_linux-x86_64.tar.gz \
+ && tar zxf /tmp/atheme.tar.gz -C / --skip-old-files && $_clean
 
 
 # Default container settings
