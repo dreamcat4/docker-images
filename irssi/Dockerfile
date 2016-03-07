@@ -128,10 +128,10 @@ RUN groupmod -o -g 6111 bitlbee \
  && install -o bitlbee -g bitlbee -d /config/bitlbee
 
 
-# Setup xtheme user
-RUN groupadd -o -g 8153 xtheme \
- && useradd -o -u 8153 -g xtheme --shell /bin/bash -d /config/xtheme xtheme \
- && install -o xtheme -g xtheme -d /config/xtheme
+# Setup atheme user
+RUN groupadd -o -g 8153 atheme \
+ && useradd -o -u 8153 -g atheme --shell /bin/bash -d /config/atheme atheme \
+ && install -o atheme -g atheme -d /config/atheme
 
 
 # Setup ngircd user
@@ -189,8 +189,9 @@ ADD services.d /etc/services.d
 COPY znc-modules-linux-x86_64.tar.gz /tmp/
 RUN tar zxf /tmp/znc-modules-linux-x86_64.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
 
-COPY xtheme-linux-x86_64.tar.gz /tmp/
-RUN tar zxf /tmp/xtheme-linux-x86_64.tar.gz -C / --skip-old-files && $_clean
+ENV atheme_version="7.2.6"
+COPY atheme-${atheme_version}_linux-x86_64.tar.gz /tmp/atheme-linux-x86_64.tar.gz
+RUN tar zxf /tmp/atheme-linux-x86_64.tar.gz -C / --skip-old-files && $_clean
 
 
 # Default container settings

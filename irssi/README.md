@@ -32,7 +32,7 @@ What's included:
   * ZNC bouncer
   * Bitlbee (for IM accounts)
   * ngircd - your own local / private IRC server
-    * xtheme services - for nickserv, sasl etc
+    * atheme services - for nickserv, sasl etc
   * Limnoria IRC bot (aka supybot)
 
 ### Connection diagram
@@ -41,7 +41,7 @@ General diagram how these programs are connected up:
 
 ```sh
 
-xtheme <--- ngircd <-\        /- limnoria IRC bot (supybot)
+atheme <--- ngircd <-\        /- limnoria IRC bot (supybot)
 Public IRC Servers <--- ZNC <--- irssi <--- TMUX Session <--- SSH <--- Client computer
            Bitlbee <-/        \- weechat -/
                                     \- weechat relay <--- glowing bear <--- web browser
@@ -64,13 +64,13 @@ IRC Networks and channels pre-configured
   * efnet
 
   * freenode
+    * `#atheme`
+      * public help / support channel
     * `#irssi`
       * public help / support channel
     * `#limnoria`
       * public help / support channel
     * `#weechat`
-      * public help / support channel
-    * `#Xtheme`
       * public help / support channel
     * `#znc`
       * public help / support channel
@@ -226,17 +226,17 @@ Provides the `#local` channel. Which is where znc and the supybot are pre-config
 
 * The config file is located at `/config/ngircd/ngircd.conf`
 * This irc server is pre-configured to listen only on the localhost `127.0.0.1` network interface.
-* Includes pairing passwords for the localhost `xtheme` services daemon.
+* Includes pairing passwords for the localhost `atheme` services daemon.
 
 NOTE:
 
-This IRC server is minimally configured. But should be safe to use for private localhost use only. To be taking this ngircd instnace public (exposing ports to outside). Then at very least you should change the xtheme pairing passwords. In both ngircd config file and xtheme's config file.
+This IRC server is minimally configured. But should be safe to use for private localhost use only. To be taking this ngircd instnace public (exposing ports to outside). Then at very least you should change the atheme pairing passwords. In both ngircd config file and atheme's config file.
 
-However its not recommended to use this single fat image for any public of semi-public hosting. As other IRC programs are running in the same image. For better hardening, use seperate sigle-service docker images, each linked together. For example 1 container for ngircd, 1 container for xtheme services.
+However its not recommended to use this single fat image for any public of semi-public hosting. As other IRC programs are running in the same image. For better hardening, use seperate sigle-service docker images, each linked together. For example 1 container for ngircd, 1 container for atheme services.
 
-Xtheme services:
+atheme services:
 
-* The config file is located at `/config/xtheme/xtheme.conf`
+* The config file is located at `/config/atheme/atheme.conf`
 * These servcies are only minimally configured (enough to work with the ngircd instance)
 * The actual services offered (nickserv, chanserv, sasl, etc) are all left at defaults
 * The pairing passwords (for connection to this IRC services daemon) are also configured in `ngircd.conf`

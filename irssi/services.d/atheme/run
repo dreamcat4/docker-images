@@ -2,32 +2,32 @@
 
 
 # Set the uid:gid to run as
-[ "$xtheme_uid" ] && usermod  -o -u "$xtheme_uid" xtheme
-[ "$xtheme_gid" ] && groupmod -o -g "$xtheme_gid" xtheme
+[ "$atheme_uid" ] && usermod  -o -u "$atheme_uid" atheme
+[ "$atheme_gid" ] && groupmod -o -g "$atheme_gid" atheme
 
 
 # Check the config file exists in /config, else copy it in
-[ -e "/config/xtheme/xtheme.conf" ] || cp -Rf "/etc/config.preseed/xtheme" "/config"
-mkdir -p /irc/xtheme
+[ -e "/config/atheme/atheme.conf" ] || cp -Rf "/etc/config.preseed/atheme" "/config"
+mkdir -p /irc/atheme
 
 
 # chown if don't have permission to write to the config folder
-[ "$(stat -c %U:%G /config/xtheme )" = "xtheme:xtheme" ] || chown -R xtheme:xtheme /config/xtheme
-[ "$(stat -c %U:%G /irc/xtheme )" = "xtheme:xtheme" ] || chown -R xtheme:xtheme /irc/xtheme
+[ "$(stat -c %U:%G /config/atheme )" = "atheme:atheme" ] || chown -R atheme:atheme /config/atheme
+[ "$(stat -c %U:%G /irc/atheme )" = "atheme:atheme" ] || chown -R atheme:atheme /irc/atheme
 
 
-# All roads lead to /irc/xtheme
+# All roads lead to /irc/atheme
 for _dir in lib log run; do
-	rm -rf /var/$_dir/xtheme
-	ln -sf /irc/xtheme /var/$_dir/xtheme
+	rm -rf /var/$_dir/atheme
+	ln -sf /irc/atheme /var/$_dir/atheme
 done
 
 
-sudo -E su "xtheme" << EOF
+sudo -E su "atheme" << EOF
 	set -x
 
-	# Launch xtheme-services
-	/usr/bin/xtheme-services -n -c /config/xtheme/xtheme.conf -l /irc/xtheme/xtheme.log -p /config/xtheme/xtheme.pid
+	# Launch atheme-services
+	/usr/bin/atheme-services -n -c /config/atheme/atheme.conf -l /irc/atheme/atheme.log -p /config/atheme/atheme.pid
 
 EOF
 
@@ -37,6 +37,10 @@ EOF
 # # xtheme-services --help
 # unknown option -- help
 # usage: xtheme [-dhnvr] [-c conf] [-l logfile] [-p pidfile]
+
+# $ atheme-services --help
+# unknown option -- help
+# usage: atheme [-dhnvr] [-c conf] [-l logfile] [-p pidfile]
 
 # OPTIONS
 #        atheme-services accepts the following command line options:
