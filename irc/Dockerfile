@@ -159,9 +159,9 @@ RUN groupadd -o -g 1135 limnoria \
 
 
 # Install irssi
-# from nei's 15.10 opensuse testing repository
-# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys  \
-RUN echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/ ./" >> /etc/apt/sources.list \
+# from nei's personal 15.10 testing repository
+RUN wget -O- http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/Release.key | apt-key add - \
+ && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/ ./" >> /etc/apt/sources.list \
  && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
