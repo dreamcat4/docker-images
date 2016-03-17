@@ -20,9 +20,56 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 
-# Install bitlbee, znc, irssi, tmux, sshd and other supportive pkgs
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y wget apt-transport-https ca-certificates \
- && wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
+# # Bitlbee dependancy
+# RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y libgnutls-deb0-28 && $_apt_clean
+
+
+# Install support pkgs
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
+
+
+# Install ngircd
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y ngircd
+
+# Setup ngircd user
+RUN groupadd -o -g 5914 ngircd \
+ && useradd -o -u 5914 -g ngircd --shell /bin/bash -d /config/ngircd ngircd \
+ && install -o ngircd -g ngircd -d /config/ngircd
+
+
+# Install atheme
+RUN wget -O /tmp/atheme.tar.gz https://dl.bintray.com/dreamcat4/linux/atheme/atheme-latest_linux-x86_64.tar.gz \
+ && tar zxf /tmp/atheme.tar.gz -C / --skip-old-files && $_clean
+
+# Setup atheme user
+RUN groupadd -o -g 8153 atheme \
+ && useradd -o -u 8153 -g atheme --shell /bin/bash -d /config/atheme atheme \
+ && install -o atheme -g atheme -d /config/atheme
+
+
+
+# Install znc
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y znc && $_apt_clean
+
+# Install external znc-modules
+RUN wget -O /tmp/znc-modules.tar.gz https://dl.bintray.com/dreamcat4/linux/znc-modules/znc-modules-latest_linux-x86_64.tar.gz \
+ && tar zxf /tmp/znc-modules.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
+
+# Setup znc user
+RUN groupadd -o -g 6697 znc \
+ && useradd -o -u 6697 -g znc --shell /bin/bash -d /config/znc znc \
+ && install -o znc -g znc -d /config/znc
+
+
+
+# Install bitlbee
+
+# Hack, install older version of libgnutls to meet bitlbee-libpurple dependancy on wily 15.10 - old bitlebee repo target
+RUN wget -O /tmp/libgnutls-deb0-28_amd64.deb http://launchpadlibrarian.net/234823129/libgnutls-deb0-28_3.3.20-1ubuntu1_amd64.deb && dpkg -i /tmp/libgnutls-deb0-28_amd64.deb \
+ && $_apt_clean
+
+RUN wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
  && echo "deb http://code.bitlbee.org/debian/master/wily/amd64/ ./" >> /etc/apt/sources.list \
  && wget -O- https://jgeboski.github.io/obs.key | apt-key add - \
  && echo "deb http://download.opensuse.org/repositories/home:/jgeboski/xUbuntu_15.10 ./" >> /etc/apt/sources.list \
@@ -30,22 +77,42 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y wge
  && echo "deb http://ppa.launchpad.net/aap/pidgin/ubuntu wily main" >> /etc/apt/sources.list \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 531EE72F4C9D234C \
  && echo "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu wily main" >> /etc/apt/sources.list \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D1820DB22A11534E \
- && echo "deb https://weechat.org/ubuntu wily main" >> /etc/apt/sources.list \
  \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    git sudo znc ngircd \
-    libtime-duration-perl rsyslog bitlbee-libpurple bitlbee-plugin-otr \
+ && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y rsyslog \
+    bitlbee-libpurple bitlbee-plugin-otr \
     bitlbee-steam bitlbee-facebook \
-    pidgin-sipe pidgin-skypeweb telegram-purple \
-    python-dev python-pip pkg-config graphviz graphviz-dev python-cobe \
-    libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
-    irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
-    weechat weechat-plugins \
-    tmux openssh-server socat nano less man nmap \
+    pidgin-sipe pidgin-skypeweb \
+    telegram-purple \
  \
- && cpanm WebService::HipChat Algorithm::Diff \
- && pip install --upgrade pip \
+ && $_apt_clean
+
+# Hack, install older version of libprotobuf to meet dependancies
+# This whatsapp-purple PPA needs newer ubuntu version as trusty 14.04 too old now
+RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/protobuf/libprotobuf8_2.5.0-9ubuntu1_amd64.deb && dpkg -i /tmp/libprotobuf8_amd64.deb \
+ && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C777F0E392FAE28B \
+ && echo "deb http://ppa.launchpad.net/whatsapp-purple/ppa/ubuntu trusty main" >> /etc/apt/sources.list \
+ && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y pidgin-whatsapp \
+ && $_apt_clean
+
+# Bitlbee - libpurpletorchat
+ENV _torchat_ver="2.0-alpha-14"
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y tor bzip2 \
+ && wget -O /tmp/libpurpletorchat.tar.bz2 https://github.com/downloads/prof7bit/TorChat/libpurpletorchat-${_torchat_ver}-linux-x86-64.tar.bz2 \
+ && tar -C /usr/lib/purple-2 --strip-components=1 -jxvf /tmp/libpurpletorchat.tar.bz2 libpurpletorchat/libpurpletorchat.so && $_apt_clean
+
+# TODO: Future (not ready yet) - tox-prpl - https://github.com/jin-eld/tox-prpl/issues/54
+
+# Setup bitlbee user
+RUN groupmod -o -g 6111 bitlbee \
+ && usermod -o -u 6111 -g bitlbee --shell /bin/bash -d /config/bitlbee bitlbee \
+ && install -o bitlbee -g bitlbee -d /config/bitlbee
+
+
+
+# Install limnoria (aka supybot)
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python-dev python-pip pkg-config graphviz graphviz-dev libxml2-dev libxslt1-dev python-cobe \
+ && pip install --upgrade pip setuptools \
  && pip install -r https://raw.githubusercontent.com/ProgVal/Limnoria/master/requirements.txt --upgrade \
  && pip install limnoria --upgrade && chmod +x /usr/local/bin/supybot* \
  && pip install -r https://raw.githubusercontent.com/ProgVal/Supybot-plugins/master/requirements.txt --upgrade \
@@ -54,20 +121,6 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y wge
  \
  && $_apt_clean
 
-# For irssi / adv_windowlist.pl:
- # && cpanm Text::CharWidth \
-
-
-
-# Hack, install older version of libprotobuf to meed dependancies
-# This whatsapp-purple PPA needs newer ubuntu version as trusty 14.04 too old now
-RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/protobuf/libprotobuf8_2.5.0-9ubuntu1_amd64.deb && dpkg -i /tmp/libprotobuf8_amd64.deb \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C777F0E392FAE28B \
- && echo "deb http://ppa.launchpad.net/whatsapp-purple/ppa/ubuntu trusty main" >> /etc/apt/sources.list \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y pidgin-whatsapp \
- && $_apt_clean
-
-
 # NOTE: overlayfs bug causes pip dependancies install failure below ^^;
 #   https://github.com/docker/docker/issues/12327#issuecomment-171496303
 #   https://gist.github.com/amercader/4432ed33a73d510b4a08
@@ -75,8 +128,6 @@ RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/m
 # Using patch / feature branch with Frog's rejected PIP pr ! didnt work
 # RUN apt-get update && apt-get install -y python-dev python-pip && pip install --upgrade pip \
 #  && pip install git+https://github.com/FragLegs/pip@patch-for-issue-2953 && $_apt_clean
-
-
 
 # Spline plugins with broken deps: "Stock Tweety WebHooks WorldTime"
 # ENV _spline_plugins="GitPull LogTail Series Stock Supybot-Pastebin Travis Tweety UrbanDictionary Weather WebHooks WolframAlpha WorldTime ZNC"
@@ -94,51 +145,11 @@ RUN mkdir -p limnoria-plugins/spline \
   ; done \
  && $_apt_clean
 
-
-
-# ! TEMP for bitlbee torchat, znc-push module
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y tor libcurl3 && $_apt_clean
-
-
-# Bitlbee - libpurpletorchat
-ENV _torchat_ver="2.0-alpha-14"
-RUN wget -O /tmp/libpurpletorchat.tbz https://github.com/downloads/prof7bit/TorChat/libpurpletorchat-${_torchat_ver}-linux-x86-64.tar.bz2 \
- && tar -C /usr/lib/purple-2 --strip-components=1 -jxvf /tmp/libpurpletorchat.tbz libpurpletorchat/libpurpletorchat.so && $_apt_clean
-
-
-# TODO: Future (not ready yet) - tox-prpl - https://github.com/jin-eld/tox-prpl/issues/54
-
-
-# Irssi - Download scripts and themes
-RUN git clone https://github.com/irssi/scripts.irssi.org.git \
- && git clone https://github.com/irssi-import/themes.git \
- && git clone https://github.com/huyz/irssi-colors-solarized
-
 RUN mkdir -p limnoria-plugins \
  && git clone https://github.com/ProgVal/Supybot-plugins limnoria-plugins/progval \
  && git clone https://github.com/GLolol/SupyPlugins limnoria-plugins/glolol
 
-
 RUN echo Checking limnoria was installed && ls -lsa /usr/local/bin/supybot
-
-
-# Setup bitlbee user
-RUN groupmod -o -g 6111 bitlbee \
- && usermod -o -u 6111 -g bitlbee --shell /bin/bash -d /config/bitlbee bitlbee \
- && install -o bitlbee -g bitlbee -d /config/bitlbee
-
-
-# Setup atheme user
-RUN groupadd -o -g 8153 atheme \
- && useradd -o -u 8153 -g atheme --shell /bin/bash -d /config/atheme atheme \
- && install -o atheme -g atheme -d /config/atheme
-
-
-# Setup ngircd user
-RUN groupadd -o -g 5914 ngircd \
- && useradd -o -u 5914 -g ngircd --shell /bin/bash -d /config/ngircd ngircd \
- && install -o ngircd -g ngircd -d /config/ngircd
-
 
 # Setup limnoria user
 RUN groupadd -o -g 1135 limnoria \
@@ -146,24 +157,56 @@ RUN groupadd -o -g 1135 limnoria \
  && install -o limnoria -g limnoria -d /config/limnoria
 
 
-# Setup znc user
-RUN groupadd -o -g 6697 znc \
- && useradd -o -u 6697 -g znc --shell /bin/bash -d /config/znc znc \
- && install -o znc -g znc -d /config/znc
 
+# Install irssi
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
+    irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
+ && cpanm WebService::HipChat Algorithm::Diff \
+ && $_apt_clean
+
+# For irssi / adv_windowlist.pl:
+ # && cpanm Text::CharWidth \
+
+# Irssi - Download scripts and themes
+RUN git clone https://github.com/irssi/scripts.irssi.org.git \
+ && git clone https://github.com/irssi-import/themes.git \
+ && git clone https://github.com/huyz/irssi-colors-solarized
 
 # Setup irssi user
-ENV TERM=linux TERMINFO=/etc/terminfo EDITOR=nano
 RUN groupadd -o -g 22 irssi \
  && useradd -o -u 22 -g irssi --shell /bin/bash -d /config/irssi irssi \
  && install -o irssi -g irssi -d /config/irssi
 
 
-# Sudo without password
-RUN echo "irssi ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Install weechat
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D1820DB22A11534E \
+ && echo "deb https://weechat.org/ubuntu wily main" >> /etc/apt/sources.list \
+ \
+ && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    weechat weechat-plugins \
+ \
+ && $_apt_clean
+
+# Setup weechat user
+RUN groupadd -o -g 22 weechat \
+ && useradd -o -u 22 -g weechat --shell /bin/bash -d /config/weechat weechat \
+ && install -o weechat -g weechat -d /config/weechat
 
 
-# Setup sshd
+
+# Install tmux, sshd and other supportive pkgs
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    tmux openssh-server socat nmap \
+ && $_apt_clean
+
+
+# Set default TERM and EDITOR
+ENV TERM=linux TERMINFO=/etc/terminfo EDITOR=nano
+
+
+# Setup sshd for irssi
 ENV TERM="tmux-256color" tmux_socket="/tmp/tmux.irssi.sock" tmux_session="tmux" tmux_irc_clients="irssi weechat"
 RUN mkdir -p /var/run/sshd \
  && echo "\n\n\
@@ -173,6 +216,8 @@ PasswordAuthentication no\n\
 Match User irssi\n\
 		ForceCommand tmux -S $tmux_socket -u attach-session -t $tmux_session\n\
 \n" >> /etc/ssh/sshd_config
+
+
 
 
 # Copy configuration files
@@ -185,13 +230,8 @@ ENV S6_LOGGING="0"
 ADD services.d /etc/services.d
 
 
-# Install external znc-modules
-RUN wget -O /tmp/znc-modules.tar.gz https://dl.bintray.com/dreamcat4/linux/znc-modules/znc-modules-latest_linux-x86_64.tar.gz \
- && tar zxf /tmp/znc-modules.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
-
-# Install atheme
-RUN wget -O /tmp/atheme.tar.gz https://dl.bintray.com/dreamcat4/linux/atheme/atheme-latest_linux-x86_64.tar.gz \
- && tar zxf /tmp/atheme.tar.gz -C / --skip-old-files && $_clean
+# let irssi user sudo without password
+RUN echo "irssi ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 
 # Default container settings
@@ -199,9 +239,6 @@ RUN echo Regenerating apt cache && apt-get update -qqy
 VOLUME /config /irc
 EXPOSE 6697 22
 ENTRYPOINT ["/init"]
-
-
-
 
 
 
