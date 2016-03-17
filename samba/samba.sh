@@ -167,6 +167,10 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v grep | grep -q smbd; then
     echo "Service already running, please restart container to apply changes"
 else
-    exec ionice -c 3 smbd -FS &
-    exec ionice -c 3 nmbd -FS
+    if [ "$disable_nmbd" ]; then
+        exec ionice -c 3 smbd -FS
+    else
+        exec ionice -c 3 smbd -FS &
+        exec ionice -c 3 nmbd -FS
+    fi
 fi
