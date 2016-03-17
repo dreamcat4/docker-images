@@ -1,0 +1,85 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set the uid:gid to run as
+[ "$weechat_uid" ] && usermod  -o -u "$weechat_uid" weechat
+[ "$weechat_gid" ] && groupmod -o -g "$weechat_gid" weechat
+
+
+# Check the config file exists in /config, else copy it in
+[ -e "/config/weechat/config" ] || cp -Rf "/etc/config.preseed/weechat" "/config"
+# mkdir -p /irc/weechat # ??? for what data ???
+
+# chown if don't have permission to write to the config and urlplot folders
+[ "$(stat -c %U:%G /config/weechat )" = "weechat:weechat" ] || chown -R weechat:weechat /config/weechat
+# [ "$(stat -c %U:%G /irc/weechat )" = "weechat:weechat" ] || chown -R weechat:weechat /irc/weechat  # ??? for what data ???
+
+
+if [ "$pipework_wait" ]; then
+	for _pipework_if in $pipework_wait; do
+		echo "weechat: Waiting for pipework to bring up $_pipework_if..."
+		pipework --wait -i $_pipework_if
+	done
+	sleep 1
+fi
+
+
+# Alias 'weechat' to connect to running tmux session
+touch ~/.profile ~/.bashrc
+grep -q "alias weechat" ~/.profile || echo "alias weechat=\"sudo -E -u weechat script -q -e /dev/null -c 'tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat'\"" >> ~/.profile
+grep -q "alias weechat" ~/.bashrc || echo "alias weechat=\"sudo -E -u weechat script -q -e /dev/null -c 'tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat'\"" >> ~/.bashrc
+
+
+sudo -E su "weechat" << EOF
+	set -x
+
+	# Generate ssh key pair
+	if [ ! -e "/config/weechat/.ssh/authorized_keys" ]; then
+		ssh-keygen -q -t rsa -N "" -f id_rsa
+		cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+	fi
+
+
+	# Alias 'weechat' to connect to running tmux session
+	touch ~/.profile ~/.bashrc
+	grep -q "alias weechat" ~/.profile || echo "alias weechat=\"script -q -e /dev/null -c 'tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat'\"" >> ~/.profile
+	grep -q "alias weechat" ~/.bashrc || echo "alias weechat=\"script -q -e /dev/null -c 'tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat'\"" >> ~/.bashrc
+
+
+	# Launch weechat in tmux where $tmux_socket_weechat and $tmux_session_weechat are declared in the Dockerfile ENV
+	# sleep 3
+	sleep 1
+	script -q -e /dev/null -c "tmux -S $tmux_socket_weechat -u new-session -d -s $tmux_session_weechat -x 120 -y 40 /usr/bin/weechat --dir /config/weechat $weechat_args"
+EOF
+
+
+# Block while tmux session is still running
+while true; do
+	script -q -e /dev/null -c "tmux -S $tmux_socket_weechat -u list-sessions -F '#{session_name}'" | grep -q "^$tmux_session_weechat" || break
+	sleep 3
+done
+
+
+# $ weechat --help
+
+# WeeChat 1.3 Copyright (C) 2003-2015, compiled on Aug 20 2015 05:24:03
+# Developed by Sébastien Helleu <flashcode@flashtux.org> - https://weechat.org/
+
+# Usage: weechat [option...] [plugin:option...]
+
+#   -a, --no-connect         disable auto-connect to servers at startup
+#   -c, --colors             display default colors in terminal
+#   -d, --dir <path>         set WeeChat home directory (default: ~/.weechat)
+#                            (environment variable WEECHAT_HOME is read if this option is not given)
+#   -h, --help               display this help
+#   -l, --license            display WeeChat license
+#   -p, --no-plugin          don't load any plugin at startup
+#   -r, --run-command <cmd>  run command(s) after startup
+#                            (many commands can be separated by semicolons)
+#   -s, --no-script          don't load any script at startup
+#       --upgrade            upgrade WeeChat using session files (see /help upgrade in WeeChat)
+#   -v, --version            display WeeChat version
+#   plugin:option            option for plugin (see man weechat)
+
+
+

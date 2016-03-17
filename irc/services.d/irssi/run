@@ -30,8 +30,8 @@ cd /scripts.irssi.org && git pull && cd /
 
 # Alias 'irssi' to connect to running tmux session
 touch ~/.profile ~/.bashrc
-grep -q "alias irssi" ~/.profile || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.profile
-grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.bashrc
+grep -q "alias irssi" ~/.profile || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket_irssi -u attach-session -t $tmux_session_irssi'\"" >> ~/.profile
+grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"sudo -E -u irssi script -q -e /dev/null -c 'tmux -S $tmux_socket_irssi -u attach-session -t $tmux_session_irssi'\"" >> ~/.bashrc
 
 
 sudo -E su "irssi" << EOF
@@ -46,36 +46,22 @@ sudo -E su "irssi" << EOF
 
 	# Alias 'irssi' to connect to running tmux session
 	touch ~/.profile ~/.bashrc
-	grep -q "alias irssi" ~/.profile || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.profile
-	grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket -u attach-session -t $tmux_session'\"" >> ~/.bashrc
+	grep -q "alias irssi" ~/.profile || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket_irssi -u attach-session -t $tmux_session_irssi'\"" >> ~/.profile
+	grep -q "alias irssi" ~/.bashrc || echo "alias irssi=\"script -q -e /dev/null -c 'tmux -S $tmux_socket_irssi -u attach-session -t $tmux_session_irssi'\"" >> ~/.bashrc
 
 
-	# Launch irssi in tmux where $tmux_socket and $tmux_session are declared in the Dockerfile ENV
+	# Launch irssi in tmux where $tmux_socket_irssi and $tmux_session_irssi are declared in the Dockerfile ENV
 	# sleep 3
 	sleep 1
-	script -q -e /dev/null -c "tmux -S $tmux_socket -u new-session -d -s $tmux_session -x 120 -y 40 /usr/bin/irssi --home=/config/irssi $irssi_args"
+	script -q -e /dev/null -c "tmux -S $tmux_socket_irssi -u new-session -d -s $tmux_session_irssi -x 120 -y 40 /usr/bin/irssi --home=/config/irssi $irssi_args"
 EOF
 
 
 # Block while tmux session is still running
 while true; do
-	script -q -e /dev/null -c "tmux -S $tmux_socket -u list-sessions -F '#{session_name}'" | grep -q "^$tmux_session" || break
+	script -q -e /dev/null -c "tmux -S $tmux_socket_irssi -u list-sessions -F '#{session_name}'" | grep -q "^$tmux_session_irssi" || break
 	sleep 3
 done
-
-
-
-
-# [ ** ] To connect to this ZNC you need to connect to it as your IRC server
-# [ ** ] using the port that you supplied.  You have to supply your login info
-# [ ** ] as the IRC server password like this: user/network:pass.
-# [ ** ]
-# [ ** ] Try something like this in your IRC client...
-# [ ** ] /server <znc_server_ip> +6697 dreamcat4:<pass>
-# [ ** ]
-# [ ** ] To manage settings, users and networks, point your web browser to
-# [ ** ] https://<znc_server_ip>:6697/
-
 
 
 

@@ -159,7 +159,10 @@ RUN groupadd -o -g 1135 limnoria \
 
 
 # Install irssi
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# from nei's 15.10 opensuse testing repository
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys  \
+RUN echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/ ./" >> /etc/apt/sources.list \
+ && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
  && cpanm WebService::HipChat Algorithm::Diff \
@@ -174,8 +177,8 @@ RUN git clone https://github.com/irssi/scripts.irssi.org.git \
  && git clone https://github.com/huyz/irssi-colors-solarized
 
 # Setup irssi user
-RUN groupadd -o -g 22 irssi \
- && useradd -o -u 22 -g irssi --shell /bin/bash -d /config/irssi irssi \
+RUN groupadd -o -g 1455 irssi \
+ && useradd -o -u 1455 -g irssi --shell /bin/bash -d /config/irssi irssi \
  && install -o irssi -g irssi -d /config/irssi
 
 
@@ -190,10 +193,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D1820DB22A11534E \
  && $_apt_clean
 
 # Setup weechat user
-RUN groupadd -o -g 22 weechat \
- && useradd -o -u 22 -g weechat --shell /bin/bash -d /config/weechat weechat \
+RUN groupadd -o -g 3333 weechat \
+ && useradd -o -u 3333 -g weechat --shell /bin/bash -d /config/weechat weechat \
  && install -o weechat -g weechat -d /config/weechat
-
 
 
 # Install tmux, sshd and other supportive pkgs
@@ -203,18 +205,21 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 
 # Set default TERM and EDITOR
-ENV TERM=linux TERMINFO=/etc/terminfo EDITOR=nano
+ENV TERM=tmux-256color TERMINFO=/etc/terminfo EDITOR=nano
 
 
 # Setup sshd for irssi
-ENV TERM="tmux-256color" tmux_socket="/tmp/tmux.irssi.sock" tmux_session="tmux" tmux_irc_clients="irssi weechat"
+ENV tmux_socket_irssi="/tmp/tmux.irssi.sock" tmux_session_irssi="irssi"
+ENV tmux_socket_weechat="/tmp/tmux.weechat.sock" tmux_session_weechat="weechat"
 RUN mkdir -p /var/run/sshd \
  && echo "\n\n\
 # Container specific sshd settings\n\
 PasswordAuthentication no\n\
 \n\
 Match User irssi\n\
-		ForceCommand tmux -S $tmux_socket -u attach-session -t $tmux_session\n\
+        ForceCommand tmux -S $tmux_socket_irssi -u attach-session -t $tmux_session_irssi\n\
+Match User weechat\n\
+        ForceCommand tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat\n\
 \n" >> /etc/ssh/sshd_config
 
 
@@ -230,8 +235,9 @@ ENV S6_LOGGING="0"
 ADD services.d /etc/services.d
 
 
-# let irssi user sudo without password
+# let irssi and weechat users sudo without password
 RUN echo "irssi ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "weechat ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 
 # Default container settings
