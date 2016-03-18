@@ -197,16 +197,6 @@ aliases = {
   RESET = "set -default";
 };
 
-
-# for 0.8.18
-# /set hilight_nick_matches_everywhere ON
-
-# and this one (but only matches on the beginning of line)
-# /set hilight_nick_matches ON
-
-
-
-
 settings = {
   core = {
     real_name = "znc user";
@@ -223,6 +213,7 @@ settings = {
     hilight_nick_matches = "yes";
     hilight_color = "%M%0";
     hilight_act_color = "%M%0";
+    hilight_nick_matches_everywhere = "yes";
   };
 
   "perl/core/scripts" = {
