@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv sh
+
+
+# Set any optional flags for dnsmasq
+[ "$_dnsmasq_flags" ] || _dnsmasq_flags="$@"
+
+
+# Grep ip address of docker internal dns server from container's /etc/resolv.conf
+_dockerdns_loopback_ip="$(grep '^nameserver' /etc/resolv.conf  | grep -o '[0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*')"
+
+
+# Append to default dnsmasq.conf
+echo "
+user=root
+server=$_dockerdns_loopback_ip
+" >> /etc/dnsmasq.conf
+
+
+# Start dnsmasq
+/usr/sbin/dnsmasq --no-daemon --conf-file=/etc/dnsmasq.conf $_dnsmasq_flags
+
+

@@ -14,15 +14,14 @@ ENV S6_LOGGING="1"
 RUN apk --update-cache add dnsmasq && rm -rf /var/cache/apk/*
 
 
-# Launch script
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Start scripts
+ENV S6_LOGGING="0"
+ADD services.d /etc/services.d
 
 
 # Default container settings
 EXPOSE 53 53/udp
-ENTRYPOINT ["/init","/entrypoint.sh"]
-
+ENTRYPOINT ["/init"]
 
 
 
