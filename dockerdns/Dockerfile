@@ -11,7 +11,7 @@ ENV S6_LOGGING="1"
 
 
 # install socat
-RUN apk --update-cache add socat && rm -rf /var/cache/apk/*
+RUN apk --update-cache add dnsmasq && rm -rf /var/cache/apk/*
 
 
 # Launch script
