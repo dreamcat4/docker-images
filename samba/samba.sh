@@ -25,8 +25,6 @@ if [ "$pipework_wait" ]; then
 fi
 
 
-set -o nounset                              # Treat unset variables as an error
-
 ### share: Add share
 # Arguments:
 #   share) share name
