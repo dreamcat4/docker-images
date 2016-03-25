@@ -10,7 +10,7 @@ _dockerdns_loopback_ip="$(grep '^nameserver' /etc/resolv.conf  | grep -o '[0-9][
 
 
 # Append to default dnsmasq.conf
-echo "
+grep -q "^server=$_dockerdns_loopback_ip" /etc/dnsmasq.conf || echo "
 user=root
 server=$_dockerdns_loopback_ip
 " >> /etc/dnsmasq.conf
