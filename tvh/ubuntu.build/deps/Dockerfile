@@ -11,7 +11,7 @@ RUN apt-get update -qq && apt-get install -qqy \
 			build-essential pkg-config debhelper libssl-dev liburiparser-dev \
 			python libavahi-client-dev libhdhomerun-dev libdvbcsa-dev \
 			libavcodec-dev libavutil-dev libavformat-dev libswscale-dev \
-			libavresample-dev libavfilter-dev libavcodec-extra a52dec \
+			libavresample-dev libavfilter-dev libavcodec-extra a52dec cmake \
  && $_apt_clean
 
 # Download tvheadend
