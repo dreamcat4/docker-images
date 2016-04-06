@@ -14,11 +14,11 @@ For older [Docker v1.7.1 compatibility](https://github.com/dreamcat4/docker-imag
 
 ### Status
 
-This project is now somewhat deprecated, in favor of newer L2 networking features of docker v1.10.x. Basically if you want L2 Bridge networking (like VMWare 'Bridged' networking mode), then it can be achieved with core docker features instead now. And that is better ways, less buggy.
+This project is somewhat deprecated, in favor of newer L2 networking features of docker v1.10.x. Basically if you want L2 Bridge networking (like VMWare 'Bridged' networking mode)... that can be achieved with core docker features now. And that is better ways, less buggy. So for L2 external bridging, for your containers to appear on LAN, please [try this method instead](http://stackoverflow.com/questions/35742807/docker-1-10-containers-ip-in-lan).
 
-There are also other new networking features since docker v1.10.x, which replace other parts of the pipework feature set.
+There are also other new networking features since docker v1.10.x, which replace other parts of the pipework feature set. Such as overlay networks etc.
 
-Otherwise if you need some more specialized networking setups which still cant be achieved with newer Docker networking API, maybe continue to use pipework and its features. In which case, this docker image is in need of new maintainer, to continue forwards. As have already stopped using it myself.
+Otherwise if you still require some more specialized networking setup, and it still cant be achieved with newest Docker networking APIs, then I guess maybe continue to use pipework and its unique features. For that case, then this docker image is in need of new maintainer, to continue forwards. As I have already stopped using it myself for some time now.
 
 ### Requirements
 
