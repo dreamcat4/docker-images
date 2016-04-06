@@ -10,10 +10,19 @@ For documentation ---> [here](https://github.com/dreamcat4/docker-images/blob/ma
 
 Page on DockerHub ---> [here](https://registry.hub.docker.com/u/dreamcat4/pipework/).
 
+For older [Docker v1.7.1 compatibility](https://github.com/dreamcat4/docker-images/issues/19), please use Larry's fork over here ---> [larrycai/pipework:1.7.1](https://hub.docker.com/r/larrycai/pipework/tags/).
+
 ### Status
 
-* Tested on an Ubuntu-14.10 host.
-* Requires Docker 1.6.0
+This project is now somewhat deprecated, in favor of newer L2 networking features of docker v1.10.x. Basically if you want L2 Bridge networking (like VMWare 'Bridged' networking mode), then it can be achieved with core docker features instead now. And that is better ways, less buggy.
+
+There are also other new networking features since docker v1.10.x, which replace other parts of the pipework feature set.
+
+Otherwise if you need some more specialized networking setups which still cant be achieved with newer Docker networking API, maybe continue to use pipework and its features. In which case, this docker image is in need of new maintainer, to continue forwards. As have already stopped using it myself.
+
+### Requirements
+
+* Requires Docker 1.8.1
 * Requires Docker Compose 1.3.0
 * Needs to be run in privileged mode etc.
 
