@@ -134,9 +134,9 @@ _expand_macros ()
             _pipework_vars="$(echo "$_pipework_vars" | sed -e "s|@INSTANCE@|${instance}|g")"
             ;;
 
-            @PROJECT_NAME@)
+            @COMPOSE_PROJECT_NAME@)
             projectname="$(docker inspect   --format "{{ index .Config.Labels \"com.docker.compose.project\"}}" ${c12id})"
-            _pipework_vars="$(echo "$_pipework_vars" | sed -e "s|@PROJECT_NAME@|${projectname}|g")"
+            _pipework_vars="$(echo "$_pipework_vars" | sed -e "s|@COMPOSE_PROJECT_NAME@|${projectname}|g")"
             ;;
         esac
     done
@@ -349,7 +349,7 @@ _process_container ()
         | grep -e 'pipework_cmd.*=\|^pipework_key=\|pipework_host_route.*='| sed -e 's/^/export "/g')"
     [ "$_pipework_vars" ] || return 0
 
-    _macros="$(echo -e "$_pipework_vars" | grep -o -e '@CONTAINER_NAME@\|@CONTAINER_ID@\|@HOSTNAME@\|@INSTANCE@\|@PROJECT_NAME@' | sort | uniq)"
+    _macros="$(echo -e "$_pipework_vars" | grep -o -e '@CONTAINER_NAME@\|@CONTAINER_ID@\|@HOSTNAME@\|@INSTANCE@\|@COMPOSE_PROJECT_NAME@' | sort | uniq)"
     [ "$_macros" ] && _expand_macros;
 
     eval $_pipework_vars
