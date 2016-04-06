@@ -7,7 +7,7 @@ ENV _apt_clean="eval apt-get clean && $_clean"
 # Install docker
 RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
  && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F76221572C52609D \
- && echo deb https://apt.dockerproject.org/repo ubuntu-xenial main > /etc/apt/sources.list.d/docker.list \
+ && echo deb https://apt.dockerproject.org/repo ubuntu-wily main > /etc/apt/sources.list.d/docker.list \
  && apt-get update -qq && apt-get install -qqy docker-engine && $_apt_clean
 
 # Install pipework
