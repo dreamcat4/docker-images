@@ -208,8 +208,8 @@ settings = {
   "fe-common/core" = {
     theme = "solarized-universal";
     show_names_on_join = "no";
-    use_msgs_window = "yes";
-    autocreate_query_level = "";
+    #    use_msgs_window = "yes";
+    #    autocreate_query_level = "";
     hilight_nick_matches = "yes";
     hilight_color = "%M%0";
     hilight_act_color = "%M%0";
@@ -259,12 +259,6 @@ settings = {
     neat_color_hinick = "yes";
     neat_color_menick = "yes";
     chansort_autosort = "yes";
-    dim_nicks_color = "%w$*";
-    dim_nicks_forms_skip = "0";
-    dim_nicks_forms_search_max = "8";
-    ipw_host = "0.0.0.0";
-    ipw_password = "irssi";
-    ipw_ssl = "yes";
   };
   "fe-text" = { actlist_sort = "refnum"; };
 };

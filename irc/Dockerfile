@@ -159,10 +159,7 @@ RUN groupadd -o -g 1135 limnoria \
 
 
 # Install irssi
-# from nei's personal 15.10 testing repository
-RUN wget -O- http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/Release.key | apt-key add - \
- && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_15.10/ ./" >> /etc/apt/sources.list \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
  && cpanm WebService::HipChat Algorithm::Diff \
@@ -243,7 +240,7 @@ RUN echo "weechat ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # Default container settings
 RUN echo Regenerating apt cache && apt-get update -qqy
 VOLUME /config /irc
-EXPOSE 6697 22
+EXPOSE 6697 22 9001
 ENTRYPOINT ["/init"]
 
 

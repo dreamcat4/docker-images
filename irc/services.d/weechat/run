@@ -7,12 +7,12 @@
 
 
 # Check the config file exists in /config, else copy it in
-[ -e "/config/weechat/config" ] || cp -Rf "/etc/config.preseed/weechat" "/config"
-# mkdir -p /irc/weechat # ??? for what data ???
+[ -e "/config/weechat/weechat.conf" ] || cp -Rf "/etc/config.preseed/weechat" "/config"
+mkdir -p /irc/weechat/logs
 
 # chown if don't have permission to write to the config and urlplot folders
 [ "$(stat -c %U:%G /config/weechat )" = "weechat:weechat" ] || chown -R weechat:weechat /config/weechat
-# [ "$(stat -c %U:%G /irc/weechat )" = "weechat:weechat" ] || chown -R weechat:weechat /irc/weechat  # ??? for what data ???
+[ "$(stat -c %U:%G /irc/weechat )" = "weechat:weechat" ] || chown -R weechat:weechat /irc/weechat/logs
 
 
 if [ "$pipework_wait" ]; then

@@ -386,18 +386,18 @@ formats = {
   "fe-common/core" = {
     daychange = "           %g-----%w-%W-%n Day changed to %%D %W-%w-%g-----%n";
     pubmsg = "{pubmsgnick $nickalign$2 {pubnick $nickcolor$[.16]0$nicktrunc}}$1";
-    own_msg = "{ownmsgnick $nickalign$2 {ownnick $nickcolor$[.8]0$nicktrunc}}$1";
-    own_msg_channel = "{ownmsgnick $nickalign$3 {ownnick $nickcolor$[.8]0$nicktrunc}{msgchannel $1}}$2";
+    own_msg = "{ownmsgnick $nickalign$2 {ownnick $nickcolor$[.16]0$nicktrunc}}$1";
+    own_msg_channel = "{ownmsgnick $nickalign$3 {ownnick $nickcolor$[.16]0$nicktrunc}{msgchannel $1}}$2";
     own_msg_private_query = "{ownprivmsgnick $nickalign{ownprivnick $nickcolor$2$nicktrunc}}$1";
 
     # Fix: whole msg line hilight
-    pubmsg_me = "%M%0{pubmsgmenick $nickalign%M%0$2 {menick $[.16]0$nicktrunc}}$1";
-    pubmsg_me_channel = "%M%0{pubmsgmenick $nickalign%M%0$3 {menick $[.16]0$nicktrunc}{msgchannel $1}}$2";
-    pubmsg_hilight = "%M%0{pubmsghinick $0 $nickalign%M%0$3 $[.16]1$nicktrunc}$2";
-    pubmsg_hilight_channel = "%M%0{pubmsghinick $0 $nickalign%M%0$4 $[.16]1$nicktrunc{msgchannel $2}}$3";
+    pubmsg_me = "%M%0{pubmsgmenick $nickalign%M%0$2 {menick $nickcolor$[.16]0$nicktrunc}}$1";
+    pubmsg_me_channel = "%M%0{pubmsgmenick $nickalign%M%0$3 {menick $nickcolor$[.16]0$nicktrunc}{msgchannel $1}}$2";
+    pubmsg_hilight = "%M%0{pubmsghinick $0 $nickalign%M%0$3 $nickcolor$[.16]1$nicktrunc}$2";
+    pubmsg_hilight_channel = "%M%0{pubmsghinick $0 $nickalign%M%0$4 $nickcolor$[.16]1$nicktrunc{msgchannel $2}}$3";
 
     pubmsg_channel = "{pubmsgnick $nickalign$3 {pubnick $nickcolor$[.16]0$nicktrunc}{msgchannel $1}}$2";
-    msg_private_query = "{privmsgnick $nickalign$nickcolor$0$nicktrunc}$2";
+    msg_private_query = "{privmsgnick $nickalign$nickcolor$[.8]0$nicktrunc}$2";
   };
   "Irssi::Script::adv_windowlist" = {
 
@@ -426,8 +426,8 @@ formats = {
   };
   "fe-common/irc" = {
     own_action = "$nickalign{ownaction $0$nicktrunc}$1";
-    action_private = "$nickalign{pvtaction $0$nicktrunc}$2";
-    action_private_query = "$nickalign{pvtaction_query $0$nicktrunc}$2";
-    action_public = "$nickalign{pubaction $0$nicktrunc}$1";
+    action_private = "$nickalign{pvtaction $[.14]0$nicktrunc}$2";
+    action_private_query = "$nickalign{pvtaction_query $[.14]0$nicktrunc}$2";
+    action_public = "$nickalign{pubaction $[.14]0$nicktrunc}$1";
   };
 };

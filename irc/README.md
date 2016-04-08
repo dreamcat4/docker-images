@@ -329,6 +329,8 @@ INTERFACE, TCP_PORT, (PROTOCOL), UNIX_USER, SERVICE, COMMENT
 
 0.0.0.0 (all interfaces), 6697, (SSL IRC), znc, znc irc server, for other irc clients / mobile apps etc. can be disabled in znc.conf file, then restart container / znc server
 
+0.0.0.0 (all interfaces), 9001, (SSL weechat relay), weechat, weechat relay port, for glowing-bear web-based IRC interface
+
 localhost, 9997 (SSL IRC), znc, znc irc server, only visible inside container, for client: conatiner's local instance of irssi program
 
 localhost, 6111, (http IRC), bitlbee, bitlbee irc server, only visible inside container, for client: local ZNC server

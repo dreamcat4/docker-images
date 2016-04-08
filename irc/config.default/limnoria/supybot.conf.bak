@@ -88,9 +88,27 @@ supybot.networks.barton.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # barton.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.barton.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.barton.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.barton.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to barton but
@@ -217,9 +235,27 @@ supybot.networks.bitlbee.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # bitlbee.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.bitlbee.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.bitlbee.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.bitlbee.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to bitlbee but
@@ -346,9 +382,27 @@ supybot.networks.dalnet.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # dalnet.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.dalnet.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.dalnet.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.dalnet.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to dalnet but
@@ -475,9 +529,27 @@ supybot.networks.efnet.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # efnet.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.efnet.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.efnet.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.efnet.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to efnet but
@@ -604,9 +676,27 @@ supybot.networks.freenode.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # freenode.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.freenode.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.freenode.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.freenode.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to freenode but
@@ -733,9 +823,27 @@ supybot.networks.gnome.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # gnome.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.gnome.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.gnome.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.gnome.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to gnome but
@@ -862,9 +970,27 @@ supybot.networks.ircnet.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # ircnet.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.ircnet.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.ircnet.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.ircnet.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to ircnet but
@@ -991,9 +1117,27 @@ supybot.networks.mozilla.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # mozilla.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.mozilla.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.mozilla.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.mozilla.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to mozilla but
@@ -1120,9 +1264,27 @@ supybot.networks.ngircd.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # ngircd.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.ngircd.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.ngircd.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.ngircd.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to ngircd but
@@ -1249,9 +1411,27 @@ supybot.networks.oftc.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # oftc.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.oftc.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.oftc.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.oftc.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to oftc but
@@ -1378,9 +1558,27 @@ supybot.networks.quakenet.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # quakenet.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.quakenet.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.quakenet.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.quakenet.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to quakenet but
@@ -1507,9 +1705,27 @@ supybot.networks.undernet.channels.key:
 # Determines whether the bot will attempt to connect with SSL sockets to
 # undernet.
 #
-# Default value: False
+# Default value: True
 ###
 supybot.networks.undernet.ssl: True
+
+###
+# Space-separated list of fingerprints of trusted certificates for this
+# network. Supported hash algorithms are: md5, sha1, sha224, sha256,
+# sha384, and sha512. If non-empty, Certification Authority signatures
+# will not be used to verify certificates.
+#
+# Default value:  
+###
+supybot.networks.undernet.ssl.serverFingerprints:  
+
+###
+# A certificate that is trusted to verify certificates of this network
+# (aka. Certificate Authority).
+#
+# Default value: 
+###
+supybot.networks.undernet.ssl.authorityCertificate: 
 
 ###
 # Determines whether the bot will connect in plain text to undernet but
@@ -2891,6 +3107,15 @@ supybot.protocols.http.peekSize: 8192
 # Default value: 
 ###
 supybot.protocols.http.proxy: 
+
+###
+# Determines whether server certificates will be verified, which checks
+# whether the server certificate is signed by a known certificate
+# authority, and aborts the connection if it is not.
+#
+# Default value: False
+###
+supybot.protocols.ssl.verifyCertificates: False
 
 ###
 # If true, uses IPV6_V6ONLY to disable forwaring of IPv4 traffic to IPv6
