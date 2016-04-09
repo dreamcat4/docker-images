@@ -996,13 +996,9 @@ sub build_buffers
 
         my $result = check_immune_detached_buffers($buffer->{"name"});          # checking for wildcard 
 
-        if ( check_detach_buffer_immediately($buffer->{"name"}) eq 1
+        next if ( check_detach_buffer_immediately($buffer->{"name"}) eq 1
                  and $buffer->{"current_buffer"} eq 0
-                 and ( not exists $hotlist{$buffer->{"pointer"}} or $hotlist{$buffer->{"pointer"}} < 2) )          # checking for buffer to immediately detach
-        {
-            weechat::command($buffer->{"pointer"}, '/buffer close');
-            next;
-        }
+                 and ( not exists $hotlist{$buffer->{"pointer"}} or $hotlist{$buffer->{"pointer"}} < 2) );          # checking for buffer to immediately detach
 
         unless ($result)
         {
