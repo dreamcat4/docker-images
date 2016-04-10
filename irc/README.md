@@ -537,8 +537,8 @@ The container's ZNC and Bitlbee servers are also kept running too. Like irssi, i
 
 ## Per-user setup
 
-1. Configure your znc user account
-2. Setup nickserv / identify with services
+1. Configure your znc user accounts - that was all covered in the 'Quickstart' section. We repeated it below (for no good reason).
+2. Setup nickserv / identify with services - See next sections below.
 
 ### ZNC user configuration
 
@@ -554,11 +554,11 @@ This is set your own IRC nickname.
 * Make sure your new user account still has admin status, and logout / login with it.
 * Now you can disable / delete the previous `znc` user account. To stop it trying to log into IRC servers. Or at least change it's password to something more secure.
 
-After changing our username, we now need to also edit the irssi config file at `/config/irssi/config`. You can do this inside the container with the cmd `nano /config/irssi/config`. Or from the host, looking inside the location of the mounted `/config` docker volume. Either way just make sure that the file's user ownership remains the same after editin. Which is the container's `irssi` unix user account. And file ownership is not changed to `root` user etc.
+After changing our username, we now need to also edit the other config files for our irc clients. For example at `/config/irssi/config`and so on. That was all explained in the quickstart section. You can do this inside the container with the cmd `nano /config/irssi/config`. Or from the host, looking inside the location of the mounted `/config` docker volume. Either way just make sure that the file's user ownership remains the same after editin. Which is the container's `irssi` unix user account. And file ownership is not changed to `root` user etc.
 
 * In the irssi/config file, update the username and password login credentials on each server's `password = ` config line. To be the new login for your znc user account. There is only 1 znc user account. But there are multiple `password = ` declarations, one for each unique IRC service (Freenode, EFNet, etc).
 
-Now restart irssi program with `/quit` command, or `docker restart` your container for changes to take effect. Irssi should now be trying to login under your own IRC nickname.
+Now restart the container with `docker restart` for changes to take effect. Irssi should now be trying to login under your own IRC nickname.
 
 ### Setting up nickserv on znc
 
