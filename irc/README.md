@@ -1,16 +1,5 @@
 # IRC
 
-### Status
-
-WIP - Work in progress.
-
-We now have basic and reliable working chain of services. Everything comes up automatically. All with basic and generic settings.
-
-Left todo:
-
-* Improve documentation
-* Publish on Docker Hub
-
 ### Introduction
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
@@ -18,9 +7,8 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
 What's included:
 
 * IRC clients
-  * irssi - config finished
-  * weechat - WIP
-    * glowing-bear (web interface)
+  * irssi
+  * weechat, mostly just for glowing-bear web interface
   * tmux and sshd for terminal server
 
 * IRC services
