@@ -324,7 +324,7 @@ nano /config/irssi/config [return]
 
 Pre-seeded Configuration Folder:
 
-All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [! broken link `config.default/README.md`](config.default/README.md) and [! broken link `config.custom/README.md`](config.custom/README.md) for more information about those.
+All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [`config.default/README.md`](config.default/README.md) and [`config.custom/README.md`](config.custom/README.md) for more information about those.
 
 SSH Configuration:
 
