@@ -547,8 +547,8 @@ This is set your own IRC nickname.
 * Using a web browser connect to znc's web interface. It is available on HTTPS and port 6697: `https://CONTAINER_IP:6697`
 * Log in to znc with username: `znc`, password: `znc`
 * Go to "Manage users" page
-* Click "Clone" next to znc user
-* Replace all instances of 'znc' and 'znc_user' (all the various different usernames) with your own IRC nickname, realname etc. 
+* Click "Clone" for `znc` user
+* Replace all instances of `znc` and `znc_user` (all the various different usernames) with your own IRC nickname, realname etc. 
 * Set a new and more secure password for you to login to znc server with.
 * Click "Clone and return" at the bottom of page.
 * Make sure your new user account still has admin status, and logout / login with it.
