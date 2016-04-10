@@ -61,7 +61,7 @@ For the most part, you just need to set new username & password(s) for your own 
 * You should be left with 2 znc user accounts. 1 admin status account of `YOUR_IRC_NICKNAME`. Plus 1 machine account of `YOUR_IRC_BOT_NICKNAME`.
 
 * Stop the container
-* Navigate to the bind:mounted volume /config
+* Navigate to the bind:mounted volume `/config`
 
 Now for some reason (or perhaps a bug in znc), as a side-effect of our user clone operation znc has inserted many redundant duplicate config lines in each network's config block. Which are now incorrectly referring to the previous nickname we dont wish for: `znc_user`. Therefore, we must now also replace all cruft instances of the `znc_user` string in the znc config text file, located at:
 
@@ -82,7 +82,7 @@ We now need to replace the znc username:password login credentials, with your ne
 /config/weechat/relay.conf
 ```
 
-**/config/irssi/config**
+**`/config/irssi/config:`**
 
 * For the znc server logins, those instructions are included inside the config file itself.
 
@@ -104,7 +104,7 @@ ipw_password = "irssi";
 
 Is the login access password for 'glowing-bear over irssi'. That would require extra runtime files which is not included in the container. We decided to leave it out because it is simpler to use glowing-bear with weechat instead.
 
-**/config/limnoria/supybot.conf**
+**`/config/limnoria/supybot.conf:`**
 
 Find these bot settings, and change them to your bot's new znc name / znc password:
 
@@ -131,7 +131,7 @@ and so on...
 
 There are about 12 networks to update.
 
-**/config/weechat/irc.conf**
+**`/config/weechat/irc.conf:`**
 
 In this file, you must now update the following options, with the credendials of your new znc user account:
 
@@ -151,7 +151,7 @@ and so on...
 
 There are about 12 networks to update.
 
-**/config/weechat/relay.conf**
+**`/config/weechat/relay.conf:`**
 
 This is for your glowing-bear web access / login password. Change the line:
 
@@ -166,7 +166,7 @@ password = "weechat"
 
 We can change the peer connection password, to help secure our own local irc server and its seperated atheme services daemon.
 
-**/config/atheme/atheme.conf**
+**`/config/atheme/atheme.conf:`**
 
 Find the lines:
 
@@ -175,7 +175,7 @@ Find the lines:
   receive_password = "ngircd";
 ```
 
-**/config/ngircd/ngircd.conf**
+**`/config/ngircd/ngircd.conf:`**
 
 Find the lines:
 
