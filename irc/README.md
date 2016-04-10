@@ -216,7 +216,7 @@ Navigate in your web browser to the glowing bear website. You should be able to 
 
 ### IRC Servers
 
-IRC Networks and channels pre-configured
+IRC Networks and channels pre-configured. However they are not all switched on by default. You will need to go into your znc web settings to enable / disable each networks you want to znc to connect to.
 
 * Public IRC networks
 
@@ -322,9 +322,9 @@ nano /config/irssi/config [return]
 
 ### Configuration
 
-Pre-seeded Configuration Files:
+Pre-seeded Configuration Folder:
 
-All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [`config.default/README.md`](#config.default/README.md) and [`config.custom/README.md`](#config.custom/README.md) for more information about those.
+All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [! broken link `config.default/README.md`](config.default/README.md) and [! broken link `config.custom/README.md`](config.custom/README.md) for more information about those.
 
 SSH Configuration:
 
