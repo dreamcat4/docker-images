@@ -34,29 +34,31 @@ And thanks to TMUX, simultaneous ssh logins are supported. So you can have the s
 
 ### Quickstart
 
-For the most part, you just need to set new usernames / passwords for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
+For the most part, you just need to set new username & password(s) for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
 
 * Create a new container of `dreamcat4/irc` image, with bind:mounted volumes for the `/config` and `/irc` folders
 * Start the container
 
-* Point your web browser to https://CONTAINER_IP:6697
-  * Log into znc web interface with initial username: 'znc' and password: 'znc'
+* Point your web browser to `https://CONTAINER_IP:6697`
+  * Log into znc web interface with initial username: `znc` and password: `znc`
 
 * Click 'Manage Users'
-  * Click 'Clone' button for 'znc' user
+  * Click 'Clone' button for `znc` user
     * To give your own real nickname, and choose a new password
     * Click 'Clone and Return' button
 
-* After saving new user, click 'Edit' again, and Select 'admin' checkbox to make yourself the admin user
-* Logout as user 'znc'
+* After saving new user, click 'Edit' again, and In the 'Flags' section, select 'admin' checkbox to make yourself the admin user
+* Logout as user `znc`
 * Log back in as your own nickname, with your new password
 
 * Click 'Manage Users' again
-  * Delete the initial 'znc' user account
+  * Delete the initial `znc` user account
 
-  * Click 'Clone' button for 'supybot' user
+  * Click 'Clone' button for `supybot` machine account
     * Again to give your bot its own nickname, and choose a unique password for it
-    * Delete new initial 'supybot' account
+    * Delete the previous `supybot` machine account
+
+* You should be left with 2 znc user accounts. 1 admin status account of `YOUR_IRC_NICKNAME`. Plus 1 machine account of `YOUR_IRC_BOT_NICKNAME`.
 
 * Stop the container
 * Navigate to the bind:mounted volume /config
