@@ -326,11 +326,11 @@ Pre-seeded Configuration Folder:
 
 All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [`config.default/README.md`](config.default/README.md) and [`config.custom/README.md`](config.custom/README.md) for more information about those.
 
-SSH Configuration:
+**SSH Configuration:**
 
 For ssh terminal access you can put your existing ssh public key (e.g. `id_rsa.pub`) into `/config/irssi/.ssh/known_hosts` file. Else a new keypair will be automatically generated per container on first run. And the resultant `id_rsa` private key file can be copied from `/config/irssi/.ssh/id_rsa` of your new running container's mounted `/config` volume.
 
-ZNC Configuration:
+**ZNC Configuration:**
 
 Primarily you will want to change the znc admin username and password to something else more secure. And to be your own IRC nickname.
 
@@ -338,40 +338,39 @@ The znc server will be configurable from any standard web browser, available on 
 
 The `znc.conf` text file can also be edited directly. It is stored in the usual loacation at `/config/znc/configs/znc.conf`
 
-Weechat Config:
+**Weechat Config:**
 
-* Placeholder
-* Not setup yet
+Your irc login settings are held in the file `/config/weechat/irc.conf`. The password for glowing-bear web interface is held in `/config/weechat/relay.conf`.
 
-IRSSI Config:
+**IRSSI Config:**
 
 Assuming that you have changed the znc username and password, then you must also change those `/server` lines in the irssi config file. To use your new znc nick name and password. This file is located at `/config/irssi/config`.
 
-IRC Data:
+**IRC Data:**
 
 Generated data gets written to thedocker volume `/irc`.
 
 Note: An additional docker image, `dreamcat4/nginx` or `dreamcat4/samba` is also useful. To more easily access the contents of this `/irc` data folder on your LAN.
 
- Logs:
+**Logs:**
 
 By default all IRC channel logs are kept by ZNC and written to the `/irc/znc/logs` folder.
 
- URLs:
+**URLs:**
 
 The `urlplot` script is pre-configured to write all posted urls to `/irc/irssi/urlplot` folder. In both HTML and CSV format. The generated HTML file can bookmarked in your local web browser for easy access.
 
-Bitlbee:
+**Bitlbee:**
 
 Tends to be configured interactively by commands to the `&bitlbee` control channel, all done while running irssi client. Or by hand-editing the config file at `/config/bitlbee/bitlbee.conf`.
 
-TMUX:
+**TMUX:**
 
 The config file is located at `/config/irssi/.tmux.conf`
 
 This default tmux config does not really need any specific per user configuration. Unless you want to customize the behaviour of tmux more to your liking. For example to hide the `tmux ...` line at the top of the screen, or change the key-bindings etc.
 
-Limnoria:
+**Limnoria:**
 
 NOTE: YOU SHOULD CHANGE YOUR BOT'S NICK FROM `supybot` ---> `YOUR BOT`
 
@@ -398,11 +397,11 @@ How to identify yourself to the bot as it's owner:
 
 You will need to change the owner in `supybot.conf` to your real nick, and change the owner password to something more secure than `supybot` before taking it online to public irc servers.
 
-EXTRA NOTE:
+**EXTRA NOTE:**
 
 Going online to public servers with an IRC bot can be considered bad behaviour. Or suspicious due to botnets etc. So using a bot in the wrong way(s) can very quickly get you banned. Either from a specific channel, or IRC network, or even multiple IRC networks! Due to shared global blacklisting mechanisms. So be sure to check any relevant bot policies for those specific network(s) and channel(s) before taking your supybot online to any specific networks or channels. Check with a actual human being, and be asking for clarification / permission to do so where applicable.
 
-Ngircd:
+**Ngircd:**
 
 Provides the `#local` channel. Which is where znc and the supybot are pre-configured to automatically join to. This is your playground to configure / use the bot before taking it online elsewhere.
 
@@ -410,13 +409,13 @@ Provides the `#local` channel. Which is where znc and the supybot are pre-config
 * This irc server is pre-configured to listen only on the localhost `127.0.0.1` network interface.
 * Includes pairing passwords for the localhost `atheme` services daemon.
 
-NOTE:
+**NOTE:**
 
 This IRC server is minimally configured. But should be safe to use for private localhost use only. To be taking this ngircd instnace public (exposing ports to outside). Then at very least you should change the atheme pairing passwords. In both ngircd config file and atheme's config file.
 
 However its not recommended to use this single fat image for any public of semi-public hosting. As other IRC programs are running in the same image. For better hardening, use seperate sigle-service docker images, each linked together. For example 1 container for ngircd, 1 container for atheme services.
 
-atheme services:
+**atheme services:**
 
 * The config file is located at `/config/atheme/atheme.conf`
 * These servcies are only minimally configured (enough to work with the ngircd instance)
