@@ -9,9 +9,6 @@ We now have basic and reliable working chain of services. Everything comes up au
 Left todo:
 
 * Improve documentation
-* Upgrade irssi version, retest the default selection of scripts
-* Configure weechat client
-  * Setup glowing-bear web interface
 * Publish on Docker Hub
 
 ### Introduction
