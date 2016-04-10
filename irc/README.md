@@ -537,7 +537,7 @@ The container's ZNC and Bitlbee servers are also kept running too. Like irssi, i
 
 ## Per-user setup
 
-1. Configure your znc user accounts - that was all covered in the 'Quickstart' section. We repeated it below (for no good reason).
+1. Configure your znc user accounts - that was all covered in the 'Quickstart' section. And we briefly remind it below.
 2. Setup nickserv / identify with services - See next sections below.
 
 ### ZNC user configuration
