@@ -47,6 +47,186 @@ Public IRC Servers <--- ZNC <--- irssi <--- TMUX Session <--- SSH <--- Client co
 
 And thanks to TMUX, simultaneous ssh logins are supported. So you can have the same irssi or weechat text-based session open on multiple machines no problem. And multiple glowing-bear instances of the web interface too.
 
+### Quickstart
+
+For the most part, you just need to set new usernames / passwords for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
+
+* Create a new container of `dreamcat4/irc` image, with bind:mounted volumes for the `/config` and `/irc` folders
+* Start the container
+
+* Point your web browser to https://CONTAINER_IP:6697
+  * Log into znc web interface with initial username: 'znc' and password: 'znc'
+
+* Click 'Manage Users'
+  * Click 'Clone' button for 'znc' user
+    * To give your own real nickname, and choose a new password
+    * Click 'Clone and Return' button
+
+* After saving new user, click 'Edit' again, and Select 'admin' checkbox to make yourself the admin user
+* Logout as user 'znc'
+* Log back in as your own nickname, with your new password
+
+* Click 'Manage Users' again
+  * Delete the initial 'znc' user account
+
+  * Click 'Clone' button for 'supybot' user
+    * Again to give your bot its own nickname, and choose a unique password for it
+    * Delete new initial 'supybot' account
+
+* Stop the container
+* Navigate to the bind:mounted volume /config
+
+Now for some reason (or perhaps a bug in znc), as a side-effect of our user clone operation znc has inserted many redundant duplicate config lines in each network's config block. Which are now incorrectly referring to the previous nickname we dont wish for: `znc_user`. Therefore, we must now also replace all cruft instances of the `znc_user` string in the znc config text file, located at:
+
+```sh
+/config/znc/configs/znc.conf
+```
+
+Just search / replace all occurences of the string with your own personal irc nickname. Or else just delete them. As they are all extraneous config lines being repeated, they are not actually needed.
+
+----
+
+We now need to replace the znc username:password login credentials, with your new user accounts. The next files to modify are:
+
+```sh
+/config/irssi/config
+/config/limnoria/supybot.conf
+/config/weechat/irc.conf
+/config/weechat/relay.conf
+```
+
+**/config/irssi/config**
+
+* For the znc server logins, those instructions are included inside the config file itself.
+
+* You should also change the following irssi's settings to your real IRC nickname / account name:
+
+```perl
+settings = {
+  core = {
+    real_name = "znc user";
+    user_name = "znc_user";
+    nick = "znc_user";
+```
+
+BTW, the following setting:
+
+```perl
+ipw_password = "irssi";
+```
+
+Is the login access password for 'glowing-bear over irssi'. That would require extra runtime files which is not included in the container. We decided to leave it out because it is simpler to use glowing-bear with weechat instead.
+
+**/config/limnoria/supybot.conf**
+
+Find these bot settings, and change them to your bot's new znc name / znc password:
+
+```yaml
+supybot.nick: supybot
+supybot.ident: supybot
+supybot.user: znc_user's supybot
+```
+
+And for each network login setting, just as we show in the irssi config file, change them to:
+
+```yaml
+supybot.networks.NETWORK.password: ZNC_BOT_USERNAME/NETWORK:ZNC_BOT_PASSWORD
+```
+
+The lines to find are:
+
+```yaml
+supybot.networks.barton.password: supybot/barton:supybot
+supybot.networks.bitlbee.password: supybot/bitlbee:supybot
+supybot.networks.dalnet.password: supybot/dalnet:supybot
+and so on...
+```
+
+There are about 12 networks to update.
+
+**/config/weechat/irc.conf**
+
+In this file, you must now update the following options, with the credendials of your new znc user account:
+
+```perl
+nicks = "znc_user,znc_user_"
+password = "znc"
+```
+
+then also for each configured znc network:
+
+```perl
+barton.username = "znc/barton"
+bitlbee.username = "znc/bitlbee"
+dalnet.username = "znc/dalnet"
+and so on...
+```
+
+There are about 12 networks to update.
+
+**/config/weechat/relay.conf**
+
+This is for your glowing-bear web access / login password. Change the line:
+
+```perl
+password = "weechat"
+```
+
+* At this point, all of your znc bouncer account logins should be updated.
+* Some irc networks require you to identify your nickname with their services. That has not been covered in this quickstart section. As it depends which irc servers you actually want to be using. There is a seperate section with more instructions for that further down.
+
+##### Configure local irc server - peer passwords
+
+We can change the peer connection password, to help secure our own local irc server and its seperated atheme services daemon.
+
+**/config/atheme/atheme.conf**
+
+Find the lines:
+
+```sh
+  send_password = "atheme";
+  receive_password = "ngircd";
+```
+
+**/config/ngircd/ngircd.conf**
+
+Find the lines:
+
+```sh
+  MyPassword = atheme
+  PeerPassword = ngircd
+```
+
+And change the 2 passwords to something un-guessable. Make sure that the `send_password` still matches the `MyPassword` in the other file. And that the `receive_password` = `PeerPassword` in counterpart file.
+
+* That is the quickstart configuration finished!
+
+It is now recommended to copy only these few modified config files, into the overlay folder named `config.custom/` in the docker build context. Which can be checked out from github repo. Then if you ever re-build this docker image yourself, it will automatically include all your unique login / accounts info (as the pre-seeded default /config).
+
+----
+##### Testing out the quickstart config
+
+For ssh terminal access, you can find a new pair of ssh connection keys were generated in the following locations:
+
+```sh
+/config/irssi/.ssh
+/config/weechat/.ssh
+```
+
+Grab the 2 unique `id_rsa` private key files. One is for irssi, and the other one is for weechat. Rename them to something obvious. For example `irssi_rsa` and `weechat_rsa`. Then copy them to your client computers from where you want to login. Then you can ssh something like this:
+
+```sh
+ssh -i irssi_rsa irssi@CONTAINER_IP
+ssh -i weechat_rsa weechat@CONTAINER_IP
+```
+
+----
+
+For [glowing-bear](https://www.glowing-bear.org) web access, over HTTPS SSL/TLS:
+
+Navigate in your web browser to the glowing bear website. You should be able to log in with `CONTAINER_IP` and TCP port `9001`. And the weechat relay password you have put into `/config/weechat/relay.conf`. Make sure you have selected SSL/TLS connection.
+
+
 ### IRC Servers
 
 IRC Networks and channels pre-configured
