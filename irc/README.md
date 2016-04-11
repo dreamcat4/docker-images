@@ -1,4 +1,4 @@
-# IRC
+## IRC
 
 **Including [irssi](https://irssi.org/) (as pictured):**
 
