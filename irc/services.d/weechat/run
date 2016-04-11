@@ -36,8 +36,10 @@ sudo -E su "weechat" << EOF
 	# Generate ssh key pair
 	if [ ! -e "/config/weechat/.ssh/authorized_keys" ]; then
 		mkdir -p ~/.ssh
+		cd ~/.ssh
 		ssh-keygen -q -t rsa -N "" -f id_rsa
 		cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+		cd
 	fi
 
 
