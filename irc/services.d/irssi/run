@@ -39,6 +39,7 @@ sudo -E su "irssi" << EOF
 
 	# Generate ssh key pair
 	if [ ! -e "/config/irssi/.ssh/authorized_keys" ]; then
+		mkdir -p ~/.ssh
 		ssh-keygen -q -t rsa -N "" -f id_rsa
 		cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 	fi
