@@ -1,4 +1,8 @@
-sup IRC
+# IRC
+
+![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
+
+...and much more!
 
 ### Introduction
 
@@ -8,7 +12,7 @@ What's included:
 
 * IRC clients
   * irssi
-  * weechat, mostly just for glowing-bear web interface
+  * weechat, for glowing-bear web interface
   * tmux and sshd for terminal server
 
 * IRC services
