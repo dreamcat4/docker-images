@@ -41,7 +41,10 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
 - [Quickstart](#quickstart)
   - [Configure ZNC](#configure-znc)
   - [Configure irc clients](#configure-irc-clients)
-    - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
+    - [irssi](#irssi)
+    - [limnoria (aka supybot)](#limnoria-aka-supybot)
+    - [weechat](#weechat)
+  - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
   - [Connecting](#connecting)
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
@@ -52,8 +55,8 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
 - [Configuration](#configuration)
   - [ssh](#ssh)
   - [znc](#znc)
-  - [weechat](#weechat)
-  - [irssi](#irssi)
+  - [weechat](#weechat-1)
+  - [irssi](#irssi-1)
   - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
@@ -177,6 +180,10 @@ The user is intended to access the IRC service primarily as the user `irssi`, on
 
 For the most part, you just need to set new username & password(s) for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
 
+* After this section is completed, all of your znc bouncer account logins should be updated.
+
+* Some irc networks also require you to identify yourself, or register your nickname with their services. That has not been covered in this quickstart section. As that depends which specific irc servers you actually wish to connect to. There is a seperate section for all the nickserv stuff / per-network registration instructions.
+
 ### Configure ZNC
 
 * Create a new container of `dreamcat4/irc` image, with bind:mounted volumes for the `/config` and `/irc` folders
@@ -226,6 +233,8 @@ We now need to replace the znc username:password login credentials, with your ne
 /config/weechat/relay.conf
 ```
 
+#### irssi
+
 **`/config/irssi/config:`**
 
 * For the znc server logins, those instructions are included inside the config file itself.
@@ -247,6 +256,8 @@ ipw_password = "irssi";
 ```
 
 Is the login access password for 'glowing-bear over irssi'. That would require extra runtime files which is not included in the container. We decided to leave it out because it is simpler to use glowing-bear with weechat instead.
+
+#### limnoria (aka supybot)
 
 **`/config/limnoria/supybot.conf:`**
 
@@ -281,6 +292,8 @@ Replace the bot owner `znc_user` --> `YOUR_IRC_NICKNAME`.
 
 The default initial 'owner password' is also stored here. However in a hashed form. Owner password is used to identify yourself as to the bot as its admin, and take ownership of it. The default owner password is `supybot`. But its encrypted so we cant change it right now. Once logged in over IRC, you first authenticate yourself with that initial owner password `supybot`. Then change it with `/query supybot user set password supybot YOUR_NEW_BOT_OWNER_PASSWORD`.
 
+#### weechat
+
 **`/config/weechat/irc.conf:`**
 
 In this file, you must now update the following options, with the credendials of your new znc user account:
@@ -309,10 +322,7 @@ This is for your glowing-bear web access / login password. Change the line:
 password = "weechat"
 ```
 
-* At this point, all of your znc bouncer account logins should be updated.
-* Some irc networks require you to identify your nickname with their services. That has not been covered in this quickstart section. As it depends which irc servers you actually want to be using. There is a seperate section with more instructions for that further down.
-
-#### Configure local irc server - peer passwords
+### Configure local irc server - peer passwords
 
 We can change the peer connection password, to help secure our own local irc server and its seperated atheme services daemon.
 
