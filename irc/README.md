@@ -10,8 +10,9 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
  
 
-  - [Introduction](#introduction)
-  - [Connection diagram](#connection-diagram)
+  - [What's included?](#whats-included)
+    - [Connection diagram](#connection-diagram)
+    - [Service ports](#service-ports)
   - [Quickstart](#quickstart)
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
     - [Testing out the quickstart config](#testing-out-the-quickstart-config)
@@ -23,7 +24,6 @@
   - [Editing configuration files](#editing-configuration-files)
   - [Configuration](#configuration)
   - [Bitlbee](#bitlbee)
-  - [Service ports](#service-ports)
   - [Connecting to the irssi session](#connecting-to-the-irssi-session)
   - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
@@ -46,7 +46,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-### Introduction
+### What's included?
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
@@ -64,7 +64,7 @@ What's included:
     * atheme services - for nickserv, sasl etc
   * Limnoria IRC bot (aka supybot)
 
-### Connection diagram
+#### Connection diagram
 
 General diagram how these programs are connected up:
 
@@ -77,6 +77,30 @@ Public IRC Servers <--- ZNC <--- irssi <--- TMUX Session <--- SSH <--- Client co
 ```
 
 And thanks to TMUX, simultaneous ssh logins are supported. So you can have the same irssi or weechat text-based session open on multiple machines no problem. And multiple glowing-bear instances of the web interface too.
+
+#### Service ports
+
+This container runs multiple services on it, and as several different user accounts. They are as follows:
+
+```sh
+INTERFACE, TCP_PORT, (PROTOCOL), UNIX_USER, SERVICE, COMMENT
+
+0.0.0.0 (all interfaces), 22, (SSH term), irssi, irssi client in a tmux session, always running
+
+0.0.0.0 (all interfaces), 6697, (SSL HTTPS), znc, znc web interface, for configuring the znc service
+
+0.0.0.0 (all interfaces), 6697, (SSL IRC), znc, znc irc server, for other irc clients / mobile apps etc. can be disabled in znc.conf file, then restart container / znc server
+
+0.0.0.0 (all interfaces), 9001, (SSL weechat relay), weechat, weechat relay port, for glowing-bear web-based IRC interface
+
+localhost, 9997 (SSL IRC), znc, znc irc server, only visible inside container, for client: conatiner's local instance of irssi program
+
+localhost, 6111, (http IRC), bitlbee, bitlbee irc server, only visible inside container, for client: local ZNC server
+
+localhost, 6667, (http IRC), ngircd, ngircd irc server, only visible inside container, for client: local ZNC server
+```
+
+The user is intended to access the IRC service primarily as the user `irssi`, on ssh port 22. Via public-private SSH key authentication (no ssh password). The container's irssi program itself is always kept running under a perpetual tmux session named `tmux`. Which supports simultaneous logins from multiple computers.
 
 ### Quickstart
 
@@ -538,30 +562,6 @@ To check that a specific protocol is supported, type `account add PROTOCOL usern
 **Additional Protocols:**
 
 https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols
-
-### Service ports
-
-This container runs multiple services on it, and as several different user accounts. They are as follows:
-
-```sh
-INTERFACE, TCP_PORT, (PROTOCOL), UNIX_USER, SERVICE, COMMENT
-
-0.0.0.0 (all interfaces), 22, (SSH term), irssi, irssi client in a tmux session, always running
-
-0.0.0.0 (all interfaces), 6697, (SSL HTTPS), znc, znc web interface, for configuring the znc service
-
-0.0.0.0 (all interfaces), 6697, (SSL IRC), znc, znc irc server, for other irc clients / mobile apps etc. can be disabled in znc.conf file, then restart container / znc server
-
-0.0.0.0 (all interfaces), 9001, (SSL weechat relay), weechat, weechat relay port, for glowing-bear web-based IRC interface
-
-localhost, 9997 (SSL IRC), znc, znc irc server, only visible inside container, for client: conatiner's local instance of irssi program
-
-localhost, 6111, (http IRC), bitlbee, bitlbee irc server, only visible inside container, for client: local ZNC server
-
-localhost, 6667, (http IRC), ngircd, ngircd irc server, only visible inside container, for client: local ZNC server
-```
-
-The user is intended to access the IRC service primarily as the user `irssi`, on ssh port 22. Via public-private SSH key authentication (no ssh password). The container's irssi program itself is always kept running under a perpetual tmux session named `tmux`. Which supports simultaneous logins from multiple computers.
 
 ### Connecting to the irssi session
 
