@@ -78,6 +78,7 @@ We now need to replace the znc username:password login credentials, with your ne
 ```sh
 /config/irssi/config
 /config/limnoria/supybot.conf
+/config/limnoria/conf/users.conf
 /config/weechat/irc.conf
 /config/weechat/relay.conf
 ```
@@ -130,6 +131,12 @@ and so on...
 ```
 
 There are about 12 networks to update.
+
+**`/config/limnoria/conf/users.conf:`**
+
+Replace the bot owner `znc_user` --> `YOUR_IRC_NICKNAME`.
+
+The default initial 'owner password' is also stored here. However in a hashed form. Owner password is used to identify yourself as to the bot as its admin, and take ownership of it. The default owner password is `supybot`. But its encrypted so we cant change it right now. Once logged in over IRC, you first authenticate yourself with that initial owner password `supybot`. Then change it with `/query supybot user set password supybot YOUR_NEW_BOT_OWNER_PASSWORD`.
 
 **`/config/weechat/irc.conf:`**
 
@@ -384,18 +391,27 @@ NOTE: YOU SHOULD CHANGE YOUR BOT'S NICK FROM `supybot` ---> `YOUR BOT`
 How to identify yourself to the bot as it's owner:
 
 ```
-< znc_user> @list --unloaded
+@list --unloaded
 #. supybot# znc_user: Error: You don't have the owner capability. If you think that you should have this capability, be sure that you are identified before trying again. The 'whoami' command can tell you if you're identified.
 
-< znc_user> @whoami
+@whoami
 #. supybot# znc_user: I don't recognize you. You can message me either of these two commands: "user identify <username> <password>" to log in or "user register <username> <password>" to register.
 
 /query supybot user identify znc_user supybot
-<znc_user> user identify znc_user supybot
 -supybot(~supybot@localhost)- The operation succeeded.
 ```
 
-You will need to change the owner in `supybot.conf` to your real nick, and change the owner password to something more secure than `supybot` before taking it online to public irc servers.
+You will need to change the owner in `supybot.conf` to your real nick, if you didnt already do so in the quickstart instructions. This involves stopping the container, and changing the owner name setting in the file `/config/limnoria/conf/users.conf`. Then restart the container.
+
+Now we can login again, and change the owner password to something more secure than `supybot` before taking it online to public irc servers:
+
+```
+/query supybot user identify YOUR_IRC_NICKNAME supybot
+-supybot(~supybot@localhost)- The operation succeeded.
+
+/query supybot user set password supybot YOUR_NEW_BOT_OWNER_PASSWORD
+-supybot(~supybot@localhost)- The operation succeeded.
+```
 
 **EXTRA NOTE:**
 
