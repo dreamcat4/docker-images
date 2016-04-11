@@ -1,10 +1,12 @@
 # IRC
 
-**Including [irssi](https://i.imgur.com/29t9smb.png) (as pictured):**
+A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
+
+**Includes [irssi text client](https://i.imgur.com/29t9smb.png) over tmux / ssh, as pictured below:**
 
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
 
-**...but much MUCH more!**
+***...but also SO MUCH MORE!...*** This is the mother of all IRC docker images.
 
 ## Contents
 
@@ -12,30 +14,40 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
  
 
-  - [What's included?](#whats-included)
-    - [Connection diagram](#connection-diagram)
-    - [Service ports](#service-ports)
-  - [Quickstart](#quickstart)
+- [What's included?](#whats-included)
+  - [Pros and Cons of this Docker image](#pros-and-cons-of-this-docker-image)
+  - [Connection diagram](#connection-diagram)
+  - [Service ports](#service-ports)
+- [Quickstart](#quickstart)
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
-    - [Testing out the quickstart config](#testing-out-the-quickstart-config)
-  - [IRC Servers](#irc-servers)
-  - [Editing configuration files](#editing-configuration-files)
-  - [Configuration](#configuration)
-    - [ssh](#ssh)
-    - [znc](#znc)
-    - [weechat](#weechat)
-    - [irssi](#irssi)
-    - [IRC Data](#irc-data)
-    - [Logs](#logs)
-    - [URLs](#urls)
-    - [Bitlbee](#bitlbee)
-    - [tmux](#tmux)
-    - [Limnoria (aka supybot)](#limnoria-aka-supybot)
-    - [ngircd](#ngircd)
-    - [atheme irc services](#atheme-irc-services)
-  - [Bitlbee Protocols](#bitlbee-protocols)
-  - [Connecting to the irssi session](#connecting-to-the-irssi-session)
-  - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
+  - [Testing out the quickstart config](#testing-out-the-quickstart-config)
+- [IRC Servers](#irc-servers)
+- [Editing configuration files](#editing-configuration-files)
+- [Configuration](#configuration)
+  - [ssh](#ssh)
+  - [znc](#znc)
+  - [weechat](#weechat)
+  - [irssi](#irssi)
+  - [IRC Data](#irc-data)
+  - [Logs](#logs)
+  - [URLs](#urls)
+  - [Bitlbee](#bitlbee)
+  - [tmux](#tmux)
+  - [Limnoria (aka supybot)](#limnoria-aka-supybot)
+  - [ngircd](#ngircd)
+  - [atheme irc services](#atheme-irc-services)
+  - [Bitlbee chat protocols](#bitlbee-chat-protocols)
+    - [LibPurple](#libpurple)
+    - [WhatsApp](#whatsapp)
+    - [Skype](#skype)
+    - [SIPE](#sipe)
+    - [Facebook](#facebook)
+    - [Steam Chat](#steam-chat)
+    - [Telegram](#telegram)
+    - [Torchat](#torchat)
+    - [Other chat protocols](#other-chat-protocols)
+- [Connecting to the irssi session](#connecting-to-the-irssi-session)
+- [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
   - [ZNC user configuration](#znc-user-configuration)
   - [Setting up nickserv on znc](#setting-up-nickserv-on-znc)
@@ -50,20 +62,16 @@
     - [oftc](#oftc)
     - [quakenet](#quakenet)
     - [undernet](#undernet)
-  - [Irssi Scripts](#irssi-scripts)
-    - [Tweaked scripts](#tweaked-scripts)
-    - [Not met script dependancies](#not-met-script-dependancies)
-  - [File permissions](#file-permissions)
-  - [Docker Compose](#docker-compose)
-  - [Alternative](#alternative)
+- [Irssi Scripts](#irssi-scripts)
+  - [Tweaked scripts](#tweaked-scripts)
+  - [Not met script dependancies](#not-met-script-dependancies)
+- [File permissions](#file-permissions)
+- [Docker Compose](#docker-compose)
+- [Web-browser alternative](#web-browser-alternative)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## What's included?
-
-A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
-
-What's included:
 
 * IRC clients
   * [irssi](https://irssi.org/)
