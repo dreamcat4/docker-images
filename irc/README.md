@@ -133,7 +133,7 @@ This image's Dockerfile has been properly organised into isolated sections for e
 
 ***Top tip:***
 
-Bitlbee and limnoria were by far the biggest culprits to image bloat here. The large image size is mostly due to their dependancies. Before adding them the image was 'only a mere ~700mb'. By adding them it fully doubled the image size from previous all estimates. That smarted much. But ah well! What can you do eh? Life fife without your own personal IRC bot and access to all of the most popular IM chat servers in the entire world? I think not! :)))
+Bitlbee and limnoria were by far the biggest culprits to image bloat here. The large image size is mostly due to their dependancies. Before adding them the image was 'only a mere ~700mb'. By adding them it fully doubled the image size from previous all estimates. That smarted much. But ah well! What can you do eh? Be left without access to all the most popular IM chat servers in the entire world? Live life without your very own personal IRC bot? Noooooo! :)))
 
 ### Connection diagram
 
