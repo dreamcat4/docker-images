@@ -22,7 +22,7 @@ You also get [your very own irc bot](https://github.com/dreamcat4/docker-images/
 
 Of course not everybody likes bots. Or the hassles associated with having their very own IRC services. So I've also included [an extensive 3rd party IM chat protocols support for bitlbee](https://github.com/dreamcat4/docker-images/tree/master/irc#bitlbee-chat-protocols). Thanks to [bitlbee](https://wiki.bitlbee.org/) and [libpurple](https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols) for providing those ones.
 
-Well anyway... the whole IRC experience here cannot be fully described. It somehow becomes more than just the sum of its parts. Throw away your old client, and this new experience of ultimate and up-precedented IRC power can be yours today!
+Well anyhow... the environment as a whole cannot be described merely in words alone. *It simply has to be experienced.* So throw away your old irc setup! Join with me! And ultimate IRC power can be yours today!
 
 ![irssi client theme customizations](http://i.imgur.com/Fk94eHf.png "irssi client theme customizations")
 
@@ -44,12 +44,15 @@ Well anyway... the whole IRC experience here cannot be fully described. It someh
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
 - [IRC Servers](#irc-servers)
+    - [Public IRC networks](#public-irc-networks)
+    - [Private / localhost services](#private--localhost-services)
 - [Editing configuration files](#editing-configuration-files)
 - [Configuration](#configuration)
   - [ssh](#ssh)
   - [znc](#znc)
   - [weechat](#weechat)
   - [irssi](#irssi)
+  - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
   - [URLs](#urls)
