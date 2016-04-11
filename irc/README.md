@@ -13,6 +13,7 @@
  
 
 - [What's included?](#whats-included)
+  - [Pros and Cons of this Docker image](#pros-and-cons-of-this-docker-image)
   - [Connection diagram](#connection-diagram)
   - [Service ports](#service-ports)
 - [Quickstart](#quickstart)
@@ -85,6 +86,29 @@ What's included:
   * [ngircd](https://github.com/ngircd/ngircd) - your own local / private IRC server
     * [atheme irc services](https://atheme.github.io/atheme.net/atheme.html) - for nickserv, sasl etc
   * [Limnoria IRC bot](http://doc.supybot.aperio.fr/en/latest/use/index.html) (aka supybot)
+
+### Pros and Cons of this Docker image
+
+**Pros:**
+
+* All of the *best*, most *useful*, and most *practical* IRC services
+* Services come preconfigured to work together with each other out-of-the box, often communicating over localhost 127.0.0.1
+* Each service runs under its own unpriviledged unix account
+* Well organised `/config` folder, with user pre-seeding
+  * the is easiest way to manage your irc settings files
+  * can diff, merge, version control, and overlay your per-user IRC settings ontop of the pre-configured defaults
+* Bitlbee comes 'fully' loaded with support for all of the major chat protocols - no hassles, just go!
+* Not resource hungry, can easily run on local modest hardware, or limited VPS plan / remote servers
+
+**Cons:**
+
+* Very large image size ~1.4gb, most of which is the bitlbee and supybot dependancies
+* It is less secure than having many isolated individual images
+* May include some service you didn't want
+
+**However:**
+
+This image's Dockerfile has been properly organised into isolated sections for each services. And each service is kept in individual separate folders. Therefore this image should be easy to split up and broken down. Want to take something out? It should be a sinch.
 
 ### Connection diagram
 
