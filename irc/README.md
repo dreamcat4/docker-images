@@ -1,4 +1,4 @@
-## IRC
+# IRC
 
 **Including [irssi](https://irssi.org/) (as pictured):**
 
@@ -10,30 +10,39 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
  
 
-  - [What's included?](#whats-included)
-    - [Connection diagram](#connection-diagram)
-    - [Service ports](#service-ports)
-  - [Quickstart](#quickstart)
+- [What's included?](#whats-included)
+  - [Connection diagram](#connection-diagram)
+  - [Service ports](#service-ports)
+- [Quickstart](#quickstart)
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
-    - [Testing out the quickstart config](#testing-out-the-quickstart-config)
-  - [IRC Servers](#irc-servers)
-  - [Editing configuration files](#editing-configuration-files)
-  - [Configuration](#configuration)
-    - [ssh](#ssh)
-    - [znc](#znc)
-    - [weechat](#weechat)
-    - [irssi](#irssi)
-    - [IRC Data](#irc-data)
-    - [Logs](#logs)
-    - [URLs](#urls)
-    - [Bitlbee](#bitlbee)
-    - [tmux](#tmux)
-    - [Limnoria (aka supybot)](#limnoria-aka-supybot)
-    - [ngircd](#ngircd)
-    - [atheme irc services](#atheme-irc-services)
-  - [Bitlbee Protocols](#bitlbee-protocols)
-  - [Connecting to the irssi session](#connecting-to-the-irssi-session)
-  - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
+  - [Testing out the quickstart config](#testing-out-the-quickstart-config)
+- [IRC Servers](#irc-servers)
+- [Editing configuration files](#editing-configuration-files)
+- [Configuration](#configuration)
+  - [ssh](#ssh)
+  - [znc](#znc)
+  - [weechat](#weechat)
+  - [irssi](#irssi)
+  - [IRC Data](#irc-data)
+  - [Logs](#logs)
+  - [URLs](#urls)
+  - [Bitlbee](#bitlbee)
+  - [tmux](#tmux)
+  - [Limnoria (aka supybot)](#limnoria-aka-supybot)
+  - [ngircd](#ngircd)
+  - [atheme irc services](#atheme-irc-services)
+  - [Bitlbee chat protocols](#bitlbee-chat-protocols)
+    - [LibPurple](#libpurple)
+    - [WhatsApp](#whatsapp)
+    - [Skype](#skype)
+    - [SIPE](#sipe)
+    - [Facebook](#facebook)
+    - [Steam Chat](#steam-chat)
+    - [Telegram](#telegram)
+    - [Torchat](#torchat)
+    - [Other chat protocols](#other-chat-protocols)
+- [Connecting to the irssi session](#connecting-to-the-irssi-session)
+- [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
   - [ZNC user configuration](#znc-user-configuration)
   - [Setting up nickserv on znc](#setting-up-nickserv-on-znc)
@@ -48,16 +57,16 @@
     - [oftc](#oftc)
     - [quakenet](#quakenet)
     - [undernet](#undernet)
-  - [Irssi Scripts](#irssi-scripts)
-    - [Tweaked scripts](#tweaked-scripts)
-    - [Not met script dependancies](#not-met-script-dependancies)
-  - [File permissions](#file-permissions)
-  - [Docker Compose](#docker-compose)
-  - [Alternative](#alternative)
+- [Irssi Scripts](#irssi-scripts)
+  - [Tweaked scripts](#tweaked-scripts)
+  - [Not met script dependancies](#not-met-script-dependancies)
+- [File permissions](#file-permissions)
+- [Docker Compose](#docker-compose)
+- [Web-browser alternative](#web-browser-alternative)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-### What's included?
+## What's included?
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
@@ -75,7 +84,7 @@ What's included:
     * [atheme irc services](https://atheme.github.io/atheme.net/atheme.html) - for nickserv, sasl etc
   * [Limnoria IRC bot](http://doc.supybot.aperio.fr/en/latest/use/index.html) (aka supybot)
 
-#### Connection diagram
+### Connection diagram
 
 General diagram how these programs are connected up:
 
@@ -89,7 +98,7 @@ Public IRC Servers <--- ZNC <--- irssi <--- TMUX Session <--- SSH <--- Client co
 
 And thanks to TMUX, simultaneous ssh logins are supported. So you can have the same irssi or weechat text-based session open on multiple machines no problem. And multiple glowing-bear instances of the web interface too.
 
-#### Service ports
+### Service ports
 
 This container runs multiple services on it, and as several different user accounts. They are as follows:
 
@@ -113,7 +122,7 @@ localhost, 6667, (http IRC), ngircd, ngircd irc server, only visible inside cont
 
 The user is intended to access the IRC service primarily as the user `irssi`, on ssh port 22. Via public-private SSH key authentication (no ssh password). The container's irssi program itself is always kept running under a perpetual tmux session named `tmux`. Which supports simultaneous logins from multiple computers.
 
-### Quickstart
+## Quickstart
 
 For the most part, you just need to set new username & password(s) for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
 
@@ -276,7 +285,7 @@ And change the 2 passwords to something un-guessable. Make sure that the `send_p
 
 It is now recommended to copy only these few modified config files, into the overlay folder named `config.custom/` in the docker build context. Which can be checked out from github repo. Then if you ever re-build this docker image yourself, it will automatically include all your unique login / accounts info (as the pre-seeded default /config).
 
-#### Testing out the quickstart config
+### Testing out the quickstart config
 
 For ssh terminal access, you can find a new pair of ssh connection keys were generated in the following locations:
 
@@ -297,7 +306,7 @@ For [glowing-bear](https://www.glowing-bear.org) web access, over HTTPS SSL/TLS:
 Navigate in your web browser to the glowing bear website. You should be able to log in with `CONTAINER_IP` and TCP port `9001`. And the weechat relay password you have put into `/config/weechat/relay.conf`. Make sure you have selected SSL/TLS connection.
 
 
-### IRC Servers
+## IRC Servers
 
 IRC Networks and channels pre-configured. However they are not all switched on by default. You will need to go into your znc web settings to enable / disable each networks you want to znc to connect to.
 
@@ -347,7 +356,7 @@ IRC Networks and channels pre-configured. However they are not all switched on b
     * `&bitlbee` - connect using IM chat protocols
 
 
-### Editing configuration files
+## Editing configuration files
 
 The text editor `nano` is included for simple editing of configuration files. e.g. `nano /config/irssi/config`. Be careful to do that under the right unix user instead of `root`.
 
@@ -362,17 +371,17 @@ sudo su -l irssi [return]
 nano /config/irssi/config [return]
 ```
 
-### Configuration
+## Configuration
 
 Pre-seeded Configuration Folder:
 
 All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [`config.default/README.md`](config.default/README.md) and [`config.custom/README.md`](config.custom/README.md) for more information about those.
 
-#### ssh
+### ssh
 
 For ssh terminal access you can put your existing ssh public key (e.g. `id_rsa.pub`) into `/config/irssi/.ssh/known_hosts` file. Else a new keypair will be automatically generated per container on first run. And the resultant `id_rsa` private key file can be copied from `/config/irssi/.ssh/id_rsa` of your new running container's mounted `/config` volume.
 
-#### znc
+### znc
 
 Primarily you will want to change the znc admin username and password to something else more secure. And to be your own IRC nickname.
 
@@ -380,41 +389,41 @@ The znc server will be configurable from any standard web browser, available on 
 
 The `znc.conf` text file can also be edited directly. It is stored in the usual loacation at `/config/znc/configs/znc.conf`
 
-#### weechat
+### weechat
 
 Your irc login settings are held in the file `/config/weechat/irc.conf`. The password for glowing-bear web interface is held in `/config/weechat/relay.conf`.
 
-#### irssi
+### irssi
 
 Assuming that you have changed the znc username and password, then you must also change those `/server` lines in the irssi config file. To use your new znc nick name and password. This file is located at `/config/irssi/config`.
 
-#### IRC Data
+### IRC Data
 
 Generated data gets written to thedocker volume `/irc`.
 
 Note: An additional docker image, `dreamcat4/nginx` or `dreamcat4/samba` is also useful. To more easily access the contents of this `/irc` data folder on your LAN.
 
-#### Logs
+### Logs
 
 By default all IRC channel logs are kept by ZNC and written to the `/irc/znc/logs` folder.
 
-#### URLs
+### URLs
 
 The irssi `urlplot` script is pre-configured to write all posted urls to `/irc/irssi/urlplot` folder. In both HTML and CSV format. The generated HTML file can bookmarked in your local web browser for easy access.
 
 There are also URL plugins for znc and weechat, however their generated 'text only' output is not as good as html files created by `urlplot`.
 
-#### Bitlbee
+### Bitlbee
 
 Tends to be configured interactively by commands to the `&bitlbee` control channel, all done while running irssi client. Or by hand-editing the config file at `/config/bitlbee/bitlbee.conf`.
 
-#### tmux
+### tmux
 
 The config file is located at `/config/irssi/.tmux.conf`
 
 This default tmux config does not really need any specific per user configuration. Unless you want to customize the behaviour of tmux more to your liking. For example to hide the `tmux ...` line at the top of the screen, or change the key-bindings etc.
 
-#### Limnoria (aka supybot)
+### Limnoria (aka supybot)
 
 NOTE: YOU SHOULD CHANGE YOUR BOT'S NICK FROM `supybot` ---> `YOUR BOT`
 
@@ -454,7 +463,7 @@ Now we can login again, and change the owner password to something more secure t
 
 Going online to public servers with an IRC bot can be considered bad behaviour. Or suspicious due to botnets etc. So using a bot in the wrong way(s) can very quickly get you banned. Either from a specific channel, or IRC network, or even multiple IRC networks! Due to shared global blacklisting mechanisms. So be sure to check any relevant bot policies for those specific network(s) and channel(s) before taking your supybot online to any specific networks or channels. Check with a actual human being, and be asking for clarification / permission to do so where applicable.
 
-#### ngircd
+### ngircd
 
 Provides the `#local` channel. Which is where znc and the supybot are pre-configured to automatically join to. This is your playground to configure / use the bot before taking it online elsewhere.
 
@@ -468,43 +477,52 @@ This IRC server is minimally configured. But should be safe to use for private l
 
 However its not recommended to use this single fat image for any public of semi-public hosting. As other IRC programs are running in the same image. For better hardening, use seperate sigle-service docker images, each linked together. For example 1 container for ngircd, 1 container for atheme services.
 
-#### atheme irc services
+### atheme irc services
 
 * The config file is located at `/config/atheme/atheme.conf`
 * These servcies are only minimally configured (enough to work with the ngircd instance)
 * The actual services offered (nickserv, chanserv, sasl, etc) are all left at defaults
 * The pairing passwords (for connection to this IRC services daemon) are also configured in `ngircd.conf`
 
-### Bitlbee Protocols
+### Bitlbee chat protocols
 
 Comes installed with all the necessary 3rd party plugins for all the most popular non-core protocols including WhatsApp, Steam Chat, Telegram, Facebook, Skype (via 'SkypeWeb') and so on.
 
 So for any of the below links, you do not need to install any new pkgs / files, they should already be available inside of Bitlbee. Some IM procotols do requires a specifal setup instructions however. As can be read about in the following pages:
 
-* LibPurple
+#### LibPurple
+
   * https://wiki.bitlbee.org/HowtoPurple
 
-* WhatsApp
+#### WhatsApp
+
   * https://wiki.bitlbee.org/HowtoWhatsapp
 
-* Skype
+#### Skype
+
   * https://wiki.bitlbee.org/HowtoSkypeWeb
 
-* SIPE
+#### SIPE
+
   * https://wiki.bitlbee.org/HowtoSIPE
 
-* Facebook
+#### Facebook
+
   * https://wiki.bitlbee.org/HowtoFacebookMQTT
 
-* Steam Chat
+#### Steam Chat
+
   * https://github.com/jgeboski/bitlbee-steam
 
-* Telegram
+#### Telegram
+
   * https://github.com/majn/telegram-purple
 
-* Torchat
+#### Torchat
+
   * https://github.com/prof7bit/TorChat
 
+#### Other chat protocols
 
 **Protcol not listed in &bitlbee?**
 
@@ -535,7 +553,7 @@ To check that a specific protocol is supported, type `account add PROTOCOL usern
 
 https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols
 
-### Connecting to the irssi session
+## Connecting to the irssi session
 
 From a remote machine:
 
@@ -548,7 +566,7 @@ docker exec -it CONTAINER_NAME bash [return]
 irssi [return]
 ```
 
-### Disconnecting from an irssi session
+## Disconnecting from an irssi session
 
 In these cases, the irssi program and it's TMUX session will be kept running as normal:
 
@@ -566,12 +584,12 @@ The container's ZNC and Bitlbee servers are also kept running too. Like irssi, i
 
 ## Per-user setup
 
-1. Configure your znc user accounts - that was all covered in the 'Quickstart' section. And we briefly remind it below.
+1. Configure your znc user accounts - already done by following the 'quickstart' guide.
 2. Setup nickserv / identify with services - See next sections below.
 
 ### ZNC user configuration
 
-This is set your own IRC nickname.
+This is set your own IRC nickname. It was already covered in the 'quickstart' guide.
 
 * Using a web browser connect to znc's web interface. It is available on HTTPS and port 6697: `https://CONTAINER_IP:6697`
 * Log in to znc with username: `znc`, password: `znc`
@@ -714,7 +732,7 @@ Further info: http://www.oftc.net/Services/
 
 Further info: http://help.undernet.org/faq.php?what=cservice#03
 
-### Irssi Scripts
+## Irssi Scripts
 
 The latest irssi scripts are already downloaded into the container with `git`. In fact, every time irssi program is restarted, we run the following command automatically:
 
@@ -736,11 +754,11 @@ Linking into the `.../autorun/` subfolder makes the script load automatically on
 
 https://scripts.irssi.org/
 
-#### Tweaked scripts
+### Tweaked scripts
 
 A few of the scripts had to be modified / tweaked in order to work. So those ones are not symlinks but copied files. Other scripts are not tweaked, but also copy files (not simplinks). Which did not exist at time of writing in irssi's official scripts repo.
 
-#### Not met script dependancies
+### Not met script dependancies
 
 All the included scripts were tested to work properly in the container. However you may want to add other scripts to your config later on. So why isn't / aren't my optional irssi script(s) working then?!!?
 
@@ -748,7 +766,7 @@ Well many optional irssi scripts also require their own specific dependancy(ies)
 
 For perl deps, you can look at the import / include lines  like `use Perlmodule::Name;` at the top of the script. Then use `cpanm Perlmodule::Name` to install them.
 
-### File permissions
+## File permissions
 
 There is the main unix account `irssi`. However this container also has unix accounts named `bitlbee` `znc` and `eggdrop` for those other supportive services.
 
@@ -780,7 +798,7 @@ bitlbee_uid=XXX
 bitlbee_gid=YYY
 ```
 
-### Docker Compose
+## Docker Compose
 
 Sorry there is no example for Docker Compose at this time. But you may do something similar:
 
@@ -807,9 +825,9 @@ containers:
 The `pipework_` variables are used to setup networking with the `dreamcat4/pipework` helper image.
 
 
-### Alternative
+## Web-browser alternative
 
-Decent irc web client:
+This is a decent irc client, for web browser:
 
 https://kiwiirc.com/client
 
