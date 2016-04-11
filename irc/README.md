@@ -1,10 +1,10 @@
 # IRC
 
-**Includes (pictured) irssi client:**
+**Including [irssi](https://irssi.org/) (as pictured):**
 
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
 
-**...and much more!**
+**...but much MUCH more!**
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -53,16 +53,16 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
 What's included:
 
 * IRC clients
-  * irssi
-  * weechat, for glowing-bear web interface
-  * tmux and sshd for terminal server
+  * [irssi](https://irssi.org/)
+  * [weechat](https://weechat.org/about/screenshots/), for the [glowing-bear](https://www.glowing-bear.org/) web interface
+  * [tmux](https://en.wikipedia.org/wiki/Tmux) and [sshd](http://www.openssh.com/) for terminal services
 
 * IRC services
-  * ZNC bouncer
-  * Bitlbee (for IM accounts)
-  * ngircd - your own local / private IRC server
-    * atheme services - for nickserv, sasl etc
-  * Limnoria IRC bot (aka supybot)
+  * [ZNC bouncer](http://wiki.znc.in/Webadmin)
+  * [Bitlbee](https://wiki.bitlbee.org/) (for IM accounts)
+  * [ngircd](https://github.com/ngircd/ngircd) - your own local / private IRC server
+    * [atheme irc services](https://atheme.github.io/atheme.net/atheme.html) - for nickserv, sasl etc
+  * [Limnoria IRC bot](http://doc.supybot.aperio.fr/en/latest/use/index.html) (aka supybot)
 
 #### Connection diagram
 
