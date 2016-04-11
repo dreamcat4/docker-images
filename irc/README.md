@@ -2,7 +2,8 @@
 
 *Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/).***
 
-This Docker image is based on ubuntu 16.04 base image (xenial xerus).
+* This Docker image is based on ubuntu 16.04 base image (xenial xerus).
+* *1.4GB Image size.
 
 # irc
 
