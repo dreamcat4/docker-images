@@ -43,6 +43,15 @@ sudo -E su "weechat" << EOF
 	fi
 
 
+	# Generate ssl certificate for glowing-bear
+	if [ ! -e "/config/weechat/ssl/relay.pem" ]; then
+		mkdir ~/ssl
+		cd ~/ssl
+		openssl req -nodes -newkey rsa:4096 -keyout relay.pem -x509 -days 365 -out relay.pem -sha256 -subj "/CN=irc.id.dkr/"
+		cd
+	fi
+
+
 	# Alias 'weechat' to connect to running tmux session
 	touch ~/.profile ~/.bashrc
 	grep -q "alias weechat" ~/.profile || echo "alias weechat=\"script -q -e /dev/null -c 'tmux -S $tmux_socket_weechat -u attach-session -t $tmux_session_weechat'\"" >> ~/.profile
