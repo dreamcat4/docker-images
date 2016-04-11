@@ -875,7 +875,11 @@ The `pipework_` variables are used to setup networking with the `dreamcat4/pipew
 
 ## Web-browser alternative
 
-This is a decent irc client, for web browser:
+This is a decent free irc client, for web browser:
 
 https://kiwiirc.com/client
+
+Here is another one, however the free version has a few restrictions:
+
+https://www.irccloud.com
 
