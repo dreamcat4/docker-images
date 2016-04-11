@@ -6,7 +6,7 @@
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
-**Includes [irssi text client](https://i.imgur.com/29t9smb.png) over tmux / ssh, as pictured below.**
+**Includes [irssi over ssh](https://i.imgur.com/29t9smb.png) and [glowing-bear web interface](https://4z2.de/images/gb-desktop.png), as pictured below.**
 
 ***...but also SO MUCH MORE!***
 
@@ -17,6 +17,8 @@ This is the mother of all IRC-related docker images. Look no further. You may co
 Based on ubuntu 16.04 base image (xenial xerus).
 
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
+
+![glowing-bear web interface](https://4z2.de/images/gb-desktop.png "glowing-bear web interface")
 
 ## Contents
 
