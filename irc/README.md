@@ -1,6 +1,6 @@
-*This page is best viewed on --->* ***[github](https://github.com/dreamcat4/docker-images/tree/master/irc).***
+*This page is best viewed on --->* ***[Github](https://github.com/dreamcat4/docker-images/tree/master/irc).***
 
-*Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/)***
+*Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/).***
 
 # IRC
 
