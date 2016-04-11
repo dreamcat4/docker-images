@@ -135,6 +135,8 @@ This image's Dockerfile has been properly organised into isolated sections for e
 
 Bitlbee and limnoria were by far the biggest culprits to image bloat here. The large image size is mostly due to their dependancies. Before adding them the image was 'only a mere ~700mb'. By adding them it fully doubled the image size from previous all estimates. That smarted much. But ah well! What can you do eh? Be left without access to all the most popular IM chat servers in the entire world? Live life without your very own personal IRC bot? Noooooo! :)))
 
+I shall leave it for some other guys to come and break up the party. But this one shall remain a masterpiece complete. The full collection, the complete enchilada.
+
 ### Connection diagram
 
 General diagram how these programs are connected up:
