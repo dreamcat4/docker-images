@@ -17,13 +17,21 @@
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
     - [Testing out the quickstart config](#testing-out-the-quickstart-config)
   - [IRC Servers](#irc-servers)
-  - [Irssi Scripts](#irssi-scripts)
-  - [Tweaked scripts](#tweaked-scripts)
-  - [Not met script dependancies](#not-met-script-dependancies)
-  - [Solarized Irssi Theme](#solarized-irssi-theme)
   - [Editing configuration files](#editing-configuration-files)
   - [Configuration](#configuration)
-  - [Bitlbee](#bitlbee)
+    - [ssh](#ssh)
+    - [znc](#znc)
+    - [weechat](#weechat)
+    - [irssi](#irssi)
+    - [IRC Data](#irc-data)
+    - [Logs](#logs)
+    - [URLs](#urls)
+    - [Bitlbee](#bitlbee)
+    - [tmux](#tmux)
+    - [Limnoria (aka supybot)](#limnoria-aka-supybot)
+    - [ngircd](#ngircd)
+    - [atheme irc services](#atheme-irc-services)
+  - [Bitlbee Protocols](#bitlbee-protocols)
   - [Connecting to the irssi session](#connecting-to-the-irssi-session)
   - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
@@ -40,6 +48,9 @@
     - [oftc](#oftc)
     - [quakenet](#quakenet)
     - [undernet](#undernet)
+  - [Irssi Scripts](#irssi-scripts)
+    - [Tweaked scripts](#tweaked-scripts)
+    - [Not met script dependancies](#not-met-script-dependancies)
   - [File permissions](#file-permissions)
   - [Docker Compose](#docker-compose)
   - [Alternative](#alternative)
@@ -336,47 +347,6 @@ IRC Networks and channels pre-configured. However they are not all switched on b
     * `&bitlbee` - connect using IM chat protocols
 
 
-
-### Irssi Scripts
-
-The latest irssi scripts are already downloaded into the container with `git`. In fact, every time irssi program is restarted, we run the following command automatically:
-
-```sh
-cd /scripts.irssi.org && git pull
-```
-
-So no need to worry about using script-assist to manage your scripts for you. There is no need for it. The local copy of the scripts repo always be kept fully up-to-date with every container restart. Or whenever you have manually `/quit` the irssi program.
-
-Most scripts are symlinked from irssi's config folder, into the git repo:
-
-To add a new script just create a symlink into your irssi scripts folder. For example:
-
-```sh
-ln -s /scripts.irssi.org/scripts/SCRIPTNAME.pl /config/irssi/scripts/autorun/
-```
-
-Linking into the `.../autorun/` subfolder makes the script load automatically on irssi startup. More information at:
-
-https://scripts.irssi.org/
-
-### Tweaked scripts
-
-A few of the scripts had to be modified / tweaked in order to work. So those ones are not symlinks but copied files. Other scripts are not tweaked, but also copy files (not simplinks). Which did not exist at time of writing in irssi's official scripts repo.
-
-### Not met script dependancies
-
-All the included scripts were tested to work properly in the container. However you may want to add other scripts to your config later on. So why isn't / aren't my optional irssi script(s) working then?!!?
-
-Well many optional irssi scripts also require their own specific dependancy(ies). Which are not necessarily come pre-installed. There are 2 kinds of dependancies: APT deps and perl deps.
-
-For perl deps, you can look at the import / include lines  like `use Perlmodule::Name;` at the top of the script. Then use `cpanm Perlmodule::Name` to install them.
-
-### Solarized Irssi Theme
-
-This theme has been modified with statusbar, awaybar, hilight colors, etc. The original verison of the theme is available here:
-
-https://github.com/huyz/irssi-colors-solarized
-
 ### Editing configuration files
 
 The text editor `nano` is included for simple editing of configuration files. e.g. `nano /config/irssi/config`. Be careful to do that under the right unix user instead of `root`.
@@ -398,11 +368,11 @@ Pre-seeded Configuration Folder:
 
 All configuration files are held in the working folder `/config`. There are different versions of the config folder. See [`config.default/README.md`](config.default/README.md) and [`config.custom/README.md`](config.custom/README.md) for more information about those.
 
-**SSH Configuration:**
+#### ssh
 
 For ssh terminal access you can put your existing ssh public key (e.g. `id_rsa.pub`) into `/config/irssi/.ssh/known_hosts` file. Else a new keypair will be automatically generated per container on first run. And the resultant `id_rsa` private key file can be copied from `/config/irssi/.ssh/id_rsa` of your new running container's mounted `/config` volume.
 
-**ZNC Configuration:**
+#### znc
 
 Primarily you will want to change the znc admin username and password to something else more secure. And to be your own IRC nickname.
 
@@ -410,39 +380,41 @@ The znc server will be configurable from any standard web browser, available on 
 
 The `znc.conf` text file can also be edited directly. It is stored in the usual loacation at `/config/znc/configs/znc.conf`
 
-**Weechat Config:**
+#### weechat
 
 Your irc login settings are held in the file `/config/weechat/irc.conf`. The password for glowing-bear web interface is held in `/config/weechat/relay.conf`.
 
-**IRSSI Config:**
+#### irssi
 
 Assuming that you have changed the znc username and password, then you must also change those `/server` lines in the irssi config file. To use your new znc nick name and password. This file is located at `/config/irssi/config`.
 
-**IRC Data:**
+#### IRC Data
 
 Generated data gets written to thedocker volume `/irc`.
 
 Note: An additional docker image, `dreamcat4/nginx` or `dreamcat4/samba` is also useful. To more easily access the contents of this `/irc` data folder on your LAN.
 
-**Logs:**
+#### Logs
 
 By default all IRC channel logs are kept by ZNC and written to the `/irc/znc/logs` folder.
 
-**URLs:**
+#### URLs
 
-The `urlplot` script is pre-configured to write all posted urls to `/irc/irssi/urlplot` folder. In both HTML and CSV format. The generated HTML file can bookmarked in your local web browser for easy access.
+The irssi `urlplot` script is pre-configured to write all posted urls to `/irc/irssi/urlplot` folder. In both HTML and CSV format. The generated HTML file can bookmarked in your local web browser for easy access.
 
-**Bitlbee:**
+There are also URL plugins for znc and weechat, however their generated 'text only' output is not as good as html files created by `urlplot`.
+
+#### Bitlbee
 
 Tends to be configured interactively by commands to the `&bitlbee` control channel, all done while running irssi client. Or by hand-editing the config file at `/config/bitlbee/bitlbee.conf`.
 
-**TMUX:**
+#### tmux
 
 The config file is located at `/config/irssi/.tmux.conf`
 
 This default tmux config does not really need any specific per user configuration. Unless you want to customize the behaviour of tmux more to your liking. For example to hide the `tmux ...` line at the top of the screen, or change the key-bindings etc.
 
-**Limnoria:**
+#### Limnoria (aka supybot)
 
 NOTE: YOU SHOULD CHANGE YOUR BOT'S NICK FROM `supybot` ---> `YOUR BOT`
 
@@ -482,7 +454,7 @@ Now we can login again, and change the owner password to something more secure t
 
 Going online to public servers with an IRC bot can be considered bad behaviour. Or suspicious due to botnets etc. So using a bot in the wrong way(s) can very quickly get you banned. Either from a specific channel, or IRC network, or even multiple IRC networks! Due to shared global blacklisting mechanisms. So be sure to check any relevant bot policies for those specific network(s) and channel(s) before taking your supybot online to any specific networks or channels. Check with a actual human being, and be asking for clarification / permission to do so where applicable.
 
-**Ngircd:**
+#### ngircd
 
 Provides the `#local` channel. Which is where znc and the supybot are pre-configured to automatically join to. This is your playground to configure / use the bot before taking it online elsewhere.
 
@@ -496,14 +468,14 @@ This IRC server is minimally configured. But should be safe to use for private l
 
 However its not recommended to use this single fat image for any public of semi-public hosting. As other IRC programs are running in the same image. For better hardening, use seperate sigle-service docker images, each linked together. For example 1 container for ngircd, 1 container for atheme services.
 
-**atheme services:**
+#### atheme irc services
 
 * The config file is located at `/config/atheme/atheme.conf`
 * These servcies are only minimally configured (enough to work with the ngircd instance)
 * The actual services offered (nickserv, chanserv, sasl, etc) are all left at defaults
 * The pairing passwords (for connection to this IRC services daemon) are also configured in `ngircd.conf`
 
-### Bitlbee
+### Bitlbee Protocols
 
 Comes installed with all the necessary 3rd party plugins for all the most popular non-core protocols including WhatsApp, Steam Chat, Telegram, Facebook, Skype (via 'SkypeWeb') and so on.
 
@@ -741,6 +713,40 @@ Further info: http://www.oftc.net/Services/
   * http://wiki.znc.in/Perform#Identifying_to_services
 
 Further info: http://help.undernet.org/faq.php?what=cservice#03
+
+### Irssi Scripts
+
+The latest irssi scripts are already downloaded into the container with `git`. In fact, every time irssi program is restarted, we run the following command automatically:
+
+```sh
+cd /scripts.irssi.org && git pull
+```
+
+So no need to worry about using script-assist to manage your scripts for you. There is no need for it. The local copy of the scripts repo always be kept fully up-to-date with every container restart. Or whenever you have manually `/quit` the irssi program.
+
+Most scripts are symlinked from irssi's config folder, into the git repo:
+
+To add a new script just create a symlink into your irssi scripts folder. For example:
+
+```sh
+ln -s /scripts.irssi.org/scripts/SCRIPTNAME.pl /config/irssi/scripts/autorun/
+```
+
+Linking into the `.../autorun/` subfolder makes the script load automatically on irssi startup. More information at:
+
+https://scripts.irssi.org/
+
+#### Tweaked scripts
+
+A few of the scripts had to be modified / tweaked in order to work. So those ones are not symlinks but copied files. Other scripts are not tweaked, but also copy files (not simplinks). Which did not exist at time of writing in irssi's official scripts repo.
+
+#### Not met script dependancies
+
+All the included scripts were tested to work properly in the container. However you may want to add other scripts to your config later on. So why isn't / aren't my optional irssi script(s) working then?!!?
+
+Well many optional irssi scripts also require their own specific dependancy(ies). Which are not necessarily come pre-installed. There are 2 kinds of dependancies: APT deps and perl deps.
+
+For perl deps, you can look at the import / include lines  like `use Perlmodule::Name;` at the top of the script. Then use `cpanm Perlmodule::Name` to install them.
 
 ### File permissions
 
