@@ -2,11 +2,13 @@
 
 *Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/).***
 
+This Docker image is based on ubuntu 16.04 base image (xenial xerus).
+
 # irc
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
-**Includes [irssi over ssh](https://i.imgur.com/29t9smb.png) and [glowing-bear web interface](https://4z2.de/images/gb-desktop.png), as pictured below.**
+**Includes [irssi over ssh](http://i.imgur.com/Fk94eHf.png) and [glowing-bear web interface](http://i.imgur.com/bAAPFkS.png), as pictured below.**
 
 ***...but also SO MUCH MORE!***
 
@@ -14,11 +16,17 @@ Or to put it another way:
 
 This is the mother of all IRC-related docker images. Look no further. You may consider it to be everything you will need for your own personal IRC nirvana, a realm like no other. The hardest work is already done here. With all of the most modern and practical IRC tools at your fingertips. Whilst also coming at the lowest cost of ownership in terms of configuration energies expended / setup burdens drained to you.
 
-Based on ubuntu 16.04 base image (xenial xerus).
+Oh and did I forget to mention?
 
-![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
+You also get [your very own irc bot](https://github.com/dreamcat4/docker-images/tree/master/irc#limnoria-aka-supybot). And [a private IRC server](https://github.com/dreamcat4/docker-images/tree/master/irc#private--localhost-services). As a sandbox environment within which to play with it before taking said bot online publically.
 
-![glowing-bear web interface](https://4z2.de/images/gb-desktop.png "glowing-bear web interface")
+Of course not everybody likes bots. So I've also included [an extensive 3rd party IM chat protocols support for bitlbee](https://github.com/dreamcat4/docker-images/tree/master/irc#bitlbee-chat-protocols). Thanks to [bitlbee](https://wiki.bitlbee.org/) and [libpurple](https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols) for providing those ones.
+
+Well that is a description. However the whole experience cannot be fully described. It is more than just the sum of its parts.
+
+![irssi client theme customizations](http://i.imgur.com/Fk94eHf.png "irssi client theme customizations")
+
+![glowing-bear web interface](http://i.imgur.com/bAAPFkS.png "glowing-bear web interface")
 
 ## Contents
 
@@ -44,6 +52,7 @@ Based on ubuntu 16.04 base image (xenial xerus).
   - [znc](#znc)
   - [weechat](#weechat)
   - [irssi](#irssi)
+  - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
   - [URLs](#urls)
@@ -458,6 +467,12 @@ Your irc login settings are held in the file `/config/weechat/irc.conf`. The pas
 ### irssi
 
 Assuming that you have changed the znc username and password, then you must also change those `/server` lines in the irssi config file. To use your new znc nick name and password. This file is located at `/config/irssi/config`.
+
+### Notifications to your i-Devices, android, Desktop, etc.
+
+The recommended notification system to use is znc's [`*push`] module](https://github.com/jreese/znc-push). Which you will need to configure for your target device. Unfortunately ATTO znc push only [supports 1 service at a time](https://github.com/jreese/znc-push/issues/162).
+
+However both irssi and weechat are also kept running all of the time. So in addition to znv `*push`, you can also install any extra notifications addons / scripts for those programs as you wish. 
 
 ### IRC Data
 
