@@ -20,10 +20,6 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 
-# # Bitlbee dependancy
-# RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y libgnutls-deb0-28 && $_apt_clean
-
-
 # Install support pkgs
 RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
