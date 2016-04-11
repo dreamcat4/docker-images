@@ -3,7 +3,7 @@
 *Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/).***
 
 * This Docker image is based on ubuntu 16.04 base image (xenial xerus).
-* *1.4GB Image size.
+* 1.4GB Image size[*](https://github.com/dreamcat4/docker-images/tree/master/irc#pros-and-cons-of-this-docker-image).
 
 # irc
 
