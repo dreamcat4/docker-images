@@ -467,7 +467,7 @@ Tends to be configured interactively by commands to the `&bitlbee` control chann
 
 ### tmux
 
-The config file is located at `/config/irssi/.tmux.conf`
+The config file is located at `/config/irssi/.tmux.conf` (for irssi), and `/config/weechat/.tmux.conf` (for weechat).
 
 This default tmux config does not really need any specific per user configuration. Unless you want to customize the behaviour of tmux more to your liking. For example to hide the `tmux ...` line at the top of the screen, or change the key-bindings etc.
 
