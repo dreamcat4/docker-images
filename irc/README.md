@@ -2,11 +2,15 @@
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
-**Includes [irssi text client](https://i.imgur.com/29t9smb.png) over tmux / ssh, as pictured below:**
+**Includes [irssi text client](https://i.imgur.com/29t9smb.png) over tmux / ssh, as pictured below.**
+
+***...but also SO MUCH MORE!***
+
+Or to put it another way: This be the mother of all IRC-related docker images. Look no further. You may consider it your own personal IRC nirvana, a realm like no other. With all of the most modern and practical IRC tools at your fingertips. Yet also coming at the fewest cost in terms of configuration energies / setup burdens drained to you. The hardest work is already done here.
+
+Based on ubuntu 16.04 base image (xenial xerus).
 
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
-
-***...but also SO MUCH MORE!...*** This is the mother of all IRC docker images.
 
 ## Contents
 
