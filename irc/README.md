@@ -6,7 +6,7 @@ This Docker image is based on ubuntu 16.04 base image (xenial xerus).
 
 # irc
 
-A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
+A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything to come up on container start, all working together.
 
 **Includes [irssi over ssh](http://i.imgur.com/Fk94eHf.png) and [glowing-bear web interface](http://i.imgur.com/bAAPFkS.png), as pictured below.**
 
@@ -39,25 +39,17 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
   - [Connection diagram](#connection-diagram)
   - [Service ports](#service-ports)
 - [Quickstart](#quickstart)
-  - [Configure ZNC](#configure-znc)
-  - [Configure irc clients](#configure-irc-clients)
-    - [irssi](#irssi)
-    - [limnoria (aka supybot)](#limnoria-aka-supybot)
-    - [weechat](#weechat)
-  - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
+    - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
   - [Connecting](#connecting)
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
 - [IRC Servers](#irc-servers)
-    - [Public IRC networks](#public-irc-networks)
-    - [Private / localhost services](#private--localhost-services)
 - [Editing configuration files](#editing-configuration-files)
 - [Configuration](#configuration)
   - [ssh](#ssh)
   - [znc](#znc)
-  - [weechat](#weechat-1)
-  - [irssi](#irssi-1)
-  - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
+  - [weechat](#weechat)
+  - [irssi](#irssi)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
   - [URLs](#urls)
