@@ -119,7 +119,7 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
   * the is easiest way to manage your irc settings files
   * can diff, merge, version control, and overlay your per-user IRC settings ontop of the pre-configured defaults
 * Bitlbee comes 'fully' loaded with support for all of the major chat protocols - no hassles, just go!
-* Not resource hungry, can easily run on local modest hardware, or limited VPS plan / remote servers
+* Not resource hungry, can easily run on local modest hardware, or limited remote VPS plan. With ease.
 
 **Cons:**
 
@@ -135,7 +135,7 @@ This image's Dockerfile has been properly organised into isolated sections for e
 
 Bitlbee and limnoria were by far the biggest culprits to image bloat here. The large image size is mostly due to their dependancies. Before adding them the image was 'only a mere ~700mb'. By adding them it fully doubled the image size from previous all estimates. That smarted much. But ah well! What can you do eh? Be left without access to all the most popular IM chat servers in the entire world? Live life without your very own personal IRC bot? Noooooo! :)))
 
-I shall leave it for some other guys to come and break up the party. But this one shall remain a masterpiece complete. The full collection, the complete enchilada.
+I shall leave it for some other guys to come and break up the party. This one shall remain a masterpiece complete. The complete collection. The full enchilada. So be it. 1.4 GB urrrghhh then. At least everything runs super-fast, and not slow or cacky in any way.
 
 ### Connection diagram
 
