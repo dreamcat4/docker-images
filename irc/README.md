@@ -24,30 +24,42 @@ Based on ubuntu 16.04 base image (xenial xerus).
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
  
 
-  - [What's included?](#whats-included)
-    - [Connection diagram](#connection-diagram)
-    - [Service ports](#service-ports)
-  - [Quickstart](#quickstart)
+- [What's included?](#whats-included)
+  - [Pros and Cons of this Docker image](#pros-and-cons-of-this-docker-image)
+  - [Connection diagram](#connection-diagram)
+  - [Service ports](#service-ports)
+- [Quickstart](#quickstart)
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
-    - [Testing out the quickstart config](#testing-out-the-quickstart-config)
-  - [IRC Servers](#irc-servers)
-  - [Editing configuration files](#editing-configuration-files)
-  - [Configuration](#configuration)
-    - [ssh](#ssh)
-    - [znc](#znc)
-    - [weechat](#weechat)
-    - [irssi](#irssi)
-    - [IRC Data](#irc-data)
-    - [Logs](#logs)
-    - [URLs](#urls)
-    - [Bitlbee](#bitlbee)
-    - [tmux](#tmux)
-    - [Limnoria (aka supybot)](#limnoria-aka-supybot)
-    - [ngircd](#ngircd)
-    - [atheme irc services](#atheme-irc-services)
-  - [Bitlbee Protocols](#bitlbee-protocols)
-  - [Connecting to the irssi session](#connecting-to-the-irssi-session)
-  - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
+  - [Connecting](#connecting)
+    - [Over ssh](#over-ssh)
+    - [From a web browser](#from-a-web-browser)
+- [IRC Servers](#irc-servers)
+- [Editing configuration files](#editing-configuration-files)
+- [Configuration](#configuration)
+  - [ssh](#ssh)
+  - [znc](#znc)
+  - [weechat](#weechat)
+  - [irssi](#irssi)
+  - [IRC Data](#irc-data)
+  - [Logs](#logs)
+  - [URLs](#urls)
+  - [Bitlbee](#bitlbee)
+  - [tmux](#tmux)
+  - [Limnoria (aka supybot)](#limnoria-aka-supybot)
+  - [ngircd](#ngircd)
+  - [atheme irc services](#atheme-irc-services)
+  - [Bitlbee chat protocols](#bitlbee-chat-protocols)
+    - [LibPurple](#libpurple)
+    - [WhatsApp](#whatsapp)
+    - [Skype](#skype)
+    - [SIPE](#sipe)
+    - [Facebook](#facebook)
+    - [Steam Chat](#steam-chat)
+    - [Telegram](#telegram)
+    - [Torchat](#torchat)
+    - [Other chat protocols](#other-chat-protocols)
+- [Connecting to the irssi session](#connecting-to-the-irssi-session)
+- [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
   - [ZNC user configuration](#znc-user-configuration)
   - [Setting up nickserv on znc](#setting-up-nickserv-on-znc)
@@ -62,12 +74,12 @@ Based on ubuntu 16.04 base image (xenial xerus).
     - [oftc](#oftc)
     - [quakenet](#quakenet)
     - [undernet](#undernet)
-  - [Irssi Scripts](#irssi-scripts)
-    - [Tweaked scripts](#tweaked-scripts)
-    - [Not met script dependancies](#not-met-script-dependancies)
-  - [File permissions](#file-permissions)
-  - [Docker Compose](#docker-compose)
-  - [Alternative](#alternative)
+- [Irssi Scripts](#irssi-scripts)
+  - [Tweaked scripts](#tweaked-scripts)
+  - [Not met script dependancies](#not-met-script-dependancies)
+- [File permissions](#file-permissions)
+- [Docker Compose](#docker-compose)
+- [Web-browser alternative](#web-browser-alternative)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -309,13 +321,15 @@ And change the 2 passwords to something un-guessable. Make sure that the `send_p
 
 It is now recommended to copy only these few modified config files, into the overlay folder named `config.custom/` in the docker build context. Which can be checked out from github repo. Then if you ever re-build this docker image yourself, it will automatically include all your unique login / accounts info (as the pre-seeded default /config).
 
-### Testing out the quickstart config
+### Connecting
 
-For ssh terminal access, you can find a new pair of ssh connection keys were generated in the following locations:
+#### Over ssh
+
+For ssh, you can find new ssh private access keys. They are auto-generated on first boot, into the following locations:
 
 ```sh
-/config/irssi/.ssh
-/config/weechat/.ssh
+/config/irssi/.ssh/id_rsa
+/config/weechat/.ssh/id_rsa
 ```
 
 Grab the 2 unique `id_rsa` private key files. One is for irssi, and the other one is for weechat. Rename them to something obvious. For example `irssi_rsa` and `weechat_rsa`. Then copy them to your client computers from where you want to login. Then you can ssh something like this:
@@ -324,6 +338,26 @@ Grab the 2 unique `id_rsa` private key files. One is for irssi, and the other on
 ssh -i irssi_rsa irssi@CONTAINER_IP
 ssh -i weechat_rsa weechat@CONTAINER_IP
 ```
+
+Or even better, create ssh aliases, to just `ssh irssi` and `ssh weechat`.
+
+```sh
+.ssh/config:
+
+Host irssi
+    Hostname YOUR_CONTAINER_IP
+    User irssi
+  PubKeyAuthentication yes
+    IdentityFile ~/.ssh/irssi_rsa
+
+Host weechat
+    Hostname YOUR_CONTAINER_IP
+    User weechat
+  PubKeyAuthentication yes
+    IdentityFile ~/.ssh/weechat_rsa
+```
+
+#### From a web browser
 
 For [glowing-bear](https://www.glowing-bear.org) web access, over HTTPS SSL/TLS:
 
