@@ -1,10 +1,10 @@
 # IRC
 
-Pictured: irssi client
+**Includes (pictured) irssi client:**
 
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
 
-...and much more!
+**...and much more!**
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
