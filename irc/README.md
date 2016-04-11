@@ -106,7 +106,7 @@ What's included:
 * It is less secure than having many isolated individual images
 * May include some service you didn't want
 
-**However:**
+***However:***
 
 This image's Dockerfile has been properly organised into isolated sections for each services. And each service is kept in individual separate folders. Therefore this image should be easy to split up and broken down. Want to take something out? It should be a sinch.
 
