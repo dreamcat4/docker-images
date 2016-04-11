@@ -1,8 +1,50 @@
 # IRC
 
+Pictured: irssi client
+
 ![irssi client theme customizations](https://i.imgur.com/29t9smb.png "irssi client theme customizations")
 
 ...and much more!
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+ 
+
+  - [Introduction](#introduction)
+  - [Connection diagram](#connection-diagram)
+  - [Quickstart](#quickstart)
+    - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
+    - [Testing out the quickstart config](#testing-out-the-quickstart-config)
+  - [IRC Servers](#irc-servers)
+  - [Irssi Scripts](#irssi-scripts)
+  - [Tweaked scripts](#tweaked-scripts)
+  - [Not met script dependancies](#not-met-script-dependancies)
+  - [Solarized Irssi Theme](#solarized-irssi-theme)
+  - [Editing configuration files](#editing-configuration-files)
+  - [Configuration](#configuration)
+  - [Bitlbee](#bitlbee)
+  - [Service ports](#service-ports)
+  - [Connecting to the irssi session](#connecting-to-the-irssi-session)
+  - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
+- [Per-user setup](#per-user-setup)
+  - [ZNC user configuration](#znc-user-configuration)
+  - [Setting up nickserv on znc](#setting-up-nickserv-on-znc)
+  - [Per-network Authentication methods](#per-network-authentication-methods)
+    - [&bitlbee](#&bitlbee)
+    - [dalnet](#dalnet)
+    - [efnet](#efnet)
+    - [freenode](#freenode)
+    - [gnome](#gnome)
+    - [ircnet](#ircnet)
+    - [mozilla](#mozilla)
+    - [oftc](#oftc)
+    - [quakenet](#quakenet)
+    - [undernet](#undernet)
+  - [File permissions](#file-permissions)
+  - [Docker Compose](#docker-compose)
+  - [Alternative](#alternative)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ### Introduction
 
@@ -74,8 +116,6 @@ Now for some reason (or perhaps a bug in znc), as a side-effect of our user clon
 ```
 
 Just search / replace all occurences of the string with your own personal irc nickname. Or else just delete them. As they are all extraneous config lines being repeated, they are not actually needed.
-
-----
 
 We now need to replace the znc username:password login credentials, with your new user accounts. The next files to modify are:
 
@@ -173,7 +213,7 @@ password = "weechat"
 * At this point, all of your znc bouncer account logins should be updated.
 * Some irc networks require you to identify your nickname with their services. That has not been covered in this quickstart section. As it depends which irc servers you actually want to be using. There is a seperate section with more instructions for that further down.
 
-##### Configure local irc server - peer passwords
+#### Configure local irc server - peer passwords
 
 We can change the peer connection password, to help secure our own local irc server and its seperated atheme services daemon.
 
@@ -201,8 +241,7 @@ And change the 2 passwords to something un-guessable. Make sure that the `send_p
 
 It is now recommended to copy only these few modified config files, into the overlay folder named `config.custom/` in the docker build context. Which can be checked out from github repo. Then if you ever re-build this docker image yourself, it will automatically include all your unique login / accounts info (as the pre-seeded default /config).
 
-----
-##### Testing out the quickstart config
+#### Testing out the quickstart config
 
 For ssh terminal access, you can find a new pair of ssh connection keys were generated in the following locations:
 
@@ -217,8 +256,6 @@ Grab the 2 unique `id_rsa` private key files. One is for irssi, and the other on
 ssh -i irssi_rsa irssi@CONTAINER_IP
 ssh -i weechat_rsa weechat@CONTAINER_IP
 ```
-
-----
 
 For [glowing-bear](https://www.glowing-bear.org) web access, over HTTPS SSL/TLS:
 
