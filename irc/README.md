@@ -39,17 +39,22 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
   - [Connection diagram](#connection-diagram)
   - [Service ports](#service-ports)
 - [Quickstart](#quickstart)
+  - [Configure ZNC](#configure-znc)
+  - [Configure irc clients](#configure-irc-clients)
     - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
   - [Connecting](#connecting)
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
 - [IRC Servers](#irc-servers)
+    - [Public IRC networks](#public-irc-networks)
+    - [Private / localhost services](#private--localhost-services)
 - [Editing configuration files](#editing-configuration-files)
 - [Configuration](#configuration)
   - [ssh](#ssh)
   - [znc](#znc)
   - [weechat](#weechat)
   - [irssi](#irssi)
+  - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
   - [URLs](#urls)
@@ -172,6 +177,8 @@ The user is intended to access the IRC service primarily as the user `irssi`, on
 
 For the most part, you just need to set new username & password(s) for your own personal irc accounts. However these same logins are referenced across multiple programs / multiple configuration files.
 
+### Configure ZNC
+
 * Create a new container of `dreamcat4/irc` image, with bind:mounted volumes for the `/config` and `/irc` folders
 * Start the container
 
@@ -206,6 +213,8 @@ Now for some reason (or perhaps a bug in znc), as a side-effect of our user clon
 ```
 
 Just search / replace all occurences of the string with your own personal irc nickname. Or else just delete them. As they are all extraneous config lines being repeated, they are not actually needed.
+
+### Configure irc clients
 
 We now need to replace the znc username:password login credentials, with your new user accounts. The next files to modify are:
 
