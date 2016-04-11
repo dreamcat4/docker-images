@@ -2,7 +2,7 @@
 
 *Back to this page on --->* ***[DockerHub](https://hub.docker.com/r/dreamcat4/irc/).***
 
-# IRC
+# dreamcat4/irc
 
 A collection of pre-configured irc programs and services. Designed to make IRC easy. Everything designed to come up on container start, all work together.
 
