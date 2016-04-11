@@ -1,4 +1,4 @@
-# IRC
+sup IRC
 
 ### Introduction
 
@@ -63,7 +63,7 @@ For the most part, you just need to set new username & password(s) for your own 
 * Stop the container
 * Navigate to the bind:mounted volume `/config`
 
-Now for some reason (or perhaps a bug in znc), as a side-effect of our user clone operation znc has inserted many redundant duplicate config lines in each network's config block. Which are now incorrectly referring to the previous nickname we dont wish for: `znc_user`. Therefore, we must now also replace all cruft instances of the `znc_user` string in the znc config text file, located at:
+Now for some reason (or perhaps a bug in znc), as a side-effect of our user clone operation znc has inserted many redundant duplicate config lines in each network's config block. Which are now incorrectly referring to the previous nicknames we dont wish for: `znc_user`and `supybot`. Therefore, we must now also replace all cruft instances of the `znc_user` and `supybot` strings in the znc config text file, located at:
 
 ```sh
 /config/znc/configs/znc.conf
@@ -111,7 +111,7 @@ Find these bot settings, and change them to your bot's new znc name / znc passwo
 ```yaml
 supybot.nick: supybot
 supybot.ident: supybot
-supybot.user: znc_user's supybot
+supybot.user: znc_users familiar
 ```
 
 And for each network login setting, just as we show in the irssi config file, change them to:
@@ -635,7 +635,7 @@ More info: https://www.dal.net/services/servcmd.php?c=9
   * Register with nickserv using the general method described ^^ earlier
 
 * sasl
-  * https://www.freenode.net/sasl/sasl-znc.shtml
+  * https://web.archive.org/web/20150907063721/https://freenode.net/sasl/sasl-znc.shtml
 
 #### gnome
 
