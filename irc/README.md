@@ -36,6 +36,8 @@ Based on ubuntu 16.04 base image (xenial xerus).
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
 - [IRC Servers](#irc-servers)
+    - [Public IRC networks](#public-irc-networks)
+    - [Private / localhost services](#private--localhost-services)
 - [Editing configuration files](#editing-configuration-files)
 - [Configuration](#configuration)
   - [ssh](#ssh)
@@ -370,7 +372,7 @@ Navigate in your web browser to the [glowing bear website](https://www.glowing-b
 
 IRC Networks and channels pre-configured. However they are not all switched on by default. You will need to go into your znc web settings to enable / disable each networks you want to znc to connect to.
 
-* Public IRC networks
+#### Public IRC networks
 
   * barton
     * `#ngircd`
@@ -407,7 +409,7 @@ IRC Networks and channels pre-configured. However they are not all switched on b
   * undernet
 
 
-* Private / localhost services
+#### Private / localhost services
 
   * "ngircd"
     * `#local` sandbox channel (for limnoria / "supybot")
