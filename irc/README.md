@@ -6,7 +6,9 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
 
 ***...but also SO MUCH MORE!***
 
-Or to put it another way: This be the mother of all IRC-related docker images. Look no further. You may consider it your own personal IRC nirvana, a realm like no other. With all of the most modern and practical IRC tools at your fingertips. Yet also coming at the fewest cost in terms of configuration energies / setup burdens drained to you. The hardest work is already done here.
+Or to put it another way:
+
+This is the mother of all IRC-related docker images. Look no further. You may consider it to be everything you will need for your own personal IRC nirvana, a realm like no other. The hardest work is already done here. With all of the most modern and practical IRC tools at your fingertips. Whilst also coming at the lowest cost of ownership in terms of configuration energies expended / setup burdens drained to you.
 
 Based on ubuntu 16.04 base image (xenial xerus).
 
