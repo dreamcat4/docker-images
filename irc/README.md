@@ -123,13 +123,17 @@ Well anyhow... the magnificence of this IRC setup cannot be described merely by 
 
 **Cons:**
 
-* Very large image size ~1.4gb, most of which is the bitlbee and supybot dependancies
+* Very large image size ~1.4gb, most of which is the bitlbee (IM chat) and limnoria (irc bot) dependancies
 * It is less secure than having many isolated individual images
 * May include some service you didn't want
 
 ***However:***
 
-This image's Dockerfile has been properly organised into isolated sections for each services. And each service is kept in individual separate folders. Therefore this image should be very easily broken down. Want to split it all up or remove some un-needed services you don't want in there? It should be a sinch. (Hint: bitlbee and limnoria are by far the biggest ones.)
+This image's Dockerfile has been properly organised into isolated sections for each services. And each service is kept in individual separate folders. Therefore this image should be very easily broken down. Want to split it up / remove some un-needed services? Should be a sinch.
+
+***Top tip:***
+
+Bitlbee and limnoria were by far the biggest culprits to image bloat here. The large image size is mostly due to their dependancies. Before adding them the image was 'only a mere ~700mb'. By adding them it fully doubled the image size from previous all estimates. That smarted much. But ah well! What can you do eh? Life fife without your own personal IRC bot and access to all of the most popular IM chat servers in the entire world? I think not! :)))
 
 ### Connection diagram
 
