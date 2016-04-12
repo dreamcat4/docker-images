@@ -11,19 +11,7 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
 
 **Includes [irssi over ssh](http://i.imgur.com/Fk94eHf.png) and [glowing-bear web interface](http://i.imgur.com/bAAPFkS.png), as pictured below.**
 
-***...but also SO MUCH MORE!***
-
-Or to put it another way:
-
-This is the mother of all IRC-related docker images. Look no further. You may consider it to be everything you will need for your own personal IRC nirvana, a realm like no other. The hardest work is already done here. With all of the most modern and practical IRC tools at your fingertips. Whilst also coming at the lowest cost of ownership in terms of configuration energies expended / setup burdens drained to you.
-
-Oh and did I forget to mention?
-
-You also get [your very own irc bot](https://github.com/dreamcat4/docker-images/tree/master/irc#limnoria-aka-supybot). Not impressed? How about [your own private IRC server too](https://github.com/dreamcat4/docker-images/tree/master/irc#private--localhost-services). Which BTW makes for handy little sandbox where can play with said IRC bot before taking it public.
-
-Of course not everybody likes bots. Or the hassles associated with having their very own IRC services. So I've also included [an extensive 3rd party IM chat protocols support for bitlbee](https://github.com/dreamcat4/docker-images/tree/master/irc#bitlbee-chat-protocols). Thanks to [bitlbee](https://wiki.bitlbee.org/) and [libpurple](https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols) for providing those ones.
-
-Well anyhow... the magnificence of this IRC setup cannot be described merely by words alone. *These wonders simply must be experienced to be believed.* So throw away your old irc setup! And join with me! Ultimate IRC power can be yours today!
+...but also: ***SO MUCH MORE!***
 
 ![irssi client theme customizations](http://i.imgur.com/Fk94eHf.png "irssi client theme customizations")
 
