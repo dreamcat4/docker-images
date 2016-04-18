@@ -56,7 +56,7 @@ sudo -E su "irssi" << EOF
 	# Launch irssi in tmux where $tmux_socket_irssi and $tmux_session_irssi are declared in the Dockerfile ENV
 	# sleep 3
 	sleep 1
-	script -q -e /dev/null -c "tmux -S $tmux_socket_irssi -u new-session -d -s $tmux_session_irssi -x 120 -y 40 /usr/bin/irssi --home=/config/irssi $irssi_args"
+	script -q -e /dev/null -c "tmux -S $tmux_socket_irssi -u new-session -d -s $tmux_session_irssi -x 240 -y 80 /usr/bin/irssi --home=/config/irssi $irssi_args"
 EOF
 
 

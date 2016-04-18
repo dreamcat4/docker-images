@@ -61,7 +61,7 @@ sudo -E su "weechat" << EOF
 	# Launch weechat in tmux where $tmux_socket_weechat and $tmux_session_weechat are declared in the Dockerfile ENV
 	# sleep 3
 	sleep 1
-	script -q -e /dev/null -c "tmux -S $tmux_socket_weechat -u new-session -d -s $tmux_session_weechat -x 120 -y 40 /usr/bin/weechat --dir /config/weechat $weechat_args"
+	script -q -e /dev/null -c "tmux -S $tmux_socket_weechat -u new-session -d -s $tmux_session_weechat -x 240 -y 80 /usr/bin/weechat --dir /config/weechat $weechat_args"
 EOF
 
 
