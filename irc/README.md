@@ -28,17 +28,25 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
   - [Connection diagram](#connection-diagram)
   - [Service ports](#service-ports)
 - [Quickstart](#quickstart)
-    - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
+  - [Configure ZNC](#configure-znc)
+  - [Configure irc clients](#configure-irc-clients)
+    - [irssi](#irssi)
+    - [limnoria (aka supybot)](#limnoria-aka-supybot)
+    - [weechat](#weechat)
+  - [Configure local irc server - peer passwords](#configure-local-irc-server---peer-passwords)
   - [Connecting](#connecting)
     - [Over ssh](#over-ssh)
     - [From a web browser](#from-a-web-browser)
 - [IRC Servers](#irc-servers)
+    - [Public IRC networks](#public-irc-networks)
+    - [Private / localhost services](#private--localhost-services)
 - [Editing configuration files](#editing-configuration-files)
 - [Configuration](#configuration)
   - [ssh](#ssh)
   - [znc](#znc)
-  - [weechat](#weechat)
-  - [irssi](#irssi)
+  - [weechat](#weechat-1)
+  - [irssi](#irssi-1)
+  - [Notifications to your i-Devices, android, Desktop, etc.](#notifications-to-your-i-devices-android-desktop-etc)
   - [IRC Data](#irc-data)
   - [Logs](#logs)
   - [URLs](#urls)
@@ -57,6 +65,7 @@ A collection of pre-configured irc programs and services. Designed to make IRC e
     - [Telegram](#telegram)
     - [Torchat](#torchat)
     - [Other chat protocols](#other-chat-protocols)
+- [Searching irc logs](#searching-irc-logs)
 - [Connecting to the irssi session](#connecting-to-the-irssi-session)
 - [Disconnecting from an irssi session](#disconnecting-from-an-irssi-session)
 - [Per-user setup](#per-user-setup)
@@ -632,6 +641,12 @@ To check that a specific protocol is supported, type `account add PROTOCOL usern
 **Additional Protocols:**
 
 https://developer.pidgin.im/wiki/ThirdPartyPlugins#AdditionalProtocols
+
+## Searching irc logs
+
+A simple commandline script is included, simply named `search`.
+
+It can be run from inside of your IRC client via the znc `*shell` module. So be sure to enable that module first in your znc webconfig. Then in your IRC client, doing a `/query *shell search --help` will open a new window, and print the relevant usage information and commandline syntax. The `search` script will search in your znc irc logs folder. Performing a case-insensitive REGEXP (grep). Joins and Quits are filtered out from the results.
 
 ## Connecting to the irssi session
 

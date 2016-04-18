@@ -26,7 +26,7 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 
 # Install ngircd
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y ngircd
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y ngircd && $_apt_clean
 
 # Setup ngircd user
 RUN groupadd -o -g 5914 ngircd \
@@ -51,6 +51,10 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y znc
 # Install external znc-modules
 RUN wget -O /tmp/znc-modules.tar.gz https://dl.bintray.com/dreamcat4/linux/znc-modules/znc-modules-latest_linux-x86_64.tar.gz \
  && tar zxf /tmp/znc-modules.tar.gz -C /usr/lib/znc/ --skip-old-files && $_clean
+
+# Install 'search' helper script, to search znc logs
+ADD znc-shell-search /usr/local/bin/search
+RUN chmod +x /usr/local/bin/search
 
 # Setup znc user
 RUN groupadd -o -g 6697 znc \

@@ -1,0 +1,131 @@
+#!/bin/sh
+
+__cat_help ()
+{
+	cat <<- "EOF"
+
+ search:
+      Helper script for znc *shell module, to search through znc IRC logs folder
+
+ Usage:
+
+	* search in znc logs of your znc user:
+
+	  search for REXEXP across all logged-in channels
+	    /query *shell search "REGEXP"
+
+	  search for REXEXP in CHANNEL
+	    /query *shell search CHANNEL "REGEXP"
+
+
+	* search in znc logs of for ALL znc users:
+
+	  search for REXEXP in CHANNEL
+	    /query *shell search -all "REGEXP"
+	    /query *shell search -all CHANNEL "REGEXP"
+
+
+	* search in znc logs of for the znc user named "USER":
+
+	  search for REXEXP in CHANNEL
+	    /query *shell search -USER "REGEXP"
+	    /query *shell search -USER CHANNEL "REGEXP"
+
+
+	* (SLOWER) search in znc logs, and print each match with N lines of context:
+
+	  search for REXEXP and print each match with lines of context: 3 before + 3 after
+	    /query *shell search 3 [-USER] [CHANNEL] "REGEXP"
+
+	  search for REXEXP and print each match with lines of context: 8 before + 2 after
+	    /query *shell search 8,2 [-USER] [CHANNEL] "REGEXP"
+
+	  search for REXEXP and print each match with lines of context: 5 before + 0 after
+	    /query *shell search 5, [-USER] [CHANNEL] "REGEXP"
+
+	  search for REXEXP and print each match with lines of context: 0 before + 5 after
+	    /query *shell search ,5 [-USER] [CHANNEL] "REGEXP"
+
+EOF
+}
+
+_znc_logs_folder="/irc/znc/logs"
+
+if [ ! "$1" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	__cat_help;
+	exit 0
+fi
+
+
+if echo "$1" | grep -q -E "^[0-9,]*$"; then
+	_bc=$(echo "$1" | cut -d, -f1)
+	_ac=$(echo "$1" | cut -d, -f2)
+
+	[ ! "$_bc" ] && _bc=0
+	[ ! "$_ac" ] && _ac=0
+
+	shift
+fi
+
+
+if [ "$1" != "${1#-}" ]; then
+	_user="${1#-}"
+	shift
+else
+	_user=$(grep -m1 "\.username = " /config/weechat/irc.conf | sed -e 's|^.* = "||' -e 's|/.*"$||')
+fi
+
+
+if [ "$2" ]; then
+	_regexp="$2"
+	echo "Search for REGEXP: \"$_regexp\", in irc logs of ZNC_USER: \"$_user\", in IRC_CHANNEL: \"$1\""
+
+	if [ "$_user" = "all" ]; then
+		_matched_files=$(grep -lri -E "$_regexp" $_znc_logs_folder/*$1*)
+	else
+		_matched_files=$(grep -lri -E "$_regexp" $_znc_logs_folder/*$1*${_user}_on_*)
+	fi
+
+elif [ ! "$1" ]; then
+	echo "Error: Too few arguments. No REGEXP specified at end, or REGEXP was mistaken as an [OPTION]."
+	exit 1
+
+else
+	_regexp="$1"
+	echo "Search for REGEXP: \"$_regexp\", in irc logs of ZNC_USER: \"$_user\", (all irc channels)"
+
+	if [ "$_user" = "all" ]; then
+		_matched_files=$(grep -lri -E "$_regexp" $_znc_logs_folder/*)
+	else
+		_matched_files=$(grep -lri -E "$_regexp" $_znc_logs_folder/*${_user}_on_*)
+	fi
+fi
+
+
+unset _matches_found
+for _file in $_matched_files; do
+
+	if [ "$_bc" ] && [ "$_ac" ]; then
+		_match_lines=$(grep -nh -vF "*** Joins:
+*** Quits: " "$_file" | grep -i -B${_bc} -A${_ac} -E "$_regexp")
+
+	else
+		_match_lines=$(grep -nhi -E "$_regexp" "$_file" | grep -vF "*** Joins:
+*** Quits: ")
+	fi
+
+	if [ "$_match_lines" ]; then
+		_matches_found=true
+		echo
+		echo "in ${_file}:"
+		echo =======================================================================
+		echo "$_match_lines"
+		echo
+	fi
+done
+
+if [ ! "$_matches_found" ]; then
+	echo "No matches found."
+fi
+
+
