@@ -93,6 +93,7 @@ group() { local name="${1}" gid="${2:-}"
 # Outputs to stdout the hased lines for import later on
 export_() {
     pdbedit --list --smbpasswd-style
+    exit $?
 }
 
 ### import: import a smbpasswd file

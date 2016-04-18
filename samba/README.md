@@ -94,8 +94,10 @@ Generate new smbpasswd file:
     smbpasswd_file="$HOME/.smb/smbpasswd.container1"
     install -d -m 0700 "$HOME/.smb"
     install -m 0600 /dev/null "$smbpasswd_file"
-    docker run  -p 139:139 -p 445:445 -d dreamcat4/samba \
-                -u "user1;badpass1" -u "user2;badpass2" -e >> $smbpasswd_file
+    cont_id="$(docker run  --net=none -p 139:139 -p 445:445 -d dreamcat4/samba \
+                    -u "user1;badpass1" -u "user2;badpass2" -e)"
+    docker logs $cont_id 2>&1 | grep XXXXXXXX >> $smbpasswd_file
+    docker rm   $cont_id
 
 Import smbpasswd file:
 
