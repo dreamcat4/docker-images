@@ -36,13 +36,19 @@ RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
 # Relocate the timezone file
 RUN mkdir -p /config/.etc && mv /etc/timezone /config/.etc/ && ln -s /config/.etc/timezone /etc/
 
+# Set locale
+ENV LANG="en_US.UTF-8"
 
-# Relocate the locale files
-RUN mkdir -p /config/.var/lib/locales/ /config/.usr/lib/ \
- && mv /var/lib/locales/supported.d /config/.var/lib/locales/ \
- && mv /usr/lib/locale /config/.usr/lib/ \
- && ln -s /config/.var/lib/locales/supported.d /var/lib/locales/ \
- && ln -s /config/.usr/lib/locale /usr/lib/
+RUN apt-get update -qqy && apt-get install -qqy locales && $_apt_clean \
+ && grep "$LANG" /usr/share/i18n/SUPPORTED >> /etc/locale.gen && locale-gen \
+ && update-locale LANG=$LANG
+
+# Relocate the locale files in /usr/lib/locale/
+RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
+ && mv /usr/lib/locale /config/.link/usr/lib/ \
+ && mv /etc/locale.gen /config/.link/etc \
+ && ln -s /config/.link/usr/lib/locale /usr/lib/ \
+ && ln -s /config/.link/etc/locale.gen /etc/
 
 
 # Global config

@@ -5,19 +5,21 @@ ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ENV _apt_clean="eval apt-get clean && $_clean"
 
 
-# 1. Set your local timezone
+# 1. Set Timezone
 RUN mkdir -p /config/.etc/ && echo "Europe/London" > /config/.etc/timezone
 
+# 2. Set locale - change 'en_US.UTF-8' --> the correct one for your county / region
+# 2b. You will also need to specify the locale at run time e.g. `docker run -e LANG="en_US.UTF-8" ...`
+ENV LANG="en_US.UTF-8"
 
-# 2. Set the locale here with 'locale-gen' cmd if you are not English or American
-# RUN apt-get update -qq && apt-get install -qqy locales && $_apt_clean \
-#  && locale-gen en_US.UTF-8 && dpkg-reconfigure locales
+RUN apt-get update -qqy && apt-get install -qqy locales && $_apt_clean \
+ && grep "$LANG" /usr/share/i18n/SUPPORTED >> /etc/locale.gen && locale-gen \
+ && update-locale LANG=$LANG
 
-
-# 3. Must always move the lang files into '/config dir', where dreamcat4/tvheadend expects
-RUN mkdir -p /config/.var/lib/locales/ /config/.usr/lib/ \
- && mv /var/lib/locales/supported.d /config/.var/lib/locales/ \
- && mv /usr/lib/locale /config/.usr/lib/
+# 3. Must always move the lang files into '/config dir', where dreamcat4/deluge expects
+RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
+ && mv /usr/lib/locale /config/.link/usr/lib/ \
+ && mv /etc/locale.gen /config/.link/etc
 
 
 # 4. Populate the Tvheadend Config Folder with the config pieces you need
