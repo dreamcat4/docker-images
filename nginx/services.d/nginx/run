@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/usr/bin/with-contenv sh
 
 
 # Set the uid:gid to run as
@@ -29,4 +29,5 @@ _nginx_args="$@"
 
 # Start nginx
 nginx $_nginx_args
+
 

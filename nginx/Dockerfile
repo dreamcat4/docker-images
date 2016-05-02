@@ -21,7 +21,7 @@ RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 # Install nginx
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 \
- && echo "deb http://nginx.org/packages/mainline/ubuntu trusty nginx" >> /etc/apt/sources.list \
+ && echo "deb http://nginx.org/packages/mainline/ubuntu xenial nginx" >> /etc/apt/sources.list \
  && apt-get update && apt-get install -y ca-certificates nginx && $_apt_clean
 
 
@@ -43,14 +43,14 @@ COPY default /etc/nginx/sites-enabled/default
 COPY default-ssl /etc/nginx/sites-available/default-ssl
 
 
-# Launch script
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Start scripts
+ENV S6_LOGGING="0"
+ADD services.d /etc/services.d
 
 
 # Default container settings
 VOLUME /www
 EXPOSE 80 443
-ENTRYPOINT ["/init","/entrypoint.sh"]
+ENTRYPOINT ["/init"]
 
 
