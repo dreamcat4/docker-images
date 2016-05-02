@@ -72,11 +72,11 @@ RUN wget -O /tmp/libgnutls-deb0-28_amd64.deb http://launchpadlibrarian.net/23482
 RUN wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
  && echo "deb http://code.bitlbee.org/debian/master/wily/amd64/ ./" >> /etc/apt/sources.list \
  && wget -O- https://jgeboski.github.io/obs.key | apt-key add - \
- && echo "deb http://download.opensuse.org/repositories/home:/jgeboski/xUbuntu_15.10 ./" >> /etc/apt/sources.list \
+ && echo "deb http://download.opensuse.org/repositories/home:/jgeboski/xUbuntu_16.04 ./" >> /etc/apt/sources.list \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C03AA79CFFEBD240 \
- && echo "deb http://ppa.launchpad.net/aap/pidgin/ubuntu wily main" >> /etc/apt/sources.list \
+ && echo "deb http://ppa.launchpad.net/aap/pidgin/ubuntu xenial main" >> /etc/apt/sources.list \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 531EE72F4C9D234C \
- && echo "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu wily main" >> /etc/apt/sources.list \
+ && echo "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu xenial main" >> /etc/apt/sources.list \
  \
  && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y rsyslog \
     bitlbee-libpurple bitlbee-plugin-otr \
@@ -182,7 +182,7 @@ RUN groupadd -o -g 1455 irssi \
 
 # Install weechat
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D1820DB22A11534E \
- && echo "deb https://weechat.org/ubuntu wily main" >> /etc/apt/sources.list \
+ && echo "deb https://weechat.org/ubuntu xenial main" >> /etc/apt/sources.list \
  \
  && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     weechat weechat-plugins \
