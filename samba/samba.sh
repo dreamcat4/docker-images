@@ -75,7 +75,8 @@ user() { local name="${1}" passwd="${2}" uid="${3:-}" gid="${4:-}" extra_groups=
     [ "$extra_groups" ] && ua_args="$ua_args --groups $extra_groups"
 
     useradd "$name" -M $ua_args || usermod $ua_args "$name"
-    [ "$passwd" ] && echo "$passwd" | tee - | smbpasswd -s -a "$name"
+    [ "$passwd" ] && echo "$passwd
+$passwd" | smbpasswd -s -a "$name"
 }
 
 ### group: add a group
