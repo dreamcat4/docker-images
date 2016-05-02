@@ -10,7 +10,7 @@ ENV S6_LOGGING="1"
 # ENV S6_KILL_GRACETIME="3000"
 
 
-# install socat
+# install dnsmasq
 RUN apk --update-cache add dnsmasq && rm -rf /var/cache/apk/*
 
 
