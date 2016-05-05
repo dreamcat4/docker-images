@@ -1,25 +1,83 @@
 /*
 
+
+!/deluge
+!/deluge/*
+/deluge/config/id.dkr
+/deluge/config/config/core/id+
+/deluge/config/config/users/id+
+/deluge/config/config/plugins/id
+# /deluge/config/config/
+# /deluge/config/config/plugins/official/
+# /deluge/config/config/plugins/3rd.party/
+
+!/ffsync
+!/ffsync/*
+
+!/forked-daapd
+!/forked-daapd/*
+
+# !/headphones
+# !/headphones/*
+
+!/irc
+!/irc/*
+/irc/config.old
+/irc/config.current
+/irc/irc
+/irc/config.default/irssi/.ssh
+/irc/config.default/weechat/.ssh
+/irc/config.default/znc/users
+/irc/config.custom
+!/irc/config.custom/README.md
+
+!/jackett
+!/jackett/*
+/jackett/config/.config
+
+!/nginx
+!/nginx/*
+
 !/pipework
 !/pipework/*
 
-!/tvh
-!/tvh/*
-/tvh/config/config/channels
-/tvh/config/config/adapters
-/tvh/config/config/bouquets
-/tvh/config/config/network
-/tvh/config/config/users/id+
-/tvh/config/config/epg/xmltv/uk/atlas/region/south
+!/ps3netsrv
+!/ps3netsrv/*
 
-#!/tvheadend
-#!/tvheadend/*
-/tvheadend/uk-atlas-api-key
+!/pxe
+!/pxe/*
 
 !/samba
 !/samba/*
 
-!/ps3netsrv
-!/ps3netsrv/*
+!/sonarr
+!/sonarr/*
+
+!/unfs3
+!/unfs3/*
+
+!/tvh
+!/tvh/*
+/tvh/mc2xml
+/tvh/mc2xml/*
+/tvh/config/config/channels
+/tvh/config/config/adapters
+/tvh/config/config/bouquets
+/tvh/config/config/network
+/tvh/config/config/filters/subtitles/disabled+
+/tvh/config/config/users/id+
+/tvh/config/config/epg/xmltv/uk/atlas/region/south
+/tvh/config/config/epg/xmltv/uk/atlas/api-key+
+/tvh/config/id.pre-scan.dkr
+/tvh/config/id.post-scan.clean.dkr
+/tvh/config/scratch.channels
+
+
+
+scratch.dkr
+scratch.*
+
+# !/
+# !//*
 
 *.html
