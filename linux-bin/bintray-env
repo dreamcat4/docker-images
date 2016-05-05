@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+# Your Bintray account user settings need to go here:
+bintray_user="dreamcat4"
+bintray_key="0123456789abcdef0123456789abcdef01234567"
+
+
+# The repo we are uploading to - should be kept the same
+bintray_repo="linux"
+
+
