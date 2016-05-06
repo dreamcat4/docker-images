@@ -45,7 +45,8 @@ RUN git clone git://thekelleys.org.uk/dnsmasq.git && cd dnsmasq \
 ADD fix--dhcp-proxy-for-uefi-clients_31-oct-2015.patch ./
 RUN cd dnsmasq && patch -p1 < ../fix--dhcp-proxy-for-uefi-clients_31-oct-2015.patch \
  && echo;echo WE CHANGED THIS CODE...;echo && git diff && echo;echo END OF CHANGES. Compiling...;echo \
- && make install DESTDIR=$PWD/out
+ && make install DESTDIR=$PWD/out \
+ && mkdir -p out/etc && cp dnsmasq.conf.example out/etc/
 
 
 # dnsmasq - Create tarball in /out/
