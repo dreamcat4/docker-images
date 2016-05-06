@@ -42,9 +42,9 @@ RUN git clone git://thekelleys.org.uk/dnsmasq.git && cd dnsmasq \
 
 
 # dnsmasq - Apply patch, compile dnsmasq
-ADD fix--dhcp-proxy-for-uefi-clients_31-oct-2015.patch ./
-RUN cd dnsmasq && patch -p1 < ../fix--dhcp-proxy-for-uefi-clients_31-oct-2015.patch \
- && echo;echo WE CHANGED THIS CODE...;echo && git diff && echo;echo END OF CHANGES. Compiling...;echo \
+ADD dnsmasq/fix--dhcp-proxy-for-uefi-clients_02-mar-2016_jpolok.patch pxe-uefi.patch
+RUN cd dnsmasq && patch -p1 < ../pxe-uefi.patch \
+ && echo && echo WE CHANGED THIS CODE... && echo && git diff && echo && echo END OF CHANGES. Compiling... && echo \
  && make install DESTDIR=$PWD/out \
  && mkdir -p out/etc && cp dnsmasq.conf.example out/etc/
 

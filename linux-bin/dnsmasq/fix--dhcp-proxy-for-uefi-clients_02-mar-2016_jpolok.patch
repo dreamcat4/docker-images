@@ -1,0 +1,190 @@
+diff --git a/man/dnsmasq.8 b/man/dnsmasq.8
+index c8913b5..ee2a6b0 100644
+--- a/man/dnsmasq.8
++++ b/man/dnsmasq.8
+@@ -1358,6 +1358,22 @@ to allow netbooting. This mode is enabled using the
+ .B proxy
+ keyword in
+ .B dhcp-range.
++.TP
++.B --pxe-skip-menu=<CSA>
++When acting in dhcp proxy mode sends back to PXE client first matching
++(by <CSA> and <tag>)
++.B pxe-service
++entry allowing the client to boot. This option provides a 'shortcut' for
++standard PXE menu based boot process that seems not to work on EFI PXE clients.
++<CSA> is client system type (see
++.B pxe-service
++above for defined types.)
++
++Note:
++.B pxe-prompt
++option is ignored for matching <CSA> when
++.B pxe-skip-menu=<CSA>
++is specified.
+ .TP  
+ .B \-X, --dhcp-lease-max=<number>
+ Limits dnsmasq to the specified maximum number of DHCP leases. The
+diff --git a/src/dnsmasq.h b/src/dnsmasq.h
+index cf1a782..dda65fb 100644
+--- a/src/dnsmasq.h
++++ b/src/dnsmasq.h
+@@ -242,7 +242,8 @@ struct event_desc {
+ #define OPT_LOOP_DETECT    50
+ #define OPT_EXTRALOG       51
+ #define OPT_TFTP_NO_FAIL   52
+-#define OPT_LAST           53
++#define OPT_PXE_SKIP_MENU  53
++#define OPT_LAST           54
+ 
+ /* extra flags for my_syslog, we use a couple of facilities since they are known 
+    not to occupy the same bits as priorities, no matter how syslog.h is set up. */
+@@ -781,6 +782,11 @@ struct pxe_service {
+   struct pxe_service *next;
+ };
+ 
++struct pxe_skip_menu {
++  unsigned short CSA;
++  struct pxe_skip_menu *next;
++};
++
+ #define MATCH_VENDOR     1
+ #define MATCH_USER       2
+ #define MATCH_CIRCUIT    3
+@@ -967,6 +973,7 @@ extern struct daemon {
+   struct dhcp_mac *dhcp_macs;
+   struct dhcp_boot *boot_config;
+   struct pxe_service *pxe_services;
++  struct pxe_skip_menu *pxe_skip_menus;
+   struct tag_if *tag_if; 
+   struct addr_list *override_relays;
+   struct dhcp_relay *relay4, *relay6;
+diff --git a/src/option.c b/src/option.c
+index ecc2619..db770c7 100644
+--- a/src/option.c
++++ b/src/option.c
+@@ -154,6 +154,7 @@ struct myoption {
+ #define LOPT_HOST_INOTIFY  342
+ #define LOPT_DNSSEC_STAMP  343
+ #define LOPT_TFTP_NO_FAIL  344
++#define LOPT_PXE_SKIP_MENU 345
+ 
+ #ifdef HAVE_GETOPT_LONG
+ static const struct option opts[] =  
+@@ -274,6 +275,7 @@ static const struct myoption opts[] =
+     { "cname", 1, 0, LOPT_CNAME },
+     { "pxe-prompt", 1, 0, LOPT_PXE_PROMT },
+     { "pxe-service", 1, 0, LOPT_PXE_SERV },
++    { "pxe-skip-menu", 1, 0, LOPT_PXE_SKIP_MENU },
+     { "test", 0, 0, LOPT_TEST },
+     { "tag-if", 1, 0, LOPT_TAG_IF },
+     { "dhcp-proxy", 2, 0, LOPT_PROXY },
+@@ -443,6 +445,7 @@ static struct {
+   { LOPT_CNAME, ARG_DUP, "<alias>,<target>", gettext_noop("Specify alias name for LOCAL DNS name."), NULL },
+   { LOPT_PXE_PROMT, ARG_DUP, "<prompt>,[<timeout>]", gettext_noop("Prompt to send to PXE clients."), NULL },
+   { LOPT_PXE_SERV, ARG_DUP, "<service>", gettext_noop("Boot service for PXE menu."), NULL },
++  { LOPT_PXE_SKIP_MENU, ARG_DUP, "<CSA>", gettext_noop("Skip sending pxe menu to client and serve first matching pxe-service."), NULL },
+   { LOPT_TEST, 0, NULL, gettext_noop("Check configuration syntax."), NULL },
+   { LOPT_ADD_MAC, OPT_ADD_MAC, NULL, gettext_noop("Add requestor's MAC address to forwarded DNS queries."), NULL },
+   { LOPT_ADD_SBNET, ARG_ONE, "<v4 pref>[,<v6 pref>]", gettext_noop("Add requestor's IP subnet to forwarded DNS queries."), NULL },
+@@ -3143,6 +3146,29 @@ static int one_opt(int option, char *arg, char *errstr, char *gen_err, int comma
+ 	break;
+       }
+ 
++    case LOPT_PXE_SKIP_MENU: /* --pxe-skip-menu */
++       {
++         /* CSA[] duplicate with LOPT_PXE_SERV below */
++         char *CSA[] = { "x86PC", "PC98", "IA64_EFI", "Alpha", "Arc_x86", "Intel_Lean_Client",
++			 "IA32_EFI", "BC_EFI", "Xscale_EFI", "x86-64_EFI", NULL };
++
++	 for (i = 0; CSA[i]; i++)
++	   if (strcasecmp(CSA[i], arg) == 0)
++	     break;
++
++	 if (CSA[i] || atoi_check(arg, &i))
++	   {
++             struct pxe_skip_menu *new = opt_malloc(sizeof(struct pxe_skip_menu));
++             new->CSA = i;
++             new->next = daemon->pxe_skip_menus;
++             daemon->pxe_skip_menus = new;
++           }
++         else
++           ret_err(gen_err);
++
++	 break;
++       }
++
+     case LOPT_PXE_PROMT:  /* --pxe-prompt */
+        {
+ 	 struct dhcp_opt *new = opt_malloc(sizeof(struct dhcp_opt));
+diff --git a/src/rfc2131.c b/src/rfc2131.c
+index 9f69ed5..ee9392b 100644
+--- a/src/rfc2131.c
++++ b/src/rfc2131.c
+@@ -62,6 +62,7 @@ static int do_encap_opts(struct dhcp_opt *opts, int encap, int flag, struct dhcp
+ static void pxe_misc(struct dhcp_packet *mess, unsigned char *end, unsigned char *uuid);
+ static int prune_vendor_opts(struct dhcp_netid *netid);
+ static struct dhcp_opt *pxe_opts(int pxe_arch, struct dhcp_netid *netid, struct in_addr local, time_t now);
++static int pxe_skip_menu(int pxearch, struct dhcp_netid *netid,struct in_addr local, struct dhcp_packet *mess, time_t now);
+ struct dhcp_boot *find_boot(struct dhcp_netid *netid);
+ 
+   
+@@ -896,8 +897,10 @@ size_t dhcp_reply(struct dhcp_context *context, char *iface_name, int int_index,
+ 		  option_put(mess, end, OPTION_SERVER_IDENTIFIER, INADDRSZ, htonl(tmp->local.s_addr));
+ 		  pxe_misc(mess, end, uuid);
+ 		  prune_vendor_opts(tagif_netid);
+-		  do_encap_opts(pxe_opts(pxearch, tagif_netid, tmp->local, now), OPTION_VENDOR_CLASS_OPT, DHOPT_VENDOR_MATCH, mess, end, 0);
+-		  
++		  /* seems that sending both sname/bootfile AND
++		     option 43 back confuses EFI PXE client .. preventing boot */
++                  if (!pxe_skip_menu(pxearch, tagif_netid, tmp->local, mess, now))
++		    do_encap_opts(pxe_opts(pxearch, tagif_netid, tmp->local, now), OPTION_VENDOR_CLASS_OPT, DHOPT_VENDOR_MATCH, mess, end, 0);
+ 		  log_packet("PXE", NULL, emac, emac_len, iface_name, ignore ? "proxy-ignored" : "proxy", NULL, mess->xid);
+ 		  log_tags(tagif_netid, ntohl(mess->xid));
+ 		  return ignore ? 0 : dhcp_packet_size(mess, agent_id, real_end);	  
+@@ -1975,6 +1978,45 @@ static int prune_vendor_opts(struct dhcp_netid *netid)
+   return force;
+ }
+ 
++static int pxe_skip_menu(int pxearch, struct dhcp_netid *netid,struct in_addr local,struct dhcp_packet *mess, time_t now)
++{
++  struct pxe_service *service;
++  struct pxe_skip_menu *skipmenu;
++  char tmpsname[INET_ADDRSTRLEN];
++  struct in_addr tmpsaddr;
++  int layer = 0;
++
++  /* we use first matching service found, if any .. since we have no PXE_BOOT_ITEM  */
++  for (service = daemon->pxe_services; service; service = service->next)
++    for (skipmenu = daemon->pxe_skip_menus; skipmenu; skipmenu = skipmenu->next)
++      if (skipmenu->CSA == service->CSA && pxearch == service->CSA && match_netid(service->netid, netid, 1))
++         {
++           if (!service->basename)
++             return 0;
++
++           memset(tmpsname, 0, INET_ADDRSTRLEN);
++           tmpsaddr.s_addr = 0;
++
++           if (service->server.s_addr != 0)
++             {
++               inet_ntop(AF_INET, &(service->server), tmpsname, INET_ADDRSTRLEN);
++               tmpsaddr=service->server;
++             }
++           else if (!service->sname)
++            {
++               inet_ntop(AF_INET, &local, tmpsname, INET_ADDRSTRLEN);
++               tmpsaddr=local;
++            }
++
++           mess->siaddr = tmpsaddr.s_addr ? tmpsaddr : a_record_from_hosts(service->sname, now);
++           snprintf((char *)mess->file, sizeof(mess->file), "%s.%d", service->basename, layer);
++           snprintf((char *)mess->sname, sizeof(mess->sname), "%s", strlen(tmpsname) ? tmpsname : service->sname);
++
++           return 1;
++        }
++  return 0;
++}
++
+ static struct dhcp_opt *pxe_opts(int pxe_arch, struct dhcp_netid *netid, struct in_addr local, time_t now)
+ {
+ #define NUM_OPTS 4  
