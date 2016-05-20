@@ -73,12 +73,12 @@ RUN git clone git://git.ipxe.org/ipxe.git
 #  && echo "$ipxe_version" > /out/ipxe_version \
 #  && git checkout "${ipxe_version}"
 
-ADD ipxe/src/config/nocrypto /build/ipxe/ipxe/src/config/local/nocrypto
+ADD ipxe/nocrypto /build/ipxe/ipxe/src/config/local/nocrypto
 
 # ipxe - compile & install
 RUN cd ipxe/src \
- && CONFIG=noccrypto make bin/undionly.kpxe \
- && CONFIG=noccrypto make bin-x86_64-efi/ipxe.efi
+ && CONFIG=nocrypto make bin/undionly.kpxe \
+ && CONFIG=nocrypto make bin-x86_64-efi/ipxe.efi
 
 RUN mkdir -p out \
  && cp ipxe/src/bin/undionly.kpxe out/ \
@@ -96,7 +96,7 @@ RUN chmod +x /bin/upload-to-bintray
 
 # Execute our upload script
 ADD bintray-env /out/
-RUN upload-to-bintray && rm /out/bintray-env && ls -lsa /out/
+# RUN upload-to-bintray && rm /out/bintray-env && ls -lsa /out/
 
 
 # Default container settings
