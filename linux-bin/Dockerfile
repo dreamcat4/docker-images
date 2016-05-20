@@ -29,28 +29,63 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ca-certificates make gcc && $_apt_clean
 
 
-# dnsmasq - Build external modules
+# dnsmasq - Build from source
 RUN mkdir -p /build/dnsmasq
 WORKDIR /build/dnsmasq
 
-# dnsmasq - ./configure && make && make install
+# dnsmasq - git checkout
 RUN git clone git://thekelleys.org.uk/dnsmasq.git && cd dnsmasq \
- && dnsmasq_version="$(git tag  | grep -E 'v[0-9][0-9]*\.[0-9][0-9]$' | tail -1)" \
+ && dnsmasq_version="$(git tag  | grep -E 'v[0-9][0-9]*\.[0-9][0-9][rc]*[0-9]*$' | sort | tail -1)" \
+ && release_version=$(git tag | grep -E "^${dnsmasq_version%rc*}$" || true) \
+ && if [ "$release_version" ]; then dnsmasq_version=$release_version; fi \
  && echo "$dnsmasq_version" > /out/dnsmasq_version \
- && git checkout "${dnsmasq_version}" \
- && sed -i -e 's|/usr/local|/usr|' Makefile
+ && git checkout "${dnsmasq_version}"
 
 
-# dnsmasq - Apply patch, compile dnsmasq
-ADD dnsmasq/fix--dhcp-proxy-for-uefi-clients_02-mar-2016_jpolok.patch pxe-uefi.patch
-RUN cd dnsmasq && patch -p1 < ../pxe-uefi.patch \
- && echo && echo WE CHANGED THIS CODE... && echo && git diff && echo && echo END OF CHANGES. Compiling... && echo \
- && make install DESTDIR=$PWD/out \
+# dnsmasq - compile & install
+RUN cd dnsmasq && sed -i -e 's|/usr/local|/usr|' Makefile && make install DESTDIR=$PWD/out \
  && mkdir -p out/etc && cp dnsmasq.conf.example out/etc/
 
 
 # dnsmasq - Create tarball in /out/
 RUN cd dnsmasq/out && tar -czvf /out/dnsmasq-$(cat /out/dnsmasq_version)_linux-x86_64.tar.gz *
+
+
+# ===
+# ipxe - install build time dependancies
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    gcc binutils make perl syslinux liblzma-dev genisoimage && $_apt_clean
+
+
+# ipxe - Build from source
+RUN mkdir -p /build/ipxe \
+ && date -I > /out/ipxe_version
+
+WORKDIR /build/ipxe
+
+# ipxe - git checkout
+RUN git clone git://git.ipxe.org/ipxe.git
+
+# RUN cd ipxe \
+#  && ipxe_version="$(git tag | grep -E 'v[0-9][0-9]*\.[0-9]\.[0-9][-rc]*[0-9]*$' | sort | tail -1)" \
+#  && release_version=$(git tag | grep -E "^${ipxe_version%-rc*}$" || true) \
+#  && if [ "$release_version" ]; then ipxe_version=$release_version; fi \
+#  && echo "$ipxe_version" > /out/ipxe_version \
+#  && git checkout "${ipxe_version}"
+
+ADD ipxe/src/config/nocrypto /build/ipxe/ipxe/src/config/local/nocrypto
+
+# ipxe - compile & install
+RUN cd ipxe/src \
+ && CONFIG=noccrypto make bin/undionly.kpxe \
+ && CONFIG=noccrypto make bin-x86_64-efi/ipxe.efi
+
+RUN mkdir -p out \
+ && cp ipxe/src/bin/undionly.kpxe out/ \
+ && cp ipxe/src/bin-x86_64-efi/ipxe.efi out/
+
+# ipxe - Create tarball in /out/
+RUN cd /build/ipxe/out && tar -czvf /out/ipxe-$(cat /out/ipxe_version)_linux-x86_64.tar.gz *
 
 
 # Upload linux binaries --> bintray.com
