@@ -79,10 +79,10 @@ _upload_tarball_to_bintray ()
 
 	# Upload tarball again, this time as 'latest'
 	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:${bintray_version} \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\?override=1
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\&override=1
 
 	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:${bintray_version} \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1 | tr -d '\"')"
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\&override=1 | tr -d '\"')"
 	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
 
 	if [ $bintray_api_http_status -ge 400 ]; then
