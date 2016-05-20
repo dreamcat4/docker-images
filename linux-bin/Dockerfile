@@ -96,7 +96,7 @@ RUN chmod +x /bin/upload-to-bintray
 
 # Execute our upload script
 ADD bintray-env /out/
-# RUN upload-to-bintray && rm /out/bintray-env && ls -lsa /out/
+RUN upload-to-bintray && rm /out/bintray-env && ls -lsa /out/
 
 
 # Default container settings
