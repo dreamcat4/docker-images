@@ -111,7 +111,7 @@ _upload_tarball_to_bintray;
 # Queue ipxe
 bintray_pkg_name="ipxe"
 bintray_version="$(cat /out/ipxe_version)"
-bintray_ver_desc="ipxe with entropy gathering disabled #undef CRYPTO_80211_*. linux 64-bit"
+bintray_ver_desc="ipxe legacy and uefi binaries for chain boot. linux 64-bit"
 tarball="ipxe-${bintray_version}_linux-x86_64.tar.gz"
 bintray_file_path="${bintray_pkg_name}/${tarball}"
 

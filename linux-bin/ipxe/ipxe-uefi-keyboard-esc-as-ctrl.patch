@@ -1,0 +1,21 @@
+diff --git a/src/core/getkey.c b/src/core/getkey.c
+index 0f0f8b7..8d13d34 100644
+--- a/src/core/getkey.c
++++ b/src/core/getkey.c
+@@ -76,9 +76,14 @@ int getkey ( unsigned long timeout ) {
+ 	if ( character != ESC )
+ 		return character;
+ 
++	character = getchar_timeout ( GETKEY_TIMEOUT );
++	if ( character < 0 )
++	  return ESC;
++
++	if ( isalpha ( character ) )
++	  return ( toupper ( character ) - 'A' + 1 );
++
+ 	while ( ( character = getchar_timeout ( GETKEY_TIMEOUT ) ) >= 0 ) {
+-		if ( character == '[' )
+-			continue;
+ 		if ( isdigit ( character ) ) {
+ 			n = ( ( n * 10 ) + ( character - '0' ) );
+ 			continue;
