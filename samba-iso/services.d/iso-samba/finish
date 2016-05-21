@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv sh
+
+_mountpoint="$(echo $samba_flags | sed -e 's/^.*-s //' -e 's/[^;]*;//' -e 's/;.*$//')"
+
+echo Unmounting \$iso_file=$iso_file from _mountpoint=$_mountpoint...
+umount $_mountpoint
+echo Done.
+
+
+
+

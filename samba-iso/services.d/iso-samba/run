@@ -1,0 +1,42 @@
+#!/usr/bin/with-contenv sh
+
+
+_mount_fail()
+{
+	echo mount of $iso_file to _mountpoint=$_mountpoint failed.
+	echo Did you set all the required docker run options / permissions ?
+	echo For more info please see:
+	echo https://github.com/dreamcat4/docker-images/tree/master/samba-iso
+	sleep inf
+}
+
+if [ ! "$samba_flags" ]; then
+	echo Error: the docker environment variable \$samba_flags is not set
+	echo we need to know the samba share details to setup, see dreamcat4/iso-samba
+	echo and then set docker run -e samba_flags accordingly
+	sleep inf
+fi
+
+iso_file=/iso
+
+if [ -f "$iso_file" ]; then
+
+	_mountpoint="$(echo $samba_flags | sed -e 's/^.*-s //' -e 's/[^;]*;//' -e 's/;.*$//')"
+
+	# Mount iso
+	mkdir -p $_mountpoint
+	mount -o loop $iso_file $_mountpoint || _mount_fail
+
+	# Launch samba
+	/usr/bin/samba.sh $samba_flags
+
+
+else
+	echo Cant find any iso file mounted as the file $iso_file
+	echo Did you mount it directly with docker run -v myfile.iso:/iso/myfile.iso ?
+	sleep inf
+fi
+
+
+
+
