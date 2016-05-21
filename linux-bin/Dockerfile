@@ -23,11 +23,11 @@ RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 RUN mkdir -p /out
 
 
+
 # ===
 # dnsmasq - install build time dependancies
 RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ca-certificates make gcc && $_apt_clean
-
 
 # dnsmasq - Build from source
 RUN mkdir -p /build/dnsmasq
@@ -41,14 +41,13 @@ RUN git clone git://thekelleys.org.uk/dnsmasq.git && cd dnsmasq \
  && echo "$dnsmasq_version" > /out/dnsmasq_version \
  && git checkout "${dnsmasq_version}"
 
-
 # dnsmasq - compile & install
 RUN cd dnsmasq && sed -i -e 's|/usr/local|/usr|' Makefile && make install DESTDIR=$PWD/out \
  && mkdir -p out/etc && cp dnsmasq.conf.example out/etc/
 
-
 # dnsmasq - Create tarball in /out/
 RUN cd dnsmasq/out && tar -czvf /out/dnsmasq-$(cat /out/dnsmasq_version)_linux-x86_64.tar.gz *
+
 
 
 # ===
@@ -91,6 +90,33 @@ RUN mkdir -p out \
 
 # ipxe - Create tarball in /out/
 RUN cd /build/ipxe/out && tar -czvf /out/ipxe-$(cat /out/ipxe_version)_linux-x86_64.tar.gz *
+
+
+
+# ===
+# istgt - install build time dependancies
+RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    curl wget gcc binutils make libssl-dev && $_apt_clean
+
+# istgt - Build from source
+RUN mkdir -p /build/istgt \
+ && curl --silent http://svnweb.freebsd.org/ports/head/net/istgt/Makefile?view=co | grep "PORTVERSION=" | cut -f2 > /out/istgt_version
+
+WORKDIR /build/istgt
+
+# istgt - download source tarball
+RUN wget http://www.peach.ne.jp/archives/istgt/istgt-$(cat /out/istgt_version).tar.gz \
+ && tar -zxf istgt-$(cat /out/istgt_version).tar.gz && ln -sf istgt-$(cat /out/istgt_version) istgt
+
+# istgt - compile & install
+RUN cd istgt \
+ && ./configure --sysconfdir=/etc --localstatedir=/var \
+    --localedir=/usr/share/locale --datarootdir=/usr/share --prefix=/usr --enable-symlink-device \
+ && make && make install DESTDIR=$PWD/out
+
+# istgt - Create tarball in /out/
+RUN cd /build/istgt/istgt/out && tar -czvf /out/istgt-$(cat /out/istgt_version)_linux-x86_64.tar.gz *
+
 
 
 # Upload linux binaries --> bintray.com
