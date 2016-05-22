@@ -1,0 +1,35 @@
+#!/usr/bin/with-contenv sh
+
+
+
+rm -f /iscsi/ietd.conf
+
+
+
+i=0
+for _dd_image in /iscsi/targets/*; do
+
+	if [ -e "$_dd_image" ]; then
+
+		echo "Target iqn.0000-00.dkr.iscsi:$(basename $_dd_image)
+        Lun $i Path=${_dd_image},Type=fileio,ScsiId=lun${i},ScsiSN=lin${i}
+
+" >> /iscsi/ietd.conf
+
+		i=$(expr $i + 1)
+	fi
+done
+
+
+
+
+# listen on port 0.0.0.0:3260
+ietd --foreground --uid=0  --gid=0 --config=/iscsi/ietd.conf
+
+
+# # list of all kmods
+# for kmod in ibft sysfs target_mod tcp trgt; do modprobe iscsi_${kmod}; done
+
+
+
+
