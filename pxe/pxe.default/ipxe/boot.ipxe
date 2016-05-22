@@ -86,19 +86,19 @@ goto ${selected}
 
   # To initially create the persistence file(s)
   #
-  # create casper-rw file - for root partition overlay
-  # dd if=/dev/zero of=casper-rw bs=1M count=2000
+  # create root /cow partition file
+  # fallocate -l 2G casper-rw
   # mkfs.ext4 -F casper-rw
-  #
-  # create home-rw file - for /home folder overlay
-  # dd if=/dev/zero of=home-rw bs=1M count=200
+
+  # create /home folder partition file
+  # fallocate -l 200M home-rw
   # mkfs.ext2 -F home-rw
-  #
-  # resize a partition -  increase size
+
+  # resize partition -  increase size
   # dd if=/dev/zero bs=1M count=200 >> casper-rw
   # resize2fs casper-rw
-  #
-  # resize a partition - decrease size
+
+  # resize partition - decrease size
   # e2fsck -y -f casper-rw
   # resize2fs casper-rw 100M
 

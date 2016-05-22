@@ -37,11 +37,11 @@ ADD services.d /etc/services.d
 
 
 # Add pxe.default/ tree
-ADD pxe.default /etc/pxe.default
+ADD pxe.default /etc/pxe.preseed
 
 
-# Add user custom config
-ADD pxe.custom /etc/pxe.default
+# Add user custom files
+ADD pxe.custom /etc/pxe.preseed
 
 
 # Install ipxe binaries

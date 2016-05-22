@@ -2,7 +2,7 @@
 
 
 # Check the config file exists in /config, else copy it in
-[ -e "/pxe/ipxe/boot.ipxe" ] || cp -Rf /etc/pxe.default/* /pxe/
+[ -e "/pxe/ipxe/boot.ipxe" ] || cp -Rf /etc/pxe.preseed/* /pxe/
 
 
 if [ "$pipework_wait" ]; then
