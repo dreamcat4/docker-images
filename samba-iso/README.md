@@ -49,7 +49,7 @@ containers:
 
 ### Credit
 
-* pxe Version 1 - By Dreamcat4.
+* Version 1 - By Dreamcat4.
 
 
 
