@@ -3,7 +3,7 @@
 * Network boot your local PCs.
 * No disks, USBs or DVDs required!
 
-![ipxe boot menu](http://i.imgur.com/wUO0q2h.png "ipxe boot menu")
+![ipxe boot menu](http://i.imgur.com/7LT2dxg.png "ipxe boot menu")
 
 ### Features
 
