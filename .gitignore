@@ -41,6 +41,9 @@
 !/linux-bin
 !/linux-bin/*
 
+# !/nfs
+# !/nfs/*
+
 !/nginx
 !/nginx/*
 
@@ -55,7 +58,6 @@
 /pxe/pxe.custom
 !/pxe/pxe.custom/README.md
 
-
 !/samba
 !/samba/*
 
@@ -64,9 +66,6 @@
 
 !/sonarr
 !/sonarr/*
-
-!/nfs
-!/nfs/*
 
 !/tvh
 !/tvh/*
