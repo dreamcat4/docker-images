@@ -38,25 +38,26 @@ This docker image contains:
 * Some time
 * To download the ISO files for the operating systems you wish to boot
 * As those cannot be re-distributed / downloaded from here.
-* Follow instructions in the `/pxe` example folder, how to unpack those missing boot files.
+* To get these main -- SAMBA -- boot options working you also need to perform certain extra steps...
 
-To get the [SAMBA] boot options working you also need to:
+***Windows***
+
+Follow instructions in the `/pxe.default` folder, how to unpack each PLACEHOLDER missing essential BOOT files. You can also see those needed files referenced in the [boot.ipxe](https://github.com/dreamcat4/docker-images/blob/e793b29f43a8c31aa2a01a77c3e80a54d8d7cbb3/pxe/pxe.default/ipxe/boot.ipxe) conf file.
 
 * Mount required installer ISOs each on separate local samba shares.
-* Can use something else e.g. `dreamcat4/samba-iso` helper image to do that with.
+* Can use something else e.g. [`dreamcat4/samba-iso`](https://github.com/dreamcat4/docker-images/tree/master/samba-iso) helper image to do that with.
 
+***Ubuntu***
 
 To get the ubuntu boot options working you also need to:
 
-* Read further instructions in the `:ubuntu` section of `boot.ipxe` configuration file
+* [Read further instructions in the `:ubuntu` section of `boot.ipxe` configuration file](https://github.com/dreamcat4/docker-images/blob/e793b29f43a8c31aa2a01a77c3e80a54d8d7cbb3/pxe/pxe.default/ipxe/boot.ipxe#L56-L63)
 * To set in there your samba username, password etc. for the samba share of the ubuntu livecd iso file
 
 To get the ubuntu persistence mode working with `casper-rw` file, you will also need to:
 
-* Read further instructions in the `:ubuntu_casper_rw` section of `boot.ipxe` configuration file
+* [Read further instructions in the `:ubuntu_casper_rw` section of `boot.ipxe` configuration file](https://github.com/dreamcat4/docker-images/blob/e793b29f43a8c31aa2a01a77c3e80a54d8d7cbb3/pxe/pxe.default/ipxe/boot.ipxe#L70-L103)
 * Use legacy mode? It was not working for me in UEFI pxe boot mode.
-
-Please see in the subfolder `pxe.example/*/README.md` for further instructions per OS.
 
 ### Credit
 
