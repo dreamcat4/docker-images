@@ -48,12 +48,12 @@ To get the [SAMBA] boot options working you also need to:
 
 To get the ubuntu boot options working you also need to:
 
-* Read further instructions in the `ubuntu` menu entry of `boot.ipxe` configuration file
+* Read further instructions in the `:ubuntu` section of `boot.ipxe` configuration file
 * To set in there your samba username, password etc. for the samba share of the ubuntu livecd iso file
 
 To get the ubuntu persistence mode working with `casper-rw` file, you will also need to:
 
-* Read further instructions in the `ubuntu_casper_rw` menu entry of `boot.ipxe` configuration file
+* Read further instructions in the `:ubuntu_casper_rw` section of `boot.ipxe` configuration file
 * Use legacy mode? It was not working for me in UEFI pxe boot mode.
 
 Please see in the subfolder `pxe.example/*/README.md` for further instructions per OS.
