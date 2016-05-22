@@ -1,0 +1,190 @@
+#!ipxe
+
+# Hi! This is an example menu file for ipxe.
+# The LAST boot option "ubuntu netboot" will always work, HOWEVER:
+
+# ! You must set in this file your SAMBA server details for ubuntu ISO.
+# Look in the section labeled :ubuntu
+
+# Most of these boot choises requires that you have populated the folder /pxe/
+# with certain IMPORTANT boot files. You MUST also mount each iso as SAMBA shares too.
+# e.g. with dreamcat4/samba-iso companion image. Without samba they will fail to boot up.
+
+# In the /pxe tree, you must also replace any files that say __PUT_HERE__.txt
+# And read all further instructions are in README.md files (dotted about in the subfolders).
+
+# Here we can see below in this boot script, when is lines starting "kernel" and "initrd" -
+#
+# * They each reference some needed boot programs, which its missing in your /pxe folder tree...
+#
+# * So go download them! / Go add them!
+#
+# * Most missing stuff come from the official ISO files
+#   (all except the WinPE environment, for which you must build on a Windows machine with WADK)
+#
+
+
+dhcp
+set keep-san 1
+set ipxe_server_ip ${proxydhcp/dhcp-server}
+
+:start
+menu iPXE boot menu for ${initiator-iqn}
+item --gap --             ------------------------- Operating systems ------------------------------
+item --key u ubuntu_casper_rw         (u) Boot Ubuntu 16.04 --- with casper-rw --- (from samba)
+item --key x ubuntu                   (6) Boot Ubuntu 16.04 --- installer .iso --- (from samba)
+item --gap --             --------------------------------------------------------------------------
+item --key w win10_repair_only        (w) Boot Windows 10 ----- repair mode ------ (from samba)
+item --key 1 winpe_win10              (1) Boot Windows 10 ----- installer .iso --- (from samba)
+item --gap --             --------------------------------------------------------------------------
+item --key 7 winpe_win7               (7) Boot Windows 7 ------ installer .iso --- (from samba)
+item --gap --             --------------------------------------------------------------------------
+item --key s salstar                  (s) Boot from internet -- boot.salstar.sk -- (from WAN)
+item --gap --             ------------------------- Advanced options -------------------------------
+item --key c config       Configure settings
+item shell                Drop to iPXE shell
+item reboot               Reboot computer
+item
+item --key x exit         Exit iPXE and continue BIOS boot
+choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
+set menu-timeout 0
+goto ${selected}
+
+
+
+
+:ubuntu
+  # ! You put here the login details for your local samba server,
+  # which is serviing the mounted ubuntu-desktop.iso files (otherwise it will not boot)
+
+  set samba_server_ip  __PUT__HERE__SAMBA_SERVER_IP
+  set samba_share      __PUT__HERE__SAMBA_SHARE_NAME
+  set samba_username   __PUT__HERE__SAMBA_USERNAME
+  set samba_password   __PUT__HERE__SAMBA_PASSWORD
+
+  kernel http://${ipxe_server_ip}/iso/extracted/clean/ubuntu/casper/vmlinuz.efi initrd=initrd.lz boot=casper persistent ro netboot=cifs root=/dev/cifs nfsroot=//${samba_server_ip}/${samba_share} NFSOPTS=-ousername=${samba_username},password=${samba_password},ro -- splash quiet
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/ubuntu/casper/initrd.lz
+  boot
+
+
+:ubuntu_casper_rw
+  # ! You put here the login details for your local samba server,
+  # which is serviing the mounted ubuntu-desktop.iso files (otherwise it will not boot)
+
+  set samba_server_ip  __PUT__HERE__SAMBA_SERVER_IP
+  set samba_share      __PUT__HERE__SAMBA_SHARE_NAME
+  set samba_username   __PUT__HERE__SAMBA_USERNAME
+  set samba_password   __PUT__HERE__SAMBA_PASSWORD
+
+  # ! You put here the login details for your casper-rw samba share,
+  # which is serviing the persistence files 'casper-rw' and 'home-rw' etc
+
+  set casper_server_ip  __PUT__HERE__SAMBA_SERVER_IP
+  set casper_share      __PUT__HERE__SAMBA_SHARE_NAME
+  set casper_username   __PUT__HERE__SAMBA_USERNAME
+  set casper_password   __PUT__HERE__SAMBA_PASSWORD
+
+  # To initially create the persistence file(s)
+  #
+  # create casper-rw file - for root partition overlay
+  # dd if=/dev/zero of=casper-rw bs=1M count=2000
+  # mkfs.ext4 -F casper-rw
+  #
+  # create home-rw file - for /home folder overlay
+  # dd if=/dev/zero of=home-rw bs=1M count=200
+  # mkfs.ext2 -F home-rw
+  #
+  # resize a partition -  increase size
+  # dd if=/dev/zero bs=1M count=200 >> casper-rw
+  # resize2fs casper-rw
+  #
+  # resize a partition - decrease size
+  # e2fsck -y -f casper-rw
+  # resize2fs casper-rw 100M
+
+  kernel http://${ipxe_server_ip}/iso/extracted/clean/ubuntu/casper/vmlinuz.efi \
+  initrd=initrd.lz boot=casper persistent ro netboot=cifs root=/dev/cifs \
+  nfsroot=//${samba_server_ip}/${samba_share} \
+  NFSOPTS=-ousername=${samba_username},password=${samba_password},ro \
+  rwmount=cifs rwroot=//${casper_server_ip}/${casper_share} RWOPTS=-ousername=${casper_username},password=${casper_password} \
+  username=${casper_username} userfullname=${casper_username} \
+  -- splash quiet
+
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/ubuntu/casper/initrd.lz
+  initrd http://${ipxe_server_ip}/iso/extracted/modified/ubuntu/casper/initrd_lz/scripts/casper-helpers scripts/casper-helpers mode=755
+
+  boot
+
+
+:winpe_win10
+  # ! you must get these files from a winpe environment (using WADK on windows)
+  # See: http://ipxe.org/howto/winpe for further instructions
+
+  kernel http://${ipxe_server_ip}/ipxe/wimboot
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/winpe/boot/BCD         BCD
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/winpe/boot/boot.sdi    boot.sdi
+  initrd http://${ipxe_server_ip}/iso/extracted/modified/winpe/sources/win10_setup.exe/boot.wim boot.wim
+  boot
+
+
+:winpe_win7
+  # ! you must get these files from a winpe environment (using WADK on windows)
+  # See: http://ipxe.org/howto/winpe for further instructions
+
+  kernel http://${ipxe_server_ip}/ipxe/wimboot
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/winpe/boot/BCD         BCD
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/winpe/boot/boot.sdi    boot.sdi
+  initrd http://${ipxe_server_ip}/iso/extracted/modified/winpe/sources/win7_setup.exe/boot.wim boot.wim
+  boot
+
+
+:win10_repair_only
+  # ! This files can be taken directly from the windows installer ISO
+  # HOWEVER only the 'Repair' mode button will works without WinPE's boot.wim environment
+
+  kernel http://${ipxe_server_ip}/ipxe/wimboot
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/win10/boot/bcd         BCD
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/win10/boot/boot.sdi    boot.sdi
+  initrd http://${ipxe_server_ip}/iso/extracted/clean/win10/sources/boot.wim boot.wim
+  boot
+
+
+:salstar
+  # Open http://boot.salstar.sk in a web browser for more details
+  chain http://boot.salstar.sk
+
+
+
+
+
+:cancel
+echo You cancelled the menu, dropping you to a shell
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+goto start
+
+:failed
+echo Booting failed, dropping to shell
+goto shell
+
+:reboot
+reboot
+
+:exit
+exit
+
+:config
+config
+goto start
+
+:back
+set submenu-timeout 0
+clear submenu-default
+goto start
+
+
+
