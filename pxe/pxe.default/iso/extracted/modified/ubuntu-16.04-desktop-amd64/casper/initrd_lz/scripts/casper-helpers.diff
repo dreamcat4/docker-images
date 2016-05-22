@@ -1,0 +1,23 @@
+--- original/casper-helpers	2016-05-22 22:09:39.935718355 +0100
++++ scripts/casper-helpers	2016-05-19 16:56:49.279749236 +0100
+@@ -201,6 +201,20 @@
+         pers_fpath=${PERSISTENT_PATH}/${pers_label}
+     fi
+ 
++    if [ "$rwmount" ] && [ "$rwroot" ]; then
++        cow_backing_mp=/$rwmount
++
++        if [ ! -d "$cow_backing_mp" ]; then
++            mkdir -p $cow_backing_mp
++            mount -t $rwmount $RWOPTS $rwroot $cow_backing_mp
++        fi
++
++        if [ -e "${cow_backing_mp}/${pers_fpath}" ]; then
++            echo $(setup_loop "${cow_backing_mp}/${pers_fpath}" "loop" "/sys/block/loop*")
++            return 0
++        fi
++    fi
++
+     for sysblock in $(echo /sys/block/* | tr ' ' '\n' | grep -v loop); do
+ 	# do not ever probe floppies, probing nonexistant ones delays the boot to half an hour and longer
+         n=${sysblock##*/}
