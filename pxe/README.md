@@ -23,8 +23,8 @@ This docker image contains:
 
 * nginx webserver, to send further boot files after ipxe is loaded up
 
-* Example `pxe.example/` folder tree
-  * Auto-populates your `/pxe` docker volume with example files and further instructions.
+* Example `pxe.default/` folder tree
+  * Auto-populates your `/pxe` docker volume with pre-seeded example files and further instructions.
   * You will need to manually download / unpack certain files:
     * installer ISOs (namely the windows installer .ISO dvd, and ubuntu-desktop.iso)
     * assoiated boot files
@@ -40,10 +40,21 @@ This docker image contains:
 * As those cannot be re-distributed / downloaded from here.
 * Follow instructions in the `/pxe` example folder, how to unpack those missing boot files.
 
-To get these first 4 [SAMBA] boot options working you also need to:
+To get the [SAMBA] boot options working you also need to:
 
 * Mount required installer ISOs each on separate local samba shares.
 * Can use something else e.g. `dreamcat4/samba-iso` helper image to do that with.
+
+
+To get the ubuntu boot options working you also need to:
+
+* Read further instructions in the `ubuntu` menu entry of `boot.ipxe` configuration file
+* To set in there your samba username, password etc. for the samba share of the ubuntu livecd iso file
+
+To get the ubuntu persistence mode working with `casper-rw` file, you will also need to:
+
+* Read further instructions in the `ubuntu_casper_rw` menu entry of `boot.ipxe` configuration file
+* Use legacy mode? It was not working for me in UEFI pxe boot mode.
 
 Please see in the subfolder `pxe.example/*/README.md` for further instructions per OS.
 
