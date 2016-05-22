@@ -59,6 +59,29 @@ To get the ubuntu persistence mode working with `casper-rw` file, you will also 
 * [Read further instructions in the `:ubuntu_casper_rw` section of `boot.ipxe` configuration file](https://github.com/dreamcat4/docker-images/blob/e793b29f43a8c31aa2a01a77c3e80a54d8d7cbb3/pxe/pxe.default/ipxe/boot.ipxe#L70-L103)
 * Use legacy mode? It was not working for me in UEFI pxe boot mode.
 
+### Known Issues
+
+Can't be 100% sure if these are going to affect other people. But the following issues were encountered during testing:
+
+***Windows***
+
+* If the Win10 installer option (via WinPE environment) is booted, then no little 'Repair' button will appear on Setup.exe first screens, cannot launch into the windows recovery menu.
+
+* If the Win10 recovery menu is booted (ironically that is via 'clean' non-WinPE installer boot files). Then the same setup.exe launches, and the little 'repair' button appears. So the recovery menu can work. However without WinPE files, setup.exe cannot install windows.
+
+* Solution to above ^^ problem was to split into 2 separate boot items in the menu.
+
+* On some UEFI clients, Win7 setup.exe will take an exceeding long time to appear on the screen. Booting seems as-if hanged at `'Loading...'`. Its just very slow. Other clients are fine.
+
+* If WinPE / Windows Installer is booted with iscsi lun attached (via ipxe's `sanhook` command). Then the disk is not visible / cannot be seen by the Windows installer.
+
+***Ubuntu***
+
+* Patched persistence mode with `casper-rw` file and `home-rw` file. Does not properly dismount partitions during shutdown.
+
+* Patched persistence mode with `casper-rw` file and `home-rw` file. Only seems to work for Legacy BIOS netboot. It does not appear to mount the persistence partitions if the computer is booted into UEFI mode.
+
+
 ### Credit
 
 * pxe Version 1 - By Dreamcat4.
