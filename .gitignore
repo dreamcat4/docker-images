@@ -31,9 +31,15 @@
 /irc/config.custom
 !/irc/config.custom/README.md
 
+!/iscsi
+!/iscsi/*
+
 !/jackett
 !/jackett/*
 /jackett/config/.config
+
+!/linux-bin
+!/linux-bin/*
 
 !/nginx
 !/nginx/*
@@ -46,15 +52,21 @@
 
 !/pxe
 !/pxe/*
+/pxe/pxe.custom
+!/pxe/pxe.custom/README.md
+
 
 !/samba
 !/samba/*
 
+!/samba-iso
+!/samba-iso/*
+
 !/sonarr
 !/sonarr/*
 
-!/unfs3
-!/unfs3/*
+!/nfs
+!/nfs/*
 
 !/tvh
 !/tvh/*
