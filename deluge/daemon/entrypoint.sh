@@ -23,7 +23,22 @@ chown -R deluge:deluge /config
 [ "$(stat -c %u:%g /downloads)" = "0:0" ] && chown deluge:deluge /downloads
 
 
-# Set timezone as specified in /config/etc/timezone
+ENV TIMEZONE="Europe/London"
+
+echo "${TIMEZONE}" > /config/.link/etc/timezone \
+ && ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime \
+ && ln -sf /config/.link/etc/timezone /etc/timezone \
+ && ln -sf /config/.link/etc/localtime /etc/localtime \
+
+if [ "$TIMEZONE" ]; then
+	mkdir -p /config/.link/etc
+	echo "${TIMEZONE}" > /config/.link/etc/timezone
+  ln -sf /config/.link/etc/timezone /etc/timezone
+	ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime
+  ln -sf /config/.link/etc/localtime /etc/localtime
+fi
+
+# Set timezone as specified in /config/.link/etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
 

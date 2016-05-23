@@ -25,9 +25,6 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
  && $_apt_clean
 
 
-# Relocate the timezone file
-RUN mkdir -p /config/.etc && mv /etc/timezone /config/.etc/ && ln -s /config/.etc/timezone /etc/
-
 # Set locale
 ENV LANG="en_US.UTF-8"
 
@@ -39,8 +36,16 @@ RUN apt-get update -qqy && apt-get install -qqy locales && $_apt_clean \
 RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
  && mv /usr/lib/locale /config/.link/usr/lib/ \
  && mv /etc/locale.gen /config/.link/etc \
- && ln -s /config/.link/usr/lib/locale /usr/lib/ \
- && ln -s /config/.link/etc/locale.gen /etc/
+ && ln -sf /config/.link/usr/lib/locale /usr/lib/ \
+ && ln -sf /config/.link/etc/locale.gen /etc/
+
+# Symlink the 2 timezone files
+ENV TIMEZONE="Etc/UTC"
+RUN echo "${TIMEZONE}" > /config/.link/etc/timezone \
+ && ln -sf /config/.link/etc/timezone /etc/timezone \
+ && ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime \
+ && ln -sf /config/.link/etc/localtime /etc/localtime \
+ && dpkg-reconfigure -f noninteractive tzdata
 
 
 # Setup the deluge user
