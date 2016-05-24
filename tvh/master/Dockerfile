@@ -28,7 +28,7 @@ RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
  && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61 \
  && echo deb https://dl.bintray.com/dreamcat4/ubuntu ${tvh_release} main > /etc/apt/sources.list.d/tvheadend.list \
  && apt-get update -qq && apt-get install -qqy bzip2 libavahi-client3 xmltv \
- && apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy tvheadend \
+ && apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy udev tvheadend \
  && rm -rf /home/hts && $_apt_clean
 
 
