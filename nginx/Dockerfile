@@ -31,8 +31,8 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 
 # Setup nginx user
-RUN groupadd -o -g 8080 nginx \
- && useradd -o -u 8080 -g nginx --shell /bin/sh -d /www nginx \
+RUN groupmod -o -g 8080 nginx \
+ && usermod -o -u 8080 -g nginx --shell /bin/sh -d /www nginx \
  && install -o nginx -g nginx -d /www /ssl
 
 
