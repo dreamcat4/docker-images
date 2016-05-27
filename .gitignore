@@ -11,9 +11,6 @@
 # /deluge/config/config/plugins/official/
 # /deluge/config/config/plugins/3rd.party/
 
-!/ffsync
-!/ffsync/*
-
 !/forked-daapd
 !/forked-daapd/*
 

@@ -75,10 +75,6 @@ RUN git clone git://git.ipxe.org/ipxe.git
 # Disable entropy gathering - avoids +20 seconds boot delay
 ADD ipxe/nocrypto /build/ipxe/ipxe/src/config/local/nocrypto
 
-# Patch esc key to act as ctrl key
-ADD ipxe/ipxe-uefi-keyboard-esc-as-ctrl.patch /build/ipxe/
-RUN cd ipxe && patch -p1 < ../ipxe-uefi-keyboard-esc-as-ctrl.patch
-
 # ipxe - compile & install
 RUN cd ipxe/src \
  && CONFIG=nocrypto make bin/undionly.kpxe \
