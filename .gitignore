@@ -14,8 +14,11 @@
 !/forked-daapd
 !/forked-daapd/*
 
-# !/headphones
-# !/headphones/*
+!/headphones
+!/headphones/*
+/headphones/config.current
+/headphones/config.custom
+!/headphones/config.custom/README.md
 
 !/irc
 !/irc/*
