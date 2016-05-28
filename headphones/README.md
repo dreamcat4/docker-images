@@ -4,9 +4,9 @@
 
 You will use headphone's web interface to specify it's settings. Main settings seem to be written to the file `/config/config.ini`. Which can be backed up / restored by using docker's build context and the `ADD` command.
 
-### Media folders
+### Map your Media folder to the /downloads volume
 
-Headphones may be given read-only access to your top-level media folder. From there, you should grant write access in 2 subfolders of your main `/media` folder:
+Headphones may be given read-only access to your top-level media folder. It should be bind:mounted to `/downloads`. You may selectively grant write access in subfolders of that folder. Depending upon your configuration.
 
 It may help if the source + destination paths are are inside the same mountpoint. To avoid lots of copying large files across different drives. And that is the reason we mount the parent folder `/media` into a docker volume.
 
@@ -36,10 +36,6 @@ sudo groupadd -g 8181 headphones
 sudo usermod -a -G headphones $(id -un)
 ```
 
-### Configuration
-
-This image comes with some vanilla default configuration.
-
 ### Docker Compose
 
 Sorry there is no example for Compose at this time. But it is something like this:
@@ -51,7 +47,7 @@ Sorry there is no example for Compose at this time. But it is something like thi
       ip: 1.2.3.4
       volume:
         - /my/headphones/config/folder:/config
-        - /my/media/top/level/folder:/media
+        - /my/media/folder:/downloads
       env:
         # - hp_uid=65534
         # - hp_gid=44
