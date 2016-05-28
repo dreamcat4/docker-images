@@ -1,6 +1,12 @@
 /*
 
 
+!/couchpotato
+!/couchpotato/*
+/couchpotato/config.current
+/couchpotato/config.custom
+!/couchpotato/config.custom/README.md
+
 !/deluge
 !/deluge/*
 /deluge/config/id.dkr
