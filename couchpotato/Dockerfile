@@ -25,20 +25,14 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
 
 
 # Download couchpotato
-# ENV couchpotato_release=develop
-# ENV couchpotato_release=master
+RUN git clone https://github.com/CouchPotato/CouchPotatoServer.git /couchpotato \
+ || git clone https://github.com/RuudBurger/CouchPotatoServer.git  /couchpotato
 
-# ! RUN git clone https://github.com/CouchPotato/CouchPotatoServer.git /couchpotato
-# $ git clone https://github.com/CouchPotato/CouchPotatoServer.git
+# $ git clone https://github.com/___???___/CouchPotatoServer.git
 # Cloning into 'CouchPotatoServer'...
 # fatal: Could not read from remote repository.
-
 # Please make sure you have the correct access rights
 # and the repository exists.
-
-# RUN git clone https://github.com/RuudBurger/CouchPotatoServer.git /couchpotato \
-#  && cd /couchpotato && git checkout $couchpotato_release
-RUN git clone https://github.com/RuudBurger/CouchPotatoServer.git /couchpotato
 
 
 # Setup the couchpotato user
