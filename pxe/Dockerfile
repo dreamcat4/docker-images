@@ -50,8 +50,6 @@ RUN wget -O /tmp/ipxe.tar.gz https://dl.bintray.com/dreamcat4/linux/ipxe/ipxe-la
  && wget -O /tmp/wimboot.zip http://git.ipxe.org/releases/wimboot/wimboot-latest.zip \
  && unzip -j /tmp/wimboot.zip */wimboot -d /etc/pxe.default/ipxe && $_clean
 
-# BSDPy - for mac netbooting - https://github.com/bruienne/bsdpy - mac separate docker image
-
 
 # Default container settings
 VOLUME /pxe

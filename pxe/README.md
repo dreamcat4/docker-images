@@ -81,6 +81,17 @@ Can't be 100% sure if these are going to affect other people. But the following 
 
 * Patched persistence mode with `casper-rw` file and `home-rw` file. Only seems to work for Legacy BIOS netboot. It does not appear to mount the persistence partitions if the computer is booted into UEFI mode.
 
+### FAQ
+
+*** What about Mac OS X? ***
+
+Macs are a bit tougher to do. But it might be possible perhaps. Here is some useful resources for helping that:
+
+BSDPy - for mac netbooting - https://github.com/bruienne/bsdpy
+
+Booting into Mac OS X from iPXE menu - https://github.com/ipxe/ipxe/pull/54
+
+
 
 ### Credit
 
