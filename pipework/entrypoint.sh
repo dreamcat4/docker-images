@@ -28,6 +28,14 @@ _test_docker ()
 	fi
 }
 
+# Get the semantic version and store the major and minor versions
+_docker_semver="$(docker version | grep -e "^ Version:" | grep -m1 -o -e "[0-9\.]*")"
+_docker_semver_maj="$(echo "$_docker_semver" | cut -d. -f1)"
+_docker_semver_min="$(echo "$_docker_semver" | cut -d. -f2)"
+if [[ $_docker_semver_maj -le 1 ]] && [[ $_docker_semver_min -lt 10 ]] ; then
+    _old_event_lines=true
+fi
+
 _cleanup ()
 {
     [ "$_while_read_pid" ]     && kill  $_while_read_pid
@@ -441,8 +449,13 @@ _daemon ()
         # _pipework_image_name=pipework
         # event_line="2015-06-10T16:38:12.000000000Z 753ce24472db2af099328ad161f1af70da0f4bc9fa00af2a4e82625f56eb67f2: (from dreamcat4/tvheadend:latest) start"
         event_line_sanitized="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ')"
-        container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f3)"
-        event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f6)"
+        if [ "$_old_event_lines" ]; then
+          container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f3)"
+          event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f6)"
+        else
+          container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f5)"
+          event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f4)"
+        fi
         # echo event_line_sanitized=$event_line_sanitized
         # echo container_id=$container_id
         # echo event=$event
