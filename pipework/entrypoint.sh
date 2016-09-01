@@ -449,13 +449,13 @@ _daemon ()
         # _pipework_image_name=pipework
         # event_line="2015-06-10T16:38:12.000000000Z 753ce24472db2af099328ad161f1af70da0f4bc9fa00af2a4e82625f56eb67f2: (from dreamcat4/tvheadend:latest) start"
         event_line_sanitized="$(echo -e " $event_line" | grep -v "from $_pipework_image_name" | tr -s ' ')"
-		if [ "$_old_event_lines" ]; then
-		  container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f3)"
-		  event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f6)"
-		else
-		  container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f5)"
-		  event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f4)"
-		fi
+        if [ "$_old_event_lines" ]; then
+          container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f3)"
+          event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f6)"
+        else
+          container_id="$(echo -e "$event_line_sanitized" | cut -d ' ' -f5)"
+          event="$(echo -e "$event_line_sanitized" | cut -d ' ' -f4)"
+        fi
         # echo event_line_sanitized=$event_line_sanitized
         # echo container_id=$container_id
         # echo event=$event
