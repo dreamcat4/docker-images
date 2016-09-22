@@ -158,15 +158,25 @@ RUN groupadd -o -g 1135 limnoria \
 
 
 
-# Install irssi
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# Install irssi from nei's irssi-test repo, on opensuse
+RUN wget -O- http://download.opensuse.org/repositories/home:ailin_nemui:irssi-test/xUbuntu_16.04/Release.key | apt-key add - \
+ && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_16.04/ /" >> /etc/apt/sources.list \
+ && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
  && cpanm WebService::HipChat Algorithm::Diff \
  && $_apt_clean
 
+# # Install irssi from official ubuntu apt repo
+# RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+#     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
+#     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
+#  && cpanm WebService::HipChat Algorithm::Diff \
+#  && $_apt_clean
+
 # For irssi / adv_windowlist.pl:
  # && cpanm Text::CharWidth \
+
 
 # Irssi - Download scripts and themes
 RUN git clone https://github.com/irssi/scripts.irssi.org.git \
