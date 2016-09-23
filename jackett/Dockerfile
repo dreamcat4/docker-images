@@ -31,7 +31,7 @@ RUN curl -Lo /tmp/jackett.tar.gz https://github.com/Jackett/Jackett/releases/dow
 
 
 # # Download jackett-public
-ENV jackett_public_version="0.6.45.2"
+ENV jackett_public_version="0.6.45.3"
 RUN curl -Lo /tmp/jackett-public.tar.gz https://github.com/dreamcat4/Jackett-public/releases/download/v${jackett_public_version}/Jackett-public.Binaries.Mono.tar.gz \
  && mkdir /jackett-public && tar -xzf /tmp/jackett-public.tar.gz --strip-components=1 -C /jackett-public && rm -f /tmp/jackett-public.tar.gz
 
