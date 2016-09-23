@@ -89,14 +89,14 @@ RUN cd /build/ipxe/out && tar -czvf /out/ipxe-$(cat /out/ipxe_version)_linux-x86
 
 
 
-# ===
-# istgt - install build time dependancies
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    curl wget gcc binutils make libssl-dev && $_apt_clean
+# # ===
+# # istgt - install build time dependancies
+# RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+#     curl wget gcc binutils make libssl-dev && $_apt_clean
 
-# istgt - Build from source
-RUN mkdir -p /build/istgt \
- && curl --silent http://svnweb.freebsd.org/ports/head/net/istgt/Makefile?view=co | grep "PORTVERSION=" | cut -f2 > /out/istgt_version
+# # istgt - Build from source
+# RUN mkdir -p /build/istgt \
+#  && curl --silent http://svnweb.freebsd.org/ports/head/net/istgt/Makefile?view=co | grep "PORTVERSION=" | cut -f2 > /out/istgt_version
 
 # WORKDIR /build/istgt - dead
 

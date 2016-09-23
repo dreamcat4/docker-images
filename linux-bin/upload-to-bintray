@@ -122,15 +122,15 @@ if [ "$(date +%A)" = "Monday" ]; then
 fi
 
 
-# Queue istgt
-bintray_pkg_name="istgt"
-bintray_version="$(cat /out/istgt_version)"
-bintray_ver_desc="linux binaries for istgt - userland iscsi daemon. linux 64-bit"
-tarball="istgt-${bintray_version}_linux-x86_64.tar.gz"
-bintray_file_path="${bintray_pkg_name}/${tarball}"
+# # Queue istgt
+# bintray_pkg_name="istgt"
+# bintray_version="$(cat /out/istgt_version)"
+# bintray_ver_desc="linux binaries for istgt - userland iscsi daemon. linux 64-bit"
+# tarball="istgt-${bintray_version}_linux-x86_64.tar.gz"
+# bintray_file_path="${bintray_pkg_name}/${tarball}"
 
-# Do it
-_upload_tarball_to_bintray;
+# # Do it
+# _upload_tarball_to_bintray;
 
 
 # Error out if there was an error
