@@ -1,0 +1,94 @@
+#!/usr/bin/with-contenv sh
+
+[ "$debug" ] && set -x
+
+
+rm -f /config/openvpn/pia_listen_port
+
+
+# Include common helper functions
+. /etc/services.d/_includes/helpers.sh
+
+
+# Wait for openvpn to connect successfully
+# Returns:
+#   $_openvpn_local_ip
+#   $_openvpn_interface
+_wait_for_openvpn;
+
+
+_openvpn_passwd_file="/config/openvpn/pw"
+_pia_user="$(head -1 "$_openvpn_passwd_file")"
+_pia_pass="$(tail -1 "$_openvpn_passwd_file")"
+
+
+# Generate a new random client_id
+_client_id="$(head -n 100 /dev/urandom | md5sum | tr -d " -")"
+
+while true; do
+
+  _pia_curl_resp="$(curl --interface $_openvpn_interface -s -d "user=${_pia_user}&pass=${_pia_pass}&client_id=${_client_id}&local_ip=${_openvpn_local_ip}" https://www.privateinternetaccess.com/vpninfo/port_forward_assignment)"
+  _pia_listen_port="$(echo $_pia_curl_resp | grep -o [0-9]*)"
+
+  echo _pia_curl_resp="$_pia_curl_resp"
+  echo _pia_listen_port="$_pia_listen_port"
+
+  if [ "$(echo $_pia_listen_port | grep "^[0-9][0-9]*$")" ]; then
+    break
+  fi
+
+  echo ERROR: Port \"$_pia_listen_port\" not recognized as a valid TCP port number
+  sleep 1
+
+done
+
+
+echo
+echo "$_pia_listen_port aquired."
+echo "_pia_listen_port = $_pia_listen_port "
+echo
+
+echo "$_pia_listen_port" > /config/openvpn/pia_listen_port
+
+
+
+echo [set-deluge-port] Local IP=$LOCAL_IP, Port=$_pia_listen_port, Client ID=$_client_id
+
+
+
+_deluge_conf_dir="/config/deluge"
+
+while true; do
+  # Wait until we can connect via deluge-console
+  if [ ! "$(deluge-console -c "$_deluge_conf_dir" connect 2> /dev/null | grep -i "failed to connect")" ]; then
+    break
+  fi
+
+  sleep 1
+done
+
+
+# Deluge commandline - Update listen port
+echo deluge-console -c "$_deluge_conf_dir" config --set listen_interface $_local_ip
+deluge-console -c "$_deluge_conf_dir" config --set listen_interface $_local_ip
+echo
+
+echo deluge-console -c "$_deluge_conf_dir" config --set random_port False
+deluge-console -c "$_deluge_conf_dir" config --set random_port False
+echo
+
+echo deluge-console -c "$_deluge_conf_dir" config --set listen_ports "($_pia_listen_port,$_pia_listen_port)"
+deluge-console -c "$_deluge_conf_dir" config --set listen_ports "($_pia_listen_port,$_pia_listen_port)"
+echo
+
+
+
+[ "$pia_port_lifetime" ] || pia_port_lifetime=3600
+sleep $pia_port_lifetime
+
+echo
+echo Time is.... $(date)
+echo
+
+
+
