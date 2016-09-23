@@ -18,7 +18,7 @@ RUN wget -O /tmp/dnsmasq.tar.gz https://dl.bintray.com/dreamcat4/linux/dnsmasq/d
  && tar zxf /tmp/dnsmasq.tar.gz -C / --skip-old-files && $_clean
 
 
-RUN echo foo
+# RUN echo foo
 
 
 # Change html folder from /www to /pxe
@@ -46,9 +46,9 @@ ADD pxe.custom /etc/pxe.preseed
 
 # Install ipxe binaries
 RUN wget -O /tmp/ipxe.tar.gz https://dl.bintray.com/dreamcat4/linux/ipxe/ipxe-latest_linux-x86_64.tar.gz \
- && mkdir -p /etc/pxe.default/ipxe && tar zxf /tmp/ipxe.tar.gz -C /etc/pxe.default/ipxe --skip-old-files \
+ && mkdir -p /etc/pxe.preseed/ipxe && tar zxf /tmp/ipxe.tar.gz -C /etc/pxe.preseed/ipxe --skip-old-files \
  && wget -O /tmp/wimboot.zip http://git.ipxe.org/releases/wimboot/wimboot-latest.zip \
- && unzip -j /tmp/wimboot.zip */wimboot -d /etc/pxe.default/ipxe && $_clean
+ && unzip -j /tmp/wimboot.zip */wimboot -d /etc/pxe.preseed/ipxe && $_clean
 
 
 # Default container settings
