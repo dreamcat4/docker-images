@@ -35,6 +35,11 @@ RUN mkdir -p /build/znc-modules/out \
 WORKDIR /build/znc-modules
 
 
+# aka.pl - Trace nick changes / aka
+RUN git clone https://github.com/MuffinMedic/znc-aka.git \
+ && cd znc-nicktrace && ls -lsa && cp aka.py /build/znc-modules/out
+
+
 # Get backlog from full znc logs, instead of just the buffer
 RUN git clone https://github.com/FruitieX/znc-backlog.git \
  && cd znc-backlog && make \
@@ -72,7 +77,7 @@ RUN git clone https://github.com/jreese/znc-push.git \
 
 
 # Urlbuffer - save seen urls to a local txt file
-RUN git clone https://github.com/uberspot/urlbuffer.git \
+RUN git clone https://github.com/dreamcat4/urlbuffer.git \
  && cd urlbuffer && znc-buildmod urlbuffer.cpp \
  && ls -lsa && cp urlbuffer.so /build/znc-modules/out
 
