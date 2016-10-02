@@ -35,11 +35,6 @@ RUN mkdir -p /build/znc-modules/out \
 WORKDIR /build/znc-modules
 
 
-# aka.pl - Trace nick changes / aka
-RUN git clone https://github.com/emagaliff/znc-nicktrace.git \
- && cd znc-nicktrace && ls -lsa && cp aka.py /build/znc-modules/out
-
-
 # Get backlog from full znc logs, instead of just the buffer
 RUN git clone https://github.com/FruitieX/znc-backlog.git \
  && cd znc-backlog && make \
