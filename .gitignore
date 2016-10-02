@@ -17,6 +17,12 @@
 # /deluge/config/config/plugins/official/
 # /deluge/config/config/plugins/3rd.party/
 
+!/deluge-pia
+!/deluge-pia/*
+/deluge-pia/config.current
+/deluge-pia/config.custom
+!/deluge-pia/config.custom/README.md
+
 !/forked-daapd
 !/forked-daapd/*
 
