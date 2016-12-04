@@ -434,7 +434,7 @@ _daemon ()
     # Create docker events log
     _docker_events_log="/tmp/docker-events.log"
     rm -f $_docker_events_log
-    touch $_docker_events_log
+    mkfifo $_docker_events_log
     chmod 0600 $_docker_events_log
 
     # http://stackoverflow.com/questions/1652680/how-to-get-the-pid-of-a-process-that-is-piped-to-another-process-in-bash
