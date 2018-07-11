@@ -12,11 +12,10 @@ for _dd_image in /iscsi/targets/*; do
 	if [ -e "$_dd_image" ]; then
 
 		echo "Target iqn.0000-00.dkr.iscsi:$(basename $_dd_image)
-        Lun $i Path=${_dd_image},Type=fileio,ScsiId=lun${i},ScsiSN=lin${i}
+        Lun 0 Path=${_dd_image},Type=fileio,ScsiId=lun0,ScsiSN=lin0
 
 " >> /iscsi/ietd.conf
 
-		i=$(expr $i + 1)
 	fi
 done
 
