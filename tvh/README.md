@@ -47,7 +47,7 @@ There are 3 kinds of tvheadend docker images:
 
   * You should build your own version of the `tvh.config` image and use `volumes-from` to mount it to the main tvheadend image (or debug image).
   * The `/config` volume provided by this image should NOT be bind-mounted. It should be a regular docker volume. Since docker only pre-seeds volumes data for the regular type of volumes.
-  * You should use Ubuntu trusty `ubuntu-debootstrap:14.04` as the base image.
+  * You should use Ubuntu trusty `ubuntu-debootstrap:16.04` as the base image.
   * Locale and timezone files are symlinked from this `tvh.config` image.
     * They are missing from the main image
   * See examlpe `Dockefile` in `dreamcat4/tvh.config` for more help / instructions.
