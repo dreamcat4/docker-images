@@ -94,6 +94,8 @@
 /tvh/config/id.pre-scan.dkr
 /tvh/config/id.post-scan.clean.dkr
 /tvh/config/scratch.channels
+/tvh/old_config/*
+/tvh/autorec/*
 
 
 
