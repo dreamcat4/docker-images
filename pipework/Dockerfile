@@ -12,7 +12,7 @@ RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
 
 # Install pipework
 ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
-RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
+RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 # Install networking utils / other dependancies
 RUN apt-get update -qq && apt-get install -qqy netcat-openbsd curl jq lsof net-tools udhcpc isc-dhcp-client dhcpcd5 arping ndisc6 fping sipcalc bc && $_apt_clean

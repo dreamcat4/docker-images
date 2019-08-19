@@ -6,7 +6,7 @@ ENV _apt_clean="eval apt-get clean && $_clean"
 
 # Install pipework
 ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
-RUN tar -zxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
+RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 # Install sudo
 RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy sudo && $_apt_clean
