@@ -23,6 +23,10 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 
+# Install gnupg2
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gnupg2 && $_apt_clean
+
+
 # Install sonarr
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC \
  && echo "deb http://apt.sonarr.tv ${sonarr_release} main" >> /etc/apt/sources.list \

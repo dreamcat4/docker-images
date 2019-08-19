@@ -4,6 +4,9 @@ MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ENV _apt_clean="eval apt-get clean && $_clean"
 
+# Install gnupg2
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gnupg2 && $_apt_clean
+
 # Install docker
 RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
  && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F76221572C52609D \
