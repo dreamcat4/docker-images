@@ -20,7 +20,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install samba
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy samba && $_apt_clean
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy iproute2 net-tools samba && $_apt_clean
 
 
 # Create samba user as user 'nobody'

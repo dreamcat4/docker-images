@@ -17,7 +17,7 @@ ENV S6_LOGGING="1"
 
 # Supportive pkgs
 RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    wget curl git sudo nano less man && $_apt_clean
+    iproute2 net-tools wget curl git sudo nano less man && $_apt_clean
 
 # Output folder
 RUN mkdir -p /out

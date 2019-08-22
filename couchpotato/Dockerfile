@@ -21,7 +21,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 # Install dependancies
 RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
-    apt-get install -qqy sudo git python python-openssl python-lxml && $_apt_clean
+    apt-get install -qqy sudo iproute2 net-tools git python python-openssl python-lxml && $_apt_clean
 
 
 # Download couchpotato

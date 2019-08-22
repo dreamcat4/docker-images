@@ -20,7 +20,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install gnupg2
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gnupg2 && $_apt_clean
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy iproute2 net-tools gnupg2 && $_apt_clean
 
 
 # Install nginx
