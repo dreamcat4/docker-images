@@ -170,7 +170,7 @@ else
     if [ "$disable_nmbd" ]; then
         exec ionice -c 3 smbd -FS </dev/null
     else
-        exec ionice -c 3 smbd -FS </dev/null &
-        exec ionice -c 3 nmbd -FS </dev/null
+        ionice -c 3 nmbd -D
+        exec ionice -c 3 smbd -FS </dev/null
     fi
 fi
