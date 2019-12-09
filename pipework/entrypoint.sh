@@ -187,15 +187,75 @@ _decrement_ipv6 ()
 _create_host_route ()
 {
     c12id="$1" ; pipework_cmd="$2"
-    set $pipework_cmd ; unset _arping
+    set $pipework_cmd ; unset _arping host_if cont_if
 
     if [ "$_pipework_host_route_arping" ] || [ "$pipework_host_route_arping" ]; then
         _arping=true
     fi
 
-    [ "$2" = "-i" ] && cont_if="$3" || \
-    cont_if="eth1"
-    host_if="$1"
+    
+    while [ "$1" ]; do
+
+        if [ "$1" = "${1#-}" ]; then
+
+            case $1 in
+
+                route)
+                echo "error: the invocation method: 'pipework route ...' is not supported with the host_routes feature"
+                return 1
+                ;;
+
+                rule)
+                echo "error: the invocation method: 'pipework rule ...' is not supported with the host_routes feature"
+                return 1
+                ;;
+
+                tc)
+                echo "error: the invocation method: 'pipework tc ...' is not supported with the host_routes feature"
+                return 1
+                ;;
+
+                *)
+                host_if="$1"
+                break
+                ;;
+            esac
+
+        else
+            case $1 in
+
+                -i)
+                cont_if="$2"
+                break
+                ;;
+
+                --wait)
+                echo "error: the invocation method: 'pipework --wait' is not supported here. it is only valid from within a client container"
+                return 1
+                ;;
+
+                --direct-phys)
+                shift
+                ;;
+
+                --*)
+                shift
+                ;;
+
+                -*)
+                break
+                ;;
+            esac
+        fi
+    done
+
+    if [ ! "$host_if" ]; then
+        echo "error: could not find host interface in pipework_cmd: '$pipework_cmd'. this is necessary for the host_routes feature"
+        return 1
+    fi
+
+    [ "$cont_if" ] || cont_if="eth1"
+
 
     _pid="$(_docker_pid $c12id)"
 
