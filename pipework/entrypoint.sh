@@ -414,7 +414,7 @@ _process_container ()
     unset $(env | grep -e ".*pipework.*" | cut -d= -f1)
 
     _pipework_vars="$(docker inspect --format '{{range $index, $val := .Config.Env }}{{printf "%s\"\n" $val}}{{end}}' $c12id \
-        | grep -e 'pipework_cmd.*=\|^pipework_key=\|pipework_host_route.*='| sed -e 's/^/export "/g' -e 's/="/=/g' -e 's/""$/"/g')"
+        | grep -e 'pipework_cmd.*=\|^pipework_key=\|pipework_host_route.*='| sed -e 's/^/export "/g')"
     [ "$_pipework_vars" ] || return 0
 
     _macros="$(echo -e "$_pipework_vars" | grep -o -e '@CONTAINER_NAME@\|@CONTAINER_ID@\|@HOSTNAME@\|@INSTANCE@\|@COMPOSE_PROJECT_NAME@' | sort | uniq)"
