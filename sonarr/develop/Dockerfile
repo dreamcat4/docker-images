@@ -29,7 +29,7 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gn
 
 
 # Install sonarr
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0xA236C58F409091A18ACA53CBEBFF6B99D9B78493 \
  && echo "deb http://apt.sonarr.tv ${sonarr_release} main" >> /etc/apt/sources.list \
  && apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy sudo libmono-cil-dev nzbdrone \
  && $_apt_clean

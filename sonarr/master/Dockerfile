@@ -29,10 +29,17 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gn
 
 
 # Install sonarr
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0xA236C58F409091A18ACA53CBEBFF6B99D9B78493 \
  && echo "deb http://apt.sonarr.tv ${sonarr_release} main" >> /etc/apt/sources.list \
  && apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy sudo libmono-cil-dev nzbdrone \
  && $_apt_clean
+
+# to modify sonarr image for curl
+# ====
+# add apt pkgs:
+# 	curl iputils-ping ca-certificates
+
+# ln -s /usr/lib/x86_64-linux-gnu/libcurl-gnutils.so.4 /opt/NzbDrone/libcurl.so.4
 
 
 # Setup sonarr /config dir and /media folder
