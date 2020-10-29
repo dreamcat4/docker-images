@@ -42,23 +42,28 @@ fi
 dpkg-reconfigure -f noninteractive tzdata
 
 
-if [ "$pipework_wait" ]; then
-	for _pipework_if in $pipework_wait; do
-		echo "Waiting for pipework to bring up $_pipework_if..."
-		pipework --wait -i $_pipework_if
-	done
-	sleep 1
+# set the default route
+if [ "$default_route" ]; then
+  route del default
+  route add default gw $default_route
 fi
 
 
-if [ "$deluge_wan_interface" ]; then
+
+if [ "$deluge_wan_ip" ]; then
+  _wan_if_flag="--interface=$deluge_wan_ip"
+
+elif [ "$deluge_wan_interface" ]; then
 	_wan_ip="$(ip -4 -o address show "$deluge_wan_interface" | tr -s ' ' | cut -d' ' -f4 | sed -e 's|/.*||g')"
 	[ "$_wan_ip" ] || exit 1
 	_wan_if_flag="--interface=$_wan_ip"
 fi
 
 
-if [ "$deluge_lan_interface" ]; then
+if [ "$deluge_lan_ip" ]; then
+  _lan_ip="$deluge_lan_ip"
+
+elif [ "$deluge_lan_interface" ]; then
 	_lan_ip="$(ip -4 -o address show "$deluge_lan_interface" | tr -s ' ' | cut -d' ' -f4 | sed -e 's|/.*||g')"
 
 else
