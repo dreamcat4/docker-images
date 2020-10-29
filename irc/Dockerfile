@@ -88,18 +88,24 @@ RUN wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
  && apt-get update -qqy && apt-get install -y rsyslog \
     bitlbee-libpurple bitlbee-plugin-otr \
     bitlbee-steam bitlbee-facebook \
-    pidgin-sipe pidgin-skypeweb \
+    pidgin-sipe \
     telegram-purple \
  \
  && $_apt_clean
 
-# Hack, install older version of libprotobuf to meet dependancies
-# This whatsapp-purple PPA needs newer ubuntu version as trusty 14.04 too old now
-RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/protobuf/libprotobuf8_2.5.0-9ubuntu1_amd64.deb && dpkg -i /tmp/libprotobuf8_amd64.deb \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C777F0E392FAE28B \
- && echo "deb http://ppa.launchpad.net/whatsapp-purple/ppa/ubuntu trusty main" >> /etc/apt/sources.list \
- && apt-get update -qqy && apt-get install -y pidgin-whatsapp \
- && $_apt_clean
+# # Hack, install older version of libprotobuf to meet dependancies
+# # This whatsapp-purple PPA needs newer ubuntu version as trusty 14.04 too old now
+# RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/protobuf/libprotobuf8_2.5.0-9ubuntu1_amd64.deb && dpkg -i /tmp/libprotobuf8_amd64.deb \
+#  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C777F0E392FAE28B \
+#  && echo "deb http://ppa.launchpad.net/whatsapp-purple/ppa/ubuntu trusty main" >> /etc/apt/sources.list \
+#  && apt-get update -qqy && apt-get install -y pidgin-whatsapp \
+#  && $_apt_clean
+
+# Source: https://github.com/EionRobb/skype4pidgin
+RUN wget -O /usr/lib/purple-2/libskypeweb.so https://github.com/EionRobb/skype4pidgin/releases/download/1.7/libskypeweb.so
+
+# Compiled for ubuntu 18.04 - https://github.com/hoehermann/purple-gowhatsapp
+RUN wget -O /usr/lib/purple-2/libgowhatsapp_0.4.0.so https://buildbot.hehoe.de/purple-gowhatsapp/builds/libgowhatsapp_0.4.0~gitf0802d1+gowhatsapp~git0051037_amd64_ubuntu18.04.so
 
 # Bitlbee - libpurpletorchat
 ENV _torchat_ver="2.0-alpha-14"
@@ -116,16 +122,28 @@ RUN groupmod -o -g 6111 bitlbee \
 
 
 
+# # Install limnoria (aka supybot)
+# RUN apt-get update -qqy && apt-get install -y \
+#     python-dev python-pip pkg-config graphviz graphviz-dev libxml2-dev libxslt1-dev python-cobe \
+#  && pip install --upgrade pip setuptools \
+#  && pip install -r https://raw.githubusercontent.com/ProgVal/Limnoria/master/requirements.txt --upgrade \
+#  && pip install limnoria --upgrade && chmod +x /usr/local/bin/supybot* \
+#  && pip install -r https://raw.githubusercontent.com/ProgVal/Supybot-plugins/master/requirements.txt --upgrade \
+#  && wget -q -O- https://raw.githubusercontent.com/GLolol/SupyPlugins/master/requirements.txt | grep -v "Limnoria.git" > /tmp/glol.reqs.txt \
+#  && pip install -r /tmp/glol.reqs.txt --upgrade && rm /tmp/glol.reqs.txt \
+#  \
+#  && $_apt_clean
+
 # Install limnoria (aka supybot)
 RUN apt-get update -qqy && apt-get install -y \
-    python-dev python-pip pkg-config graphviz graphviz-dev libxml2-dev libxslt1-dev python-cobe \
- && pip install --upgrade pip setuptools \
- && pip install -r https://raw.githubusercontent.com/ProgVal/Limnoria/master/requirements.txt --upgrade \
- && pip install limnoria --upgrade && chmod +x /usr/local/bin/supybot* \
- && pip install -r https://raw.githubusercontent.com/ProgVal/Supybot-plugins/master/requirements.txt --upgrade \
- && wget -q -O- https://raw.githubusercontent.com/GLolol/SupyPlugins/master/requirements.txt | grep -v "Limnoria.git" > /tmp/glol.reqs.txt \
- && pip install -r /tmp/glol.reqs.txt --upgrade && rm /tmp/glol.reqs.txt \
+ python3 python3-pip python3-wheel python3-dev pkg-config graphviz graphviz-dev libxml2-dev libxslt1-dev \
  \
+ && pip3 install -r https://raw.githubusercontent.com/ProgVal/Limnoria/master/requirements.txt --upgrade \
+ && pip3 install -r https://raw.githubusercontent.com/ProgVal/Supybot-plugins/master/requirements.txt --upgrade \
+ && wget -q -O- https://raw.githubusercontent.com/jlu5/SupyPlugins/master/requirements.txt | \
+    grep -v "Limnoria.git" | pip3 install -r /dev/stdin \
+ \
+ && pip3 install limnoria --upgrade \
  && $_apt_clean
 
 # NOTE: overlayfs bug causes pip dependancies install failure below ^^;
@@ -144,7 +162,7 @@ RUN mkdir -p limnoria-plugins/spline \
  && for _spline_plugin in $_spline_plugins; \
  do wget -q -O- https://raw.githubusercontent.com/reticulatingspline/${_spline_plugin}/master/requirements.txt | grep -v "Limnoria.git" > /tmp/spline.reqs.txt || break ; \
     echo "processing deps for \"reticulatingspline/${_spline_plugin}\":" && cat /tmp/spline.reqs.txt && echo \
- && pip install -r /tmp/spline.reqs.txt --upgrade && rm /tmp/spline.reqs.txt && echo \
+ && pip3 install -r /tmp/spline.reqs.txt --upgrade && rm /tmp/spline.reqs.txt && echo \
   ; done \
  \
  && for _spline_plugin in $_spline_plugins; \
@@ -154,7 +172,7 @@ RUN mkdir -p limnoria-plugins/spline \
 
 RUN mkdir -p limnoria-plugins \
  && git clone https://github.com/ProgVal/Supybot-plugins limnoria-plugins/progval \
- && git clone https://github.com/GLolol/SupyPlugins limnoria-plugins/glolol
+ && git clone https://github.com/jlu5/SupyPlugins limnoria-plugins/glolol
 
 RUN echo Checking limnoria was installed && ls -lsa /usr/local/bin/supybot
 
@@ -165,24 +183,25 @@ RUN groupadd -o -g 1135 limnoria \
 
 
 
-# Install irssi from nei's irssi-test repo, on opensuse
-RUN wget -O- http://download.opensuse.org/repositories/home:ailin_nemui:irssi-test/xUbuntu_20.04/Release.key | apt-key add - \
- && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_20.04/ /" >> /etc/apt/sources.list \
- && apt-get update -qqy && apt-get install -y \
-    libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
-    irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
- && cpanm WebService::HipChat Algorithm::Diff \
- && $_apt_clean
-
-# # Install irssi from official ubuntu apt repo
-# RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# # Install irssi from nei's irssi-test repo, on opensuse
+# RUN wget -O- http://download.opensuse.org/repositories/home:ailin_nemui:irssi-test/xUbuntu_20.04/Release.key | apt-key add - \
+#  && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_20.04/ /" >> /etc/apt/sources.list \
+#  && apt-get update -qqy && apt-get install -y \
 #     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
-#     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
+#     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-robustirc irssi-plugin-xmpp \
 #  && cpanm WebService::HipChat Algorithm::Diff \
 #  && $_apt_clean
 
+# Install irssi from official ubuntu apt repo
+RUN apt-get update -qqy && apt-get install -y \
+    libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
+    irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-robustirc irssi-plugin-xmpp \
+ && cpanm WebService::HipChat Algorithm::Diff \
+ && cpanm Text::CharWidth \
+ && $_apt_clean
+
 # For irssi / adv_windowlist.pl:
- # && cpanm Text::CharWidth \
+# && cpanm Text::CharWidth \
 
 
 # Irssi - Download scripts and themes
