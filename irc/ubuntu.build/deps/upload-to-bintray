@@ -8,9 +8,8 @@
 unset _error
 
 
-_upload_tarball_to_bintray ()
+_create_version ()
 {
-	# Create a new version
 	echo curl -sS -i -u${bintray_user}:\${bintray_key} -H "Content-Type: application/json" \
 	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
 	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }"
@@ -19,55 +18,14 @@ _upload_tarball_to_bintray ()
 	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
 	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }" | tr -d '\"')"
 	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
-
-	if echo "$bintray_api_resp" | grep -qi "already exists"; then
-	  echo "Aborting. Version ${bintray_version} of ${bintray_pkg_name} has already been upladed to bintray."
-	  echo "API response: ^$bintray_api_resp$"
-	  return 0
-	fi
-
-	if [ $bintray_api_http_status -ge 400 ]; then
-	  echo "Upload error. Could not create a new pkg version on bintray."
-	  echo "API response: ^$bintray_api_resp$"
-	  _error="true"
-	else
-	  echo "$bintray_api_resp"
-	fi
-
-
-	# Upload tarball
-	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:$bintray_version \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1
-
-	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:$bintray_version \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1 | tr -d '\"')"
-	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
-
-	if [ $bintray_api_http_status -ge 400 ]; then
-	  echo "Upload error. Could not upload to bintray."
-	  echo "API response: ^$bintray_api_resp$"
-	  _error="true"
-	else
-	  echo "$bintray_api_resp"
-	fi
-
-
-	# Set flags to 'latest', for doing again
-	bintray_version="latest"
-	bintray_file_path="${bintray_pkg_name}/${bintray_pkg_name}-${bintray_version}_linux-x86_64.tar.gz"
-
-	# Create a 'latest' version
-	echo curl -sS -i -u${bintray_user}:\${bintray_key} -H "Content-Type: application/json" \
-	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
-	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }"
-
-	bintray_api_resp="$(curl -sS -i -u${bintray_user}:${bintray_key} -H "Content-Type: application/json" \
-	  -X POST https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions \
-	  --data "{ \"name\": \"${bintray_version}\", \"desc\": \"${bintray_ver_desc}\", }" | tr -d '\"')"
 
 	if echo "$bintray_api_resp" | grep -qi "already exists"; then
 	  echo "Version '${bintray_version}' already exists."
 	  echo "API response: ^$bintray_api_resp$"
+
+  elif [ $bintray_api_http_status -eq 409 ]; then
+  	echo "Version conflict."
+  	echo "API response: ^$bintray_api_resp$"
 
 	elif [ $bintray_api_http_status -ge 400 ]; then
 	  echo "Upload error. Could not create a new pkg version '${bintray_version}' on bintray."
@@ -76,21 +34,87 @@ _upload_tarball_to_bintray ()
 	else
 	  echo "$bintray_api_resp"
 	fi
+}
 
-	# Upload tarball again, this time as 'latest'
-	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:${bintray_version} \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\&override=1
+_delete_version ()
+{
+	echo "Deleting existing version '${bintray_version}'..."
 
-	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:${bintray_version} \
-	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1\&override=1 | tr -d '\"')"
+	echo curl -sS -i -u${bintray_user}:\${bintray_key} -H "Content-Type: application/json" \
+	  -X DELETE https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions/${bintray_version} \
+
+	bintray_api_resp="$(curl -sS -i -u${bintray_user}:${bintray_key} -H "Content-Type: application/json" \
+	  -X DELETE https://api.bintray.com/packages/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/versions/${bintray_version} | tr -d '\"')"
 	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
 
 	if [ $bintray_api_http_status -ge 400 ]; then
+	  echo "Upload error. Could not delete pkg version '${bintray_version}' on bintray."
+	  echo "API response: ^$bintray_api_resp$"
+	  _error="true"
+	else
+	  echo "$bintray_api_resp"
+	fi
+}
+
+_upload_tarball ()
+{
+	# Upload tarball
+	echo curl -sS -i -T /out/${tarball} -u${bintray_user}:\${bintray_key} -H X-Bintray-Version:$bintray_version \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1
+
+	bintray_api_resp="$(curl -sS -i -T /out/${tarball} -u${bintray_user}:${bintray_key} -H X-Bintray-Version:$bintray_version \
+	  https://api.bintray.com/content/${bintray_user}/${bintray_repo}/${bintray_pkg_name}/${bintray_file_path}\?publish=1 | tr -d '\"')"
+	bintray_api_http_status="$(echo "$bintray_api_resp" | head -1 | cut -d' ' -f2)"
+
+	if echo "$bintray_api_resp" | grep -qi "has been published for more than"; then
+	  echo "Version '${bintray_version}' published for too long."
+	  echo "API response: ^$bintray_api_resp$"
+	  echo ""
+	elif [ $bintray_api_http_status -ge 400 ]; then
 	  echo "Upload error. Could not upload to bintray."
 	  echo "API response: ^$bintray_api_resp$"
 	  _error="true"
 	else
 	  echo "$bintray_api_resp"
+	fi
+}
+
+_upload_tarball_to_bintray ()
+{
+	# Create a new version
+	_create_version
+
+	if echo "$bintray_api_resp" | grep -qi "already exists"; then
+	  return 0
+	fi
+
+	_upload_tarball
+
+
+	# Set flags to 'latest', for doing again
+	bintray_version="latest"
+	bintray_file_path="${bintray_pkg_name}/${bintray_pkg_name}-${bintray_version}_linux-x86_64.tar.gz"
+
+	# Create a 'latest' version
+	_create_version
+
+
+	# Upload tarball again, this time as 'latest'
+	_upload_tarball
+
+	if echo "$bintray_api_resp" | grep -qi "has been published for more than"; then
+
+	  # # Clear error flag
+	  # unset _error
+
+	  # Delete the existing 'latest' version
+	  _delete_version
+
+	  # Re-Create a 'latest' version (as new)
+	  _create_version
+
+	  # Try to upload 'latest' version (2nd time)
+	  _upload_tarball
 	fi
 }
 
