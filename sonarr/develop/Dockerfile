@@ -3,7 +3,6 @@ MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
 ENV sonarr_release=develop
-# ENV sonarr_release=master
 
 
 ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
