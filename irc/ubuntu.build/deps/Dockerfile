@@ -38,7 +38,7 @@ WORKDIR /build/znc-modules
 
 
 # aka.pl - Trace nick changes / aka
-RUN git clone https://github.com/MuffinMedic/znc-aka.git \
+RUN git clone https://github.com/A-UNDERSCORE-D/znc-aka.git \
  && cd znc-aka && ls -lsa && cp aka.py /build/znc-modules/out
 
 
@@ -103,9 +103,9 @@ WORKDIR /build/atheme
 
 # atheme - ./configure && make && make install
 RUN git clone https://github.com/atheme/atheme.git && cd atheme \
- && atheme_version="$(git tag | grep 'atheme-[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | sort | tail -1 | sed -e 's/^atheme-//')" \
+ && atheme_version="$(git tag | grep 'v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | sort | tail -1)" \
  && echo "$atheme_version" > /out/atheme_version \
- && git checkout "atheme-${atheme_version}" \
+ && git checkout "$atheme_version" \
  && git submodule update --init \
  && \
     ./configure --sysconfdir=/etc/atheme --localstatedir=/var \
