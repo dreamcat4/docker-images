@@ -22,17 +22,17 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install deluge
-RUN apt-get update -qq && \
-    apt-get install -qqy sudo socat iproute2 deluged deluge-web deluge-console \
+RUN apt-get update -qq && apt-get install -qqy lsb-release sudo curl socat iproute2 tcpdump jq iputils-ping iputils-tracepath inetutils-traceroute net-tools less nmap dnsutils nano tzdata deluged deluge-web deluge-console \
  && $_apt_clean
 
+# Patch deluge migration bug, see - https://forum.deluge-torrent.org/viewtopic.php?t=55662
+RUN sed -i -e "s/def findCaller(self, stack_info=False):  # NOQA: N802/def findCaller(self, *args, **kwargs):  # NOQA: N802/g" /usr/lib/python3/dist-packages/deluge/log.py
 
-# Set locale
-ENV LANG="en_US.UTF-8"
+# Set default locale
+RUN apt-get update -qqy && apt-get install -qqy lsb-release locales && $_apt_clean
+ARG LANG="en_US.UTF-8"
+RUN sed -i "/$LANG/s/^# //g" /etc/locale.gen && locale-gen && update-locale LANG=$LANG
 
-RUN apt-get update -qqy && apt-get install -qqy locales && $_apt_clean \
- && grep "$LANG" /usr/share/i18n/SUPPORTED >> /etc/locale.gen && locale-gen \
- && update-locale LANG=$LANG
 
 # Relocate the locale files in /usr/lib/locale/
 RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
@@ -43,9 +43,9 @@ RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
 
 # Symlink the 2 timezone files
 ENV TIMEZONE="Etc/UTC"
-RUN echo "${TIMEZONE}" > /config/.link/etc/timezone \
+RUN echo "$TIMEZONE" > /config/.link/etc/timezone \
  && ln -sf /config/.link/etc/timezone /etc/timezone \
- && ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime \
+ && ln -sf /usr/share/zoneinfo/$TIMEZONE /config/.link/etc/localtime \
  && ln -sf /config/.link/etc/localtime /etc/localtime \
  && dpkg-reconfigure tzdata
 
