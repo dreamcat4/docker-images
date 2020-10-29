@@ -6,8 +6,8 @@
 
 
 # Set the uid:gid to run as
-[ "$daapd_uid" ] && usermod  -o -u "$daapd_uid" deluge
-[ "$daapd_gid" ] && groupmod -o -g "$daapd_gid" deluge
+[ "$daapd_uid" ] && usermod  -o -u "$daapd_uid" daapd
+[ "$daapd_gid" ] && groupmod -o -g "$daapd_gid" daapd
 
 # chown -r /music only if owned by root. We asume that means it's a docker volume
 [ "$(stat -c %u:%g /music )" = "0:0" ] && chown daapd:daapd /config /music
