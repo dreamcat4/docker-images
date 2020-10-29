@@ -2,13 +2,14 @@ FROM dreamcat4/nginx
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 # apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y
 
 
 # Install support pkgs
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     iproute2 curl wget nano man less sudo unzip xorriso tcpdump wimtools \
  && $_apt_clean
 

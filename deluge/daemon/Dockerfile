@@ -2,12 +2,13 @@ FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 
 # Install s6-overlay
-ENV s6_overlay_version="1.22.1.0"
+ARG s6_overlay_version="1.22.1.0"
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
 RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
  && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
@@ -21,7 +22,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install deluge
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
+RUN apt-get update -qq && \
     apt-get install -qqy sudo socat iproute2 deluged deluge-web deluge-console \
  && $_apt_clean
 
@@ -46,7 +47,7 @@ RUN echo "${TIMEZONE}" > /config/.link/etc/timezone \
  && ln -sf /config/.link/etc/timezone /etc/timezone \
  && ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime \
  && ln -sf /config/.link/etc/localtime /etc/localtime \
- && dpkg-reconfigure -f noninteractive tzdata
+ && dpkg-reconfigure tzdata
 
 
 # Setup the deluge user

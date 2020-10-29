@@ -2,13 +2,14 @@ FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 # apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y
 
 
 # Install s6-overlay
-ENV s6_overlay_version="1.22.1.0"
+ARG s6_overlay_version="1.22.1.0"
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
 RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
  && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
@@ -22,16 +23,16 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install gnupg2
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gnupg2 && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy gnupg2 && $_apt_clean
 
 
 # Install support pkgs
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
+RUN apt-get update -qqy && apt-get install -y \
+    lsb-release wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
 
 
 # Install ngircd
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y ngircd && $_apt_clean
+RUN apt-get update -qqy && apt-get install -y ngircd && $_apt_clean
 
 # Setup ngircd user
 RUN groupadd -o -g 5914 ngircd \
@@ -51,7 +52,7 @@ RUN groupadd -o -g 8153 atheme \
 
 
 # Install znc
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y znc && $_apt_clean
+RUN apt-get update -qqy && apt-get install -y znc && $_apt_clean
 
 # Install external znc-modules
 RUN wget -O /tmp/znc-modules.tar.gz https://dl.bintray.com/dreamcat4/linux/znc-modules/znc-modules-latest_linux-x86_64.tar.gz \
@@ -83,7 +84,7 @@ RUN wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 531EE72F4C9D234C \
  && echo "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu xenial main" >> /etc/apt/sources.list \
  \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y rsyslog \
+ && apt-get update -qqy && apt-get install -y rsyslog \
     bitlbee-libpurple bitlbee-plugin-otr \
     bitlbee-steam bitlbee-facebook \
     pidgin-sipe pidgin-skypeweb \
@@ -96,12 +97,12 @@ RUN wget -O- https://code.bitlbee.org/debian/release.key | apt-key add - \
 RUN wget -O /tmp/libprotobuf8_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/protobuf/libprotobuf8_2.5.0-9ubuntu1_amd64.deb && dpkg -i /tmp/libprotobuf8_amd64.deb \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C777F0E392FAE28B \
  && echo "deb http://ppa.launchpad.net/whatsapp-purple/ppa/ubuntu trusty main" >> /etc/apt/sources.list \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y pidgin-whatsapp \
+ && apt-get update -qqy && apt-get install -y pidgin-whatsapp \
  && $_apt_clean
 
 # Bitlbee - libpurpletorchat
 ENV _torchat_ver="2.0-alpha-14"
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y tor bzip2 \
+RUN apt-get update -qqy && apt-get install -y tor bzip2 \
  && wget -O /tmp/libpurpletorchat.tar.bz2 https://github.com/downloads/prof7bit/TorChat/libpurpletorchat-${_torchat_ver}-linux-x86-64.tar.bz2 \
  && tar -C /usr/lib/purple-2 --strip-components=1 -jxvf /tmp/libpurpletorchat.tar.bz2 libpurpletorchat/libpurpletorchat.so && $_apt_clean
 
@@ -115,7 +116,7 @@ RUN groupmod -o -g 6111 bitlbee \
 
 
 # Install limnoria (aka supybot)
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     python-dev python-pip pkg-config graphviz graphviz-dev libxml2-dev libxslt1-dev python-cobe \
  && pip install --upgrade pip setuptools \
  && pip install -r https://raw.githubusercontent.com/ProgVal/Limnoria/master/requirements.txt --upgrade \
@@ -166,7 +167,7 @@ RUN groupadd -o -g 1135 limnoria \
 # Install irssi from nei's irssi-test repo, on opensuse
 RUN wget -O- http://download.opensuse.org/repositories/home:ailin_nemui:irssi-test/xUbuntu_16.04/Release.key | apt-key add - \
  && echo "deb http://download.opensuse.org/repositories/home:/ailin_nemui:/irssi-test/xUbuntu_16.04/ /" >> /etc/apt/sources.list \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && apt-get update -qqy && apt-get install -y \
     libtime-duration-perl libwww-perl libnotify-bin libmime-base64-urlsafe-perl \
     irssi make cpanminus irssi-scripts irssi-plugin-otr irssi-plugin-xmpp \
  && cpanm WebService::HipChat Algorithm::Diff \
@@ -199,7 +200,7 @@ RUN groupadd -o -g 1455 irssi \
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D1820DB22A11534E \
  && echo "deb https://weechat.org/ubuntu xenial main" >> /etc/apt/sources.list \
  \
- && apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && apt-get update -qqy && apt-get install -y \
     weechat weechat-plugins \
  \
  && $_apt_clean
@@ -211,7 +212,7 @@ RUN groupadd -o -g 3333 weechat \
 
 
 # Install tmux, sshd and other supportive pkgs
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     tmux openssh-server socat nmap \
  && $_apt_clean
 

@@ -1,8 +1,9 @@
 FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 
 # 1. Set locale - change 'en_US.UTF-8' --> the correct one for your county / region
@@ -24,7 +25,7 @@ RUN echo "${TIMEZONE}" > /config/.link/etc/timezone \
  && ln -sf /config/.link/etc/timezone /etc/timezone \
  && ln -sf /usr/share/zoneinfo/${TIMEZONE} /config/.link/etc/localtime \
  && ln -sf /config/.link/etc/localtime /etc/localtime \
- && dpkg-reconfigure -f noninteractive tzdata
+ && dpkg-reconfigure tzdata
 
 
 

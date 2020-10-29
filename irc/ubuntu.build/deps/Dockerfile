@@ -2,13 +2,14 @@ FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 # apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y
 
 
 # Install s6-overlay
-ENV s6_overlay_version="1.22.1.0"
+ARG s6_overlay_version="1.22.1.0"
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
 RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
  && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
@@ -17,7 +18,7 @@ ENV S6_LOGGING="1"
 
 
 # Supportive pkgs
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     wget curl git sudo nano less man && $_apt_clean
 
 # Output folder
@@ -25,7 +26,7 @@ RUN mkdir -p /out
 
 # ===
 # ZNC - install build time dependancies
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     znc znc-dev ca-certificates libcurl4-openssl-dev make && $_apt_clean
 
 
@@ -92,8 +93,8 @@ RUN cd /build/znc-modules/out && tar -czvf /out/znc-modules-$(cat /out/znc_modul
 
 # ===
 # atheme - install build time dependancies
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    autoconf automake libtool gettext libpcre3-dev perl && $_apt_clean
+RUN apt-get update -qqy && apt-get install -y \
+    autoconf automake libtool gettext libpcre3-dev perl libperl-dev && $_apt_clean
 
 
 # atheme - Build external modules
