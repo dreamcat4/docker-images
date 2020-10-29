@@ -6,12 +6,13 @@ MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 ENV tvh_release=unstable
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 
 # Install s6-overlay
-ENV s6_overlay_version="1.22.1.0"
+ARG s6_overlay_version="1.22.1.0"
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
 RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
  && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
@@ -25,15 +26,15 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install gnupg2
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy gnupg2 && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy gnupg2 && $_apt_clean
 
 
 # Install xmltv & tvheadend
-RUN apt-get update -qq && apt-get install -qqy apt-transport-https \
- && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61 \
+RUN apt-get update -qq && apt-get install -qqy apt-transport-https ca-certificates \
+ && APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61 \
  && echo deb https://dl.bintray.com/dreamcat4/ubuntu ${tvh_release} main > /etc/apt/sources.list.d/tvheadend.list \
  && apt-get update -qq && apt-get install -qqy bzip2 libavahi-client3 xmltv \
- && apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy udev tvheadend \
+ && apt-get update -qq && apt-get install -qqy udev tvheadend \
  && rm -rf /home/hts && $_apt_clean
 
 
