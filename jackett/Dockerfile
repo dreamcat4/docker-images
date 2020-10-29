@@ -19,14 +19,15 @@ ENV S6_LOGGING="1"
 ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
 RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
-
+# ? needs mono-complete also ?
 # Install jackett dependancies
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy curl bzip2 sudo libmono-cil-dev libcurl4-openssl-dev \
+RUN apt-get update -qq && apt-get install -qqy lsb-release curl bzip2 sudo libmono-cil-dev libcurl4-openssl-dev mono-devel \
  && $_apt_clean
 
 
 # Download jackett
-ENV jackett_version="0.7.184"
+# ENV jackett_version="0.7.504"
+ENV jackett_version="0.16.1922"
 RUN curl -Lo /tmp/jackett.tar.gz https://github.com/Jackett/Jackett/releases/download/v${jackett_version}/Jackett.Binaries.Mono.tar.gz \
  && mkdir /jackett && tar -xzf /tmp/jackett.tar.gz --strip-components=1 -C /jackett && rm -f /tmp/jackett.tar.gz
 
