@@ -8,10 +8,7 @@
 	"ota_timeout": 600,
 	"ota_initial": 1,
 	"mod_enabled": {
-		"opentv-skyit": 0,
 		"opentv-skyuk": 1,
-		"opentv-ausat": 0,
-		"viasat_baltic": 0,
 		"uk_freeview": 1,
 		"uk_freesat": 1,
 		"eit": 1
