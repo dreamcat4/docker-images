@@ -36,10 +36,16 @@ RUN sed -i 's|^\(   log file = \).*|\1/dev/stdout|' /etc/samba/smb.conf \
  && echo '   directory mask = 0775' >> /etc/samba/smb.conf \
  && echo '   force create mode = 0664' >> /etc/samba/smb.conf \
  && echo '   force directory mode = 0775' >> /etc/samba/smb.conf \
+ && echo '   follow symlinks = yes' >> /etc/samba/smb.conf \
  && echo '   load printers = no' >>/etc/samba/smb.conf \
  && echo '   printing = bsd' >>/etc/samba/smb.conf \
  && echo '   printcap name = /dev/null' >>/etc/samba/smb.conf \
  && echo '   disable spoolss = yes' >>/etc/samba/smb.conf \
+ && echo '   acl allow execute always = yes' >>/etc/samba/smb.conf \
+ && echo '   server schannel = yes' >>/etc/samba/smb.conf \
+ && echo '   local master = no' >>/etc/samba/smb.conf \
+ && echo '   domain master = no' >>/etc/samba/smb.conf \
+ && echo '   preferred master = no' >>/etc/samba/smb.conf \
  && echo '' >> /etc/samba/smb.conf
 
 
