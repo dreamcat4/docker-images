@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
@@ -26,8 +26,8 @@ RUN apt-get update -qq && apt-get install -qqy lsb-release iproute2 net-tools gn
 
 
 # Install nginx
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 \
- && echo "deb http://nginx.org/packages/mainline/ubuntu xenial nginx" >> /etc/apt/sources.list \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 2>&1 \
+ && echo "deb http://nginx.org/packages/mainline/ubuntu focal nginx" >> /etc/apt/sources.list \
  && apt-get update && apt-get install -y ca-certificates nginx && $_apt_clean
 
 

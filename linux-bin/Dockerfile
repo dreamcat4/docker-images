@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
@@ -53,7 +53,7 @@ RUN cd dnsmasq/out && tar -czvf /out/dnsmasq-$(cat /out/dnsmasq_version)_linux-x
 
 # ===
 # ipxe - install build time dependancies
-RUN apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update -qqy && apt-get install -y \
     gcc binutils make perl syslinux liblzma-dev genisoimage && $_apt_clean
 
 
