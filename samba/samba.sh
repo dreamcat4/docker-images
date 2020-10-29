@@ -108,6 +108,16 @@ import() { local name uid file="${1}"
     pdbedit -i smbpasswd:$file
 }
 
+
+### widelinks: allow access wide symbolic links
+# Arguments:
+#   none)
+# Return: result
+widelinks() { local file=/etc/samba/smb.conf \
+            replace='\1\n   wide links = yes\n   unix extensions = no'
+    sed -i 's/\(follow symlinks = yes\)/'"$replace"'/' $file
+}
+
 ### usage: Help
 # Arguments:
 #   none)
@@ -134,6 +144,7 @@ Options (fields in '[]' are optional, '<>' are required):
     -e          Export smbpasswd file to stdout
     -i \"<path>\" Import smbpasswd
                 required arg: \"<path>\" - full file path in container to import
+    -W Allow access wide symbolic links
 
 The 'command' (if provided and valid) will be run instead of samba
 " >&2
@@ -142,7 +153,7 @@ The 'command' (if provided and valid) will be run instead of samba
 
 cd /tmp
 
-while getopts ":hs:t:u:g:ei:" opt; do
+while getopts ":hs:t:u:g:ei:W" opt; do
     case "$opt" in
         h) usage ;;
         s) eval share $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
@@ -151,6 +162,7 @@ while getopts ":hs:t:u:g:ei:" opt; do
         g) eval group $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
         e) export_ ;;
         i) import   "$OPTARG" ;;
+        W) widelinks ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
@@ -168,9 +180,9 @@ elif ps -ef | egrep -v grep | grep -q smbd; then
     echo "Service already running, please restart container to apply changes"
 else
     if [ "$disable_nmbd" ]; then
-        exec ionice -c 3 smbd -FS </dev/null
+        ionice -c 3 smbd -FS </dev/null
     else
         ionice -c 3 nmbd -D
-        exec ionice -c 3 smbd -FS </dev/null
+        ionice -c 3 smbd -FS </dev/null
     fi
 fi
