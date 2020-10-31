@@ -84,8 +84,8 @@ _upload_tarball_to_bintray ()
 	# Create a new version
 	_create_version
 
-	if echo "$bintray_api_resp" | grep -qi "already exists"; then
-	  return 0
+	if echo "$bintray_api_resp" | grep -qi "already exists" || [ $bintray_api_http_status -eq 409 ]; then
+		return 0
 	fi
 
 	_upload_tarball
