@@ -36,6 +36,14 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0xA236C58F409091A18
  && $_apt_clean
 
 
+# to modify sonarr image for curl
+# ====
+# add apt pkgs:
+#   curl iputils-ping ca-certificates
+
+# ln -s /usr/lib/x86_64-linux-gnu/libcurl-gnutils.so.4 /opt/NzbDrone/libcurl.so.4
+
+
 # Setup sonarr /config dir and /media folder
 RUN groupadd -o -g 8989 sonarr \
  && useradd -o -c "Also known as nzbdrone - runs mono NzbDrone.exe" \
