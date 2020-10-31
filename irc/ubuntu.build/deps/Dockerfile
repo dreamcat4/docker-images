@@ -8,15 +8,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 # apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y
 
 
-# Install s6-overlay
-ARG s6_overlay_version="1.22.1.0"
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
-RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
- && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
-ENV S6_LOGGING="1"
-# ENV S6_KILL_GRACETIME="3000"
-
-
 # Supportive pkgs
 RUN apt-get update -qqy && apt-get install -y \
     wget curl git sudo nano less man && $_apt_clean
@@ -132,7 +123,7 @@ RUN upload-to-bintray && rm /out/bintray-env && ls -lsa /out/
 
 # Default container settings
 VOLUME /out
-ENTRYPOINT ["/init","/bin/sleep","99999999"]
+ENTRYPOINT ["/bin/sleep","99999999"]
 
 
 
