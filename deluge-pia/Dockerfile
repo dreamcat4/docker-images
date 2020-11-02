@@ -2,12 +2,13 @@ FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 
 # Install s6-overlay
-ENV s6_overlay_version="1.22.1.0"
+ARG s6_overlay_version="1.22.1.0"
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${s6_overlay_version}/s6-overlay-amd64.tar.gz /tmp/
 RUN tar hzxf /tmp/s6-overlay-amd64.tar.gz -C / --exclude=usr/bin/execlineb \
  && tar hzxf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin/execlineb && $_clean
@@ -16,13 +17,11 @@ ENV S6_LOGGING="1"
 
 
 # Install deluge
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
-    apt-get install -qqy sudo socat iproute2 deluged deluge-web deluge-console \
+RUN apt-get update -qq && apt-get install -qqy sudo socat iproute2 deluged deluge-web deluge-console \
  && $_apt_clean
 
 # Install openvpn
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive \
-    apt-get install -qqy openvpn openssl net-tools easy-rsa dante-server curl wget ca-certificates \
+RUN apt-get update -qq && apt-get install -qqy openvpn openssl net-tools easy-rsa dante-server curl wget ca-certificates \
  && $_apt_clean
 
 

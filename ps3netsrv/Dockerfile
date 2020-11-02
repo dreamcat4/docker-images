@@ -1,15 +1,16 @@
 FROM ubuntu:18.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
-ENV _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
-ENV _apt_clean="eval apt-get clean && $_clean"
+ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Install pipework
 ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-master.tar.gz
 RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 # Install sudo
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -qqy sudo && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy sudo && $_apt_clean
 
 # Install ps3netsrv
 ADD https://github.com/dreamcat4/ps3netsrv/raw/master/release/linux/ps3netsrv-x86_64 /ps3netsrv
