@@ -1,0 +1,126 @@
+FROM dreamcat4/tvh.ubuntu.build.deps
+MAINTAINER dreamcat4 <dreamcat4@gmail.com>
+
+
+
+# Update & checkout tvheadend
+ARG tvh_release="stable"
+
+
+# Build configuration settings
+ARG TVH_DOOZER_BUILD_TARGET=focal-amd64
+ARG TVH_MAKE_J_PARALLEL_NUM_JOBS=4
+
+
+ARG TVH_CONFIGURE_ARGS=" \
+--nowerror \
+--disable-bintray_cache \
+--python=python3 \
+--enable-ccache \
+--enable-libsystemd_daemon \
+--enable-ffmpeg_static \
+--enable-libffmpeg_static \
+--enable-hdhomerun_client \
+--enable-hdhomerun_static \
+--enable-imagecache \
+--enable-avahi \
+--enable-zlib \
+--enable-vaapi \
+--enable-nvenc \
+--enable-qsv \
+--enable-dvbcsa \
+--enable-bundle \
+"
+
+# Extra developer flags, for profiling etc. Build can't include these seperately
+# into the optional 'tvheadend-dbg' package. Must be compiled into the main pkg.
+# Might incur a performance penalty - IDK! ...So uncomment only if you need them!
+ARG TVH_CONFIGURE_ARGS_DEV=" \
+--enable-cclang_threadsan \
+--enable-gperftools \
+--enable-ccdebug \
+--enable-gtimer_check \
+--enable-slow_memoryinfo \
+"
+
+
+
+WORKDIR /build/tvheadend
+RUN git pull
+
+
+RUN case "$tvh_release" in \
+      \
+      stable) \
+        tvh_point_releases="02468" \
+ &&     tvh_git_ref="$(git tag | grep "v[456789].[0-9]*[$tvh_point_releases].[0-9]*[0-9]$" | sort -V | tail -1)" \
+      ;; \
+      \
+      testing) \
+        tvh_git_ref="$(git branch -a | grep release | sort -V | tail -1 | sed -e "s|^\s*remotes/||")" \
+      ;; \
+      \
+      unstable) \
+        tvh_point_releases="13579" \
+ &&     tvh_git_ref="$(git tag | grep "v[456789].[0-9]*[$tvh_point_releases]" | sort -V | tail -1)" \
+      ;; \
+      \
+      master) \
+        tvh_git_ref="master" \
+      ;; \
+      \
+      *) \
+        "error: unrecognized tvheadend release \"$tvh_release\". valid values are stable, testing, unstable and master" && false \
+      ;; \
+    esac \
+    \
+ && if [ "$tvh_git_ref" ]; then \
+      git checkout "$tvh_git_ref"; \
+    else \
+      echo "error: no git tag found for tvheadend release \"$tvh_release\"" && false; \
+    fi
+
+
+
+
+# Uncomment this line to see the list of ./configure options for tvheadend
+# RUN ./configure --help && exit 1
+
+
+
+
+# Fix older branches not updated for 20.04 focal, they are missing certain build files for Focal!
+RUN if ! grep -q "$TVH_DOOZER_BUILD_TARGET" .doozer.json; then git restore -s master -- .doozer.json; fi
+RUN if [ ! -e "Autobuild/$TVH_DOOZER_BUILD_TARGET.sh" ]; then  git restore -s master -- Autobuild/focal-amd64.sh; fi
+
+# Fix 20.04 focal switchover from 'python' to 'python3'
+RUN sed -i -e "s/python,/python3,/" debian/control \
+ && if [ ! -e /usr/bin/python ]; then ln -s /usr/bin/python3 /usr/bin/python; fi
+
+
+# Compile tvheadend .deb pkgs
+RUN export AUTOBUILD_CONFIGURE_EXTRA="$TVH_CONFIGURE_ARGS $TVH_CONFIGURE_ARGS_DEV" \
+ && ./Autobuild.sh -w /build/work -t $TVH_DOOZER_BUILD_TARGET -j $TVH_MAKE_J_PARALLEL_NUM_JOBS \
+ && mv /build/*.deb /out && mv /build/*.changes /out && rm -rf /build
+
+
+
+
+
+
+# Upload tvheadend ubuntu .deb pkgs --> bintray.com
+WORKDIR /out
+ADD upload-to-bintray /bin/
+RUN chmod +x /bin/upload-to-bintray
+
+
+# Execute our upload script
+ADD bintray-env /out/
+# RUN upload-to-bintray && rm /out/bintray-env
+
+
+# Build products are copied to the volume '/out'
+VOLUME /out
+ENTRYPOINT ["/bin/sleep","99999999"]
+
+

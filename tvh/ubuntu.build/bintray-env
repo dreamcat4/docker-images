@@ -1,0 +1,16 @@
+#!/bin/sh
+
+
+# Your Bintray account user settings need to go here:
+bintray_user="dreamcat4"
+bintray_key="0123456789abcdef0123456789abcdef01234567"
+
+
+# The program name and the repo we are uploading it to - should be kept the same
+bintray_repo="ubuntu"
+bintray_pkg_name="tvheadend"
+
+
+# This is specified when adding apt sources
+deb_component="main"
+
