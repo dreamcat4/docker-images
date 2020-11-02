@@ -18,8 +18,8 @@ _wait_for_openvpn;
 
 
 _openvpn_passwd_file="/config/openvpn/pw"
-_pia_user="$(head -1 "$_openvpn_passwd_file")"
-_pia_pass="$(tail -1 "$_openvpn_passwd_file")"
+_pia_user="$(grep -o '^[^#]*' "$_openvpn_passwd_file" | head -1)"
+_pia_pass="$(grep -o '^[^#]*' "$_openvpn_passwd_file" | tail -1)"
 
 
 # Generate a new random client_id
