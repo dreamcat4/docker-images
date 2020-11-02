@@ -1,20 +1,34 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
 ARG _apt_clean="eval apt-get clean && $_clean"
+ARG DEBIAN_FRONTEND=noninteractive
 
 
-# 1. Set Timezone
-RUN mkdir -p /config/.etc/ && echo "Europe/London" > /config/.etc/timezone
+# 1. Set your local timezone
+RUN mkdir -p /config/.link/etc/ && echo "Europe/London" > /config/.link/etc/timezone
 
-# 2. Set locale - change 'en_US.UTF-8' --> the correct one for your county / region
-# 2b. You will also need to specify the locale at run time e.g. `docker run -e LANG="en_US.UTF-8" ...`
+
+# Get locales
+RUN apt-get update -qqy && apt-get install -qqy lsb-release locales && $_apt_clean
+
+
+# 2a. Uncomment this line to see the full list of available locales
+# RUN cat /etc/locale.gen && false
+
+
+# 2b. Set chosen locale - change 'en_US.UTF-8' --> the correct one for your county / region
 ENV LANG="en_US.UTF-8"
 
-RUN apt-get update -qqy && apt-get install -qqy locales && $_apt_clean \
- && grep "$LANG" /usr/share/i18n/SUPPORTED >> /etc/locale.gen && locale-gen \
- && update-locale LANG=$LANG
+
+# 2c. If importing this image simply as a volume, then also set
+#     the locale at run time e.g. `docker run -e LANG="en_US.UTF-8" ...`
+
+
+# Set locale
+RUN sed -i "/$LANG/s/^# //g" /etc/locale.gen && locale-gen && update-locale LANG=$LANG
+
 
 # 3. Must always move the lang files into '/config dir', where dreamcat4/deluge expects
 RUN mkdir -p /config/.link/usr/lib/ /config/.link/etc \
