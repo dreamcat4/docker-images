@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
@@ -22,9 +22,21 @@ ADD https://github.com/jpetazzo/pipework/archive/master.tar.gz /tmp/pipework-mas
 RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipework /sbin/ && $_clean
 
 
-# Install support pkgs, iscsi
+# DEPRECATED - iscsi-target / istgt is the user mode daemon
+
+# # Install support pkgs, iscsi
+# RUN apt-get update -qqy && apt-get install -y \
+#     curl wget nano man less sudo istgt && $_apt_clean
+
+
+
+# instead use open-iscsi, from here:
+# https://hub.docker.com/r/aragunathan/open-iscsi
+# https://www.docker.com/blog/road-to-containing-iscsi/
+
+# Install support pkgs, open-iscsi
 RUN apt-get update -qqy && apt-get install -y \
-    curl wget nano man less sudo iscsitarget && $_apt_clean
+    curl wget nano man less sudo open-iscsi && $_apt_clean
 
 
 # You must also "apt-get install iscsitarget" on your docker host, to install the kmod

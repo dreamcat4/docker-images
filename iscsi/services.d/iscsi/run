@@ -1,6 +1,8 @@
 #!/usr/bin/with-contenv sh
 
 
+# DEPRECATED: iscsi-target / istgt
+# THIS NEEDS TO BE RE-WRITTEN FOR OPEN-ISCSI INSTEAD
 
 rm -f /iscsi/ietd.conf
 
