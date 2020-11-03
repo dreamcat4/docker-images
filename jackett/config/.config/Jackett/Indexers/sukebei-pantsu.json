@@ -1,0 +1,60 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://sukebei.nyaa.net/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "category",
+    "type": "inputselect",
+    "name": "Category",
+    "value": "_",
+    "options": {
+      "_": "All categories",
+      "1_": "Art",
+      "1_1": "Art - Anime",
+      "1_2": "Art - Doujinshi",
+      "1_3": "Art - Games",
+      "1_4": "Art - Manga",
+      "1_5": "Art - Pictures",
+      "2_": "Real Life",
+      "2_1": "Real Life - Photobooks and Pictures",
+      "2_2": "Real Life - Videos"
+    }
+  },
+  {
+    "id": "sortrequestedfromsite",
+    "type": "inputselect",
+    "name": "Sort requested from site",
+    "value": "2",
+    "options": {
+      "2": "created",
+      "5": "seeders",
+      "4": "size",
+      "1": "title"
+    }
+  },
+  {
+    "id": "orderrequestedfromsite",
+    "type": "inputselect",
+    "name": "Order requested from site",
+    "value": "false",
+    "options": {
+      "false": "desc",
+      "true": "asc"
+    }
+  }
+]

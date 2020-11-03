@@ -1,0 +1,46 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://idope.se/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "adddownloadlinksviaitorrents.org",
+    "type": "inputbool",
+    "name": "Add download links via itorrents.org",
+    "value": false
+  },
+  {
+    "id": "itorrentsnote",
+    "type": "displayinfo",
+    "name": "ITorrents Note",
+    "value": "Without the itorrents option only magnet links will be provided."
+  },
+  {
+    "id": "sortrequestedfromsite(appliesonlytosearchwithkeywords)",
+    "type": "inputselect",
+    "name": "Sort requested from site (Applies only to search with Keywords)",
+    "value": "-3",
+    "options": {
+      "-3": "created desc",
+      "-1": "seeders desc",
+      "-2": "size desc",
+      "3": "created asc",
+      "1": "seeders asc",
+      "2": "size asc"
+    }
+  }
+]

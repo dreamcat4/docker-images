@@ -1,0 +1,37 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://www.7torrents.cc/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "about7torrentscategories",
+    "type": "displayinfo",
+    "name": "About 7torrents Categories",
+    "value": "7torrents does not return categories in its search results.</br>To add to your Apps' Torznab indexer, replace all categories with 8000(Other)."
+  },
+  {
+    "id": "sortrequestedfromsite",
+    "type": "inputselect",
+    "name": "Sort requested from site",
+    "value": "created",
+    "options": {
+      "created": "created",
+      "length": "size",
+      "seeders": "seeders"
+    }
+  }
+]

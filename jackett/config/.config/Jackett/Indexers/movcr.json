@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://movcr.st/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "aboutmovcrcategories",
+    "type": "displayinfo",
+    "name": "About MovCr Categories",
+    "value": "MovCr does not return categories in its search results page. To add to Sonarr or Radarr replace all categories with 8000(Other)."
+  }
+]

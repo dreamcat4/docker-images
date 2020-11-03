@@ -1,0 +1,44 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://torrentproject2.com/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "onlyincludeverifedcontentinresults",
+    "type": "inputbool",
+    "name": "Only include verifed content in results",
+    "value": false
+  },
+  {
+    "id": "sortrequestedfromsite",
+    "type": "inputselect",
+    "name": "Sort requested from site",
+    "value": "latest",
+    "options": {
+      "latest": "created desc",
+      "oldest": "created asc",
+      "seeders": "seeders",
+      "size": "size"
+    }
+  },
+  {
+    "id": "abouttorrentproject2categories",
+    "type": "displayinfo",
+    "name": "About TorrentProject2 Categories",
+    "value": "TorrentProject2 does not return categories in its search results page. To add to Sonarr or Radarr replace all categories with 8000(Other)."
+  }
+]

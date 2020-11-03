@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://www.cinecalidad.is/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "selectlanguage",
+    "type": "inputselect",
+    "name": "Select language",
+    "value": "castellano",
+    "options": {
+      "castellano": "Castilian Spanish",
+      "latino": "Latin American Spanish"
+    }
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://www.tokyotosho.info/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "category",
+    "type": "inputselect",
+    "name": "Category",
+    "value": "0",
+    "options": {
+      "0": "All",
+      "1": "Anime",
+      "10": "Non-English",
+      "3": "Manga",
+      "8": "Drama",
+      "2": "Music",
+      "9": "Music Video",
+      "7": "Raws",
+      "4": "Hentai",
+      "12": "Hentai (Anime)",
+      "13": "Hentai (Manga)",
+      "14": "Hentai (Games)",
+      "11": "Batch",
+      "15": "JAV",
+      "5": "Other"
+    }
+  }
+]

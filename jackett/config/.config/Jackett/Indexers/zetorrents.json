@@ -1,0 +1,52 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://vww.zetorrents.io/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "aboutzetorrentscategories",
+    "type": "displayinfo",
+    "name": "About zetorrents Categories",
+    "value": "zetorrents does not return categories in its search results page. To add to Sonarr or Radarr replace all categories with 8000(Other)."
+  },
+  {
+    "id": "replacemultibyanotherlanguageinreleasename",
+    "type": "inputbool",
+    "name": "Replace MULTI by another language in release name",
+    "value": false
+  },
+  {
+    "id": "replacemultibythislanguage",
+    "type": "inputselect",
+    "name": "Replace MULTI by this language",
+    "value": "FRENCH",
+    "options": {
+      "FRENCH": "FRENCH",
+      "MULTI.FRENCH": "MULTI.FRENCH",
+      "ENGLISH": "ENGLISH",
+      "MULTI.ENGLISH": "MULTI.ENGLISH",
+      "VOSTFR": "VOSTFR",
+      "MULTI.VOSTFR": "MULTI.VOSTFR"
+    }
+  },
+  {
+    "id": "replacevostfrwithenglish",
+    "type": "inputbool",
+    "name": "Replace VOSTFR with ENGLISH",
+    "value": false
+  }
+]

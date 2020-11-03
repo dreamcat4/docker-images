@@ -1,0 +1,37 @@
+[
+  {
+    "id": "sitelink",
+    "type": "inputstring",
+    "name": "Site Link",
+    "value": "https://btdig.com/"
+  },
+  {
+    "id": "cookieheader",
+    "type": "hiddendata",
+    "name": "CookieHeader",
+    "value": ""
+  },
+  {
+    "id": "lasterror",
+    "type": "hiddendata",
+    "name": "LastError",
+    "value": ""
+  },
+  {
+    "id": "aboutbtdiggcategories",
+    "type": "displayinfo",
+    "name": "About BTDigg Categories",
+    "value": "BTDigg does not return categories in its search results.</br>To add to your Apps' Torznab indexer, replace all categories with 8000(Other)."
+  },
+  {
+    "id": "sortrequestedfromsite",
+    "type": "inputselect",
+    "name": "Sort requested from site",
+    "value": "0",
+    "options": {
+      "0": "relevance",
+      "2": "created",
+      "3": "size"
+    }
+  }
+]
