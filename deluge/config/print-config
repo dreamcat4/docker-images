@@ -1,3 +1,0 @@
-#!/bin/sh
-
-find config -regex '.*\+$' | sort | sed -e 's|^|ADD |g' -e 's|$| /config/|g'
