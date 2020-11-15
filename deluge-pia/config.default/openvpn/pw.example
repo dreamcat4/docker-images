@@ -1,5 +1,0 @@
-# Copy this file to ../../config.custom/openvpn/pw,
-# Or bind-mount it to /config/openvpn/pw
-
-# Put as line #1 your pia username
-# Put as line #2 your pia password
