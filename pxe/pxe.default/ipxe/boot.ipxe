@@ -46,6 +46,7 @@ item shell                Drop to iPXE shell
 item reboot               Reboot computer
 item
 item --key x exit         Exit iPXE and continue BIOS boot
+set menu-timeout 30000
 choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
 set menu-timeout 0
 goto ${selected}
@@ -84,8 +85,6 @@ goto ${selected}
   set casper_username   __PUT__HERE__SAMBA_USERNAME
   set casper_password   __PUT__HERE__SAMBA_PASSWORD
 
-  # To initially create the persistence file(s)
-  #
   # create root /cow partition file
   # fallocate -l 2G casper-rw
   # mkfs.ext4 -F casper-rw
@@ -107,8 +106,8 @@ goto ${selected}
   nfsroot=//${samba_server_ip}/${samba_share} \
   NFSOPTS=-ousername=${samba_username},password=${samba_password},ro \
   rwmount=cifs rwroot=//${casper_server_ip}/${casper_share} RWOPTS=-ousername=${casper_username},password=${casper_password} \
-  username=${casper_username} userfullname=${casper_username} \
-  -- splash quiet
+  username=${casper_username} userfullname=${casper_username}
+#  -- splash quiet
 
   initrd http://${ipxe_server_ip}/iso/extracted/clean/ubuntu/casper/initrd.lz
   initrd http://${ipxe_server_ip}/iso/extracted/modified/ubuntu/casper/initrd_lz/scripts/casper-helpers scripts/casper-helpers mode=755
@@ -148,10 +147,16 @@ goto ${selected}
   initrd http://${ipxe_server_ip}/iso/extracted/clean/win10/sources/boot.wim boot.wim
   boot
 
-
 :salstar
   # Open http://boot.salstar.sk in a web browser for more details
-  chain http://boot.salstar.sk
+#   goto salstar_${platform}
+
+# :salstar_pcbios
+#   chain http://boot.salstar.sk
+
+# :salstar_efi
+#   # DNS FTP HTTP HTTPS TFTP
+  chain http://boot.salstar.sk/ipxe/ipxe.efi
 
 
 
