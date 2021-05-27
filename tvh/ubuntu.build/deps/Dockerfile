@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:21.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 ARG _clean="rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
