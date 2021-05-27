@@ -10,7 +10,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Supportive pkgs
 RUN apt-get update -qqy && apt-get install -y \
-    lsb-release iproute2 net-tools wget curl git sudo nano less man && $_apt_clean
+    lsb-release iproute2 net-tools wget curl iputils-ping net-tools iproute2 git sudo nano less man && $_apt_clean
 
 # Output folder
 RUN mkdir -p /out

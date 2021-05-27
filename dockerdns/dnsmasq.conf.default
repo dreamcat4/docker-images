@@ -666,3 +666,5 @@
 #conf-dir=/etc/dnsmasq.d/,*.conf
 user=root
 server=127.0.0.11
+server=/dkr/127.0.0.11
+server=/id/127.0.0.11

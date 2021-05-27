@@ -22,7 +22,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install gnupg2
-RUN apt-get update -qq && apt-get install -qqy lsb-release iproute2 net-tools gnupg2 && $_apt_clean
+RUN apt-get update -qq && apt-get install -qqy lsb-release curl iputils-ping net-tools iproute2 gnupg2 && $_apt_clean
 
 
 # Install nginx

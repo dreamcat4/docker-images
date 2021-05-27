@@ -26,7 +26,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install prerequisites
-RUN apt-get update -qq && apt-get install -qqy lsb-release gnupg2 apt-transport-https ca-certificates \
+RUN apt-get update -qq && apt-get install -qqy lsb-release curl iputils-ping net-tools iproute2 gnupg2 apt-transport-https ca-certificates \
  && $_apt_clean
 
 

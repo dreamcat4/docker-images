@@ -29,7 +29,7 @@ RUN apt-get update -qq && apt-get install -qqy gnupg2 && $_apt_clean
 
 # Install support pkgs
 RUN apt-get update -qqy && apt-get install -y \
-    lsb-release wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
+    lsb-release curl iputils-ping net-tools iproute2 wget apt-transport-https ca-certificates nano less man git sudo && $_apt_clean
 
 
 # Install ngircd

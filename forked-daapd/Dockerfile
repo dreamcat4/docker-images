@@ -21,7 +21,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 
 # Install forked-daapd
-RUN apt-get update && apt-get install -y lsb-release sudo iproute2 net-tools forked-daapd && $_apt_clean
+RUN apt-get update && apt-get install -y lsb-release sudo curl iputils-ping net-tools iproute2 forked-daapd && $_apt_clean
 
 
 # Setup daapd user

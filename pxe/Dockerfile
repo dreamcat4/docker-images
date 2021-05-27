@@ -10,7 +10,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install support pkgs
 RUN apt-get update -qqy && apt-get install -y \
-    iproute2 curl wget nano man less sudo unzip xorriso tcpdump wimtools \
+    curl iputils-ping net-tools iproute2 wget nano man less sudo unzip xorriso tcpdump wimtools \
  && $_apt_clean
 
 

@@ -36,7 +36,7 @@ RUN tar hzxf /tmp/pipework-master.tar.gz -C /tmp && cp /tmp/pipework-master/pipe
 
 # Install support pkgs, open-iscsi
 RUN apt-get update -qqy && apt-get install -y \
-    curl wget nano man less sudo open-iscsi && $_apt_clean
+    curl iputils-ping net-tools iproute2 wget nano man less sudo open-iscsi && $_apt_clean
 
 
 # You must also "apt-get install iscsitarget" on your docker host, to install the kmod
