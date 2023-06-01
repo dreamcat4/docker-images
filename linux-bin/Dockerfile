@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:23.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 

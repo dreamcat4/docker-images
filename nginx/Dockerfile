@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:23.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
@@ -27,7 +27,7 @@ RUN apt-get update -qq && apt-get install -qqy lsb-release curl iputils-ping net
 
 # Install nginx
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 2>&1 \
- && echo "deb http://nginx.org/packages/mainline/ubuntu focal nginx" >> /etc/apt/sources.list \
+ && echo "deb https://nginx.org/packages/mainline/ubuntu lunar nginx" >> /etc/apt/sources.list \
  && apt-get update && apt-get install -y ca-certificates nginx && $_apt_clean
 
 

@@ -1,4 +1,5 @@
-FROM ubuntu:21.04
+#! NOW owntone --> project moved
+FROM ubuntu:23.04
 MAINTAINER dreamcat4 <dreamcat4@gmail.com>
 
 
